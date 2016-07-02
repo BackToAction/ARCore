@@ -666,7 +666,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
       }
     }
   }
-/*Plugin OnGBTHold*/
+/*Plugin OnGBTHold*///
 	public function onGBTHold(PlayerItemHeldEvent $e){
 		$i = $e->getItem();
 		$p = $e->getPlayer();
