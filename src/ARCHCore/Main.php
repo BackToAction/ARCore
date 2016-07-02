@@ -8,7 +8,7 @@ namespace ARCHCore;
  *  Any Contribute Are Allow As Long This Text Here.
  *  
  *  #Write Ur Name If U Contribute.
- *  Contribute: -
+ *  Contribute: [NeuroBinds]
  *  
  *  Not For Sale.
  * 
@@ -117,14 +117,12 @@ class Main extends PluginBase implements Listener{
     }
 /*Plugins OnEnable*/
    public function onEnable(){
-		$this->MSF();
+		$this->makeSaveFiles();
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new ArchParticles($this), 10);
 //load level/world
         $this->getServer()->loadLevel("ARCHRPG_LOBBY");
 /*Server Name*/
 		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
-		$this->saveDefaultConfig();
-		$this->getConfig()->reload();
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
        $this->getLogger()->info("\n\n§e==========\n§aRegister\n§bArchRPG§eCore\n§e==========\n\n");
 /*/====Using EconomyAPI====/*/
@@ -151,9 +149,9 @@ class Main extends PluginBase implements Listener{
       $this->cfg = new Config($this->dataPath() . "newspaper.yml", Config::YAML, array("page_1" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_2" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_3" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_4" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_5" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_6" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_7" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_8" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_9" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message"), "page_10" => array("message_1" => "first message here", "message_2" => "second message here", "message_3" => "third message here", "message_4" => "fourth message here", "message_5" => "fifth message here", "message_6" => "sixth message here", "message_7" => "seventh message here", "message_8" => "eighth message here", "message_9" => "ninth message here", "message_10" => "tenth message")));
 
     }
-/*Plugin MSF*/
-	private function MSF(){
-		$this->saveResource("LuncherPads.yml");
+/*Plugin MakeSaveFiles*/
+	private function makeSaveFiles(){
+		$this->saveResource("LaunchRocketsPads.yml");
 		$this->getConfig()->save();
 	}
 /*Plugins OnDisable*/
@@ -164,7 +162,7 @@ class Main extends PluginBase implements Listener{
    public function addParticle(PlayerJoinEvent $event){ 
        $level = $this->getServer()->getLevelByName("ARCHRPG_LOBBY");
        $player = $event->getPlayer();
-       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "§aWelcome Nerd!"));
+       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "§aWelcome Beginner!\n§eYou Will Randomly Teleport\n§eTo Random City When You Tap The Doors!"));
    }
 /*Plugin OnJoin*/
    public function onJoin(PlayerJoinEvent $event){ 
@@ -172,6 +170,11 @@ class Main extends PluginBase implements Listener{
        $player->setFood(200);
        $player->setHealth(200);
    }
+/*Plugins PRE*/
+    public function PRE(PlayerRespawnEvent $event){
+   $event->getPlayer()->setMaxHealth(200);
+   $event->getPlayer()->setHealth(200);       
+    }
 /*Plugins sendcmd*/
    public function sendcmd(PlayerCommandPreprocessEvent $event) {
        $cmd3 = explode(" ", strtolower($event->getMessage()));
@@ -236,8 +239,8 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 
    if($event->getItem()->getId() === 322){
 
-             $player->addEffect(Effect::getEffect(10)->setAmplifier(3)->setDuration(200)->setVisible(false));
-             $player->addEffect(Effect::getEffect(21)->setAmplifier(0)->setDuration(1000)->setVisible(false));
+             $player->addEffect(Effect::getEffect(10)->setAmplifier(3)->setDuration(200)->setVisible(true));
+             $player->addEffect(Effect::getEffect(21)->setAmplifier(1)->setDuration(1000)->setVisible(true));
              $player->setHealth($player->getHealth() + 6);
 
     }
@@ -672,8 +675,8 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 			$p->sendPopup("§aG§ba§cc§dh§ea§fb§1o§2x §3T§4i§5c§6k§7e§8t§9s");
 		}
 	}
-/*Plugin OnPlayerMovezzzz*/
-	public function onPlayerMovezzzz(PlayerMoveEvent $event){
+/*Plugin OnPlayerMove*/
+	public function onPlayerMove(PlayerMoveEvent $event){
 		$player = $event->getPlayer();
 		$block = $player->getLevel()->getBlock($player->floor()->subtract(0, 1));
 		if($this->getConfig()->get($block->getId()) !== false){
@@ -696,9 +699,10 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 			$player->getLevel()->addParticle(new BubbleParticle($player->getPosition()->add(mt_rand(0, 10) / 10 - 0.5, mt_rand(0, 4) / 10 - 0.2, mt_rand(0, 10) / 10 - 0.5)));
 			$player->getLevel()->addSound(new BlazeShootSound($player->getPosition()));
 			if($player->hasEffect(Effect::JUMP)) $player->removeEffect(Effect::JUMP);
-			$player->addEffect(Effect::getEffect(8)->setDuration($distance * 2)->setAmplifier(255)->setAmbient(true)->setVisible(true));
+			$player->addEffect(Effect::getEffect(8)->setDuration($distance * 2)->setAmplifier(255)->setAmbient(false)->setVisible(true));
 		}
 	}
+
 /*/
  *  More Features Coming Soon.
  *  The Plugin Only For My Server.
