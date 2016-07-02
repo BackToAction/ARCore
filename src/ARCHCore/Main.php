@@ -68,6 +68,8 @@ use pocketmine\level\sound\BlazeShootSound;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\level\sound\EndermanTeleportSound;
 use pocketmine\level\particle\FloatingTextParticle;
+use pocketmine\level\particle\ExplodeParticle;
+use pocketmine\level\particle\BubbleParticle;
 use pocketmine\level\particle\Particle;
 use pocketmine\level\particle\DustParticle;
 use pocketmine\level\Position;
@@ -666,7 +668,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
       }
     }
   }
-/*Plugin OnGBTHold*///
+/*Plugin OnGBTHold*/
 	public function onGBTHold(PlayerItemHeldEvent $e){
 		$i = $e->getItem();
 		$p = $e->getPlayer();
