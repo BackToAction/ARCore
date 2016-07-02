@@ -1,0 +1,16 @@
+name: ArchCoreSystem
+author: GamerXzavier
+main: ARCHCore\Main
+api: [2.0.0]
+version: 1#Beta
+commands:
+ help:
+  usage: /help or /?
+  description: Help Command
+ news:
+  description: See Newss!!
+
+  permissions:
+    N.F.D:
+      description: User Doesnt Have Falling Damage Events.
+      default: true
