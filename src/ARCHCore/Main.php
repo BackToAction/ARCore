@@ -151,7 +151,7 @@ class Main extends PluginBase implements Listener{
     }
 /*Plugin MakeSaveFiles*/
 	private function makeSaveFiles(){
-		$this->saveResource("LaunchRocketsPads.yml");
+		$this->saveResource("config.yml");
 		$this->getConfig()->save();
 	}
 /*Plugins OnDisable*/
