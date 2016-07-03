@@ -30,6 +30,7 @@ use pocketmine\event\player\PlayerChatEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
+use pocketmine\event\entity\EntityShootBowEvent;
 use pocketmine\event\entity\EntityDamageByEntityEvent;
 use pocketmine\event\entity\EntityDamageByChildEntityEvent;
 use pocketmine\event\entity\EntityDamageEvent;
@@ -976,6 +977,19 @@ Server::broadcastPacket($level->getPlayers(),$light);
 		$player=$p;
 		 $this->PlayerFile = new Config($this->getDataFolder()."Players/".$ign.".yml", Config::YAML);
 		}
+/*/
+ * Wanted To Use Snowball But I'm Lazy...
+ *
+/*/
+/*Plugin FireBow*/
+  public function FireBow(EntityShootBowEvent $event){
+    $entity = $event->getEntity();
+    if($entity instanceof Player){
+      if($entity->hasPermission("Fire.Bows")){
+        $event->getProjectile()->setOnFire(500000000 * 20);
+      }
+    }
+  }
   
 
 
