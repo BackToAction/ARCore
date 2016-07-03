@@ -951,6 +951,16 @@ Server::broadcastPacket($level->getPlayers(),$light);
 		
 		return $message;
 	}
+/*Plugin test*/
+	public function test(CommandSender $sender, Command $cmd, $label, array $sub){
+		$nbt = new CompoundTag("", ["Pos" => new ListTag("Pos", [new DoubleTag("", $sender->getx()),new DoubleTag("", $sender->gety() + $sender->getEyeHeight()),new DoubleTag("", $sender->getz()) ]),"Motion" => new ListTag("Motion", [new DoubleTag("", -sin($sender->getyaw() / 180 * M_PI) * cos($sender->getPitch() / 180 * M_PI)),new DoubleTag("", -sin($sender->getPitch() / 180 * M_PI)),new DoubleTag("", cos($sender->getyaw() / 180 * M_PI) * cos($sender->getPitch() / 180 * M_PI)) ]),"Rotation" => new ListTag("Rotation", [new FloatTag("", $sender->getyaw()),new FloatTag("", $sender->getPitch()) ]) ]);
+		$arrow = new Arrow($sender->chunk, $nbt, $sender);
+		$ev = new EntityShootBowEvent($sender, Item::get(264, 0, 0), $arrow, 1.5);
+		$this->getServer(0)->getPluginManager()->callEvent($ev);
+		if($ev->isCancelled()) $arrow->kill();
+		else $arrow->spawnToAll();
+		return true;
+	}
 	
 
 
