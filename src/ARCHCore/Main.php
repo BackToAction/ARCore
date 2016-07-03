@@ -113,6 +113,8 @@ use onebone\economyapi\EconomyAPI;
 
 class Main extends PluginBase implements Listener{
 
+ public $players = array();
+
     public function dataPath(){
 
       return $this->getDataFolder();
@@ -120,6 +122,8 @@ class Main extends PluginBase implements Listener{
     }
 /*Plugins OnEnable*/
    public function onEnable(){
+		  @mkdir($this->getDataFolder());
+@mkdir($this->getDataFolder()."Players/");
 		$this->makeSaveFiles();
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new ArchParticles($this), 10);
 //load level/world
@@ -961,7 +965,18 @@ Server::broadcastPacket($level->getPlayers(),$light);
 		else $arrow->spawnToAll();
 		return true;
 	}
-	
+/*Plugin GetDataFolder*/
+		public function GetDataFolderMCPE(){
+			return $this->getDataFolder();
+		}
+/*Plugin MakeFile*/
+		public function makefile(PlayerJoinEvent $ev){
+		$ign=$ev->getPlayer()->getName();
+		$p=$ev->getPlayer();
+		$player=$p;
+		 $this->PlayerFile = new Config($this->getDataFolder()."Players/".$ign.".yml", Config::YAML);
+		}
+  
 
 
 /*/
