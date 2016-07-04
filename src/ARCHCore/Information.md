@@ -8,6 +8,8 @@
 - Add RocketPads.
 - Remove Buggy Parts.
 - Bug Fix On FloatingParticleText.
+- Add RPG Stats.
+- Remove Some Unreasonable Symbols.
 
 # Test Update:
 
