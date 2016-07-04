@@ -69,6 +69,7 @@ use pocketmine\entity\Entity;
 use pocketmine\level\sound\BlazeShootSound;
 use pocketmine\level\sound\GhastShootSound;
 use pocketmine\level\sound\EndermanTeleportSound;
+use pocketmine\level\sound\AnvilFallSound;
 use pocketmine\level\particle\FloatingTextParticle;
 use pocketmine\level\particle\ExplodeParticle;
 use pocketmine\level\particle\BubbleParticle;
@@ -123,16 +124,26 @@ class Main extends PluginBase implements Listener{
     }
 /*Plugins OnEnable*/
    public function onEnable(){
+
+		  @mkdir($this->getDataFolder());
+@mkdir($this->getDataFolder()."Stats/");
+
 		  @mkdir($this->getDataFolder());
 @mkdir($this->getDataFolder()."Players/");
+
 		$this->makeSaveFiles();
+
     $this->getServer()->getScheduler()->scheduleRepeatingTask(new ArchParticles($this), 10);
+
+		 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"popupStats"]),15);
 //load level/world
         $this->getServer()->loadLevel("ARCHRPG_LOBBY");
 /*Server Name*/
-		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
+		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "BetaÂ§lÂ§8Â»v0.1 ");
+
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-       $this->getLogger()->info("\n\n§e==========\n§aRegister\n§bArchRPG§eCore\n§e==========\n\n");
+
+       $this->getLogger()->info("\n\nÂ§e==========\nÂ§aRegister\nÂ§bArchRPGÂ§eCore\nÂ§e==========\n\n");
 /*/====Using EconomyAPI====/*/
 			$this->api = EconomyAPI::getInstance();
 /*-=-=-=-Config-=-=-=-*/
@@ -164,13 +175,13 @@ class Main extends PluginBase implements Listener{
 	}
 /*Plugins OnDisable*/
    public function onDisable(){
-       $this->getLogger()->info("\n\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n\n");
+       $this->getLogger()->info("\n\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\n\n");
    }
 /*Plugin AddParticle*/
    public function addParticle(PlayerJoinEvent $event){ 
        $level = $this->getServer()->getLevelByName("ARCHRPG_LOBBY");
        $player = $event->getPlayer();
-       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "§aWelcome Beginner!\n§eYou Will Randomly Teleport\n§eTo Random City When You Tap The Doors!"));
+       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "Â§aWelcome Beginner!\nÂ§eYou Will Randomly Teleport\nÂ§eTo Random City When You Tap The Doors!"));
    }
 /*Plugin OnJoin*/
    public function onJoin(PlayerJoinEvent $event){ 
@@ -188,7 +199,7 @@ class Main extends PluginBase implements Listener{
        $cmd3 = explode(" ", strtolower($event->getMessage()));
        $player = $event->getPlayer();
    if($cmd3[0] === "/?"){ 
-       $player->sendMessage("§b§l»§r§eHelp Commands Available§l§b«");
+       $player->sendMessage("Â§bÂ§lÂ»Â§rÂ§eHelp Commands AvailableÂ§lÂ§bÂ«");
        $player->sendMessage("");
        $player->sendMessage("");
        $player->sendMessage("");
@@ -201,7 +212,7 @@ class Main extends PluginBase implements Listener{
        $cmd4 = explode(" ", strtolower($event->getMessage()));
        $player = $event->getPlayer();
    if($cmd4[0] === "/help"){ 
-       $player->sendMessage("§b§l»§r§eHelp Commands Available§l§b«");
+       $player->sendMessage("Â§bÂ§lÂ»Â§rÂ§eHelp Commands AvailableÂ§lÂ§bÂ«");
        $player->sendMessage("");
        $player->sendMessage("");
        $player->sendMessage("");
@@ -214,7 +225,7 @@ class Main extends PluginBase implements Listener{
         if($event instanceof EntityDamageByChildEntityEvent){
             $target = $event->getEntity();
             $player = $event->getDamager();
-            $event->getDamager()->sendPopup("§aShot A Player!");
+            $event->getDamager()->sendPopup("Â§aShot A Player!");
             $player->getLevel()->addSound(new AnvilFallSound($player), [$player]);
                 }
         }
@@ -258,7 +269,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
         if($event instanceof EntityDamageByChildEntityEvent){
             $target = $event->getEntity();
             $player = $event->getDamager();
-            $event->getDamager()->sendPopup("§aShot A Player!");
+            $event->getDamager()->sendPopup("Â§aShot A Player!");
             $player->getLevel()->addSound(new AnvilFallSound($player), [$player]);
                 }
         }
@@ -291,7 +302,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
         if($inventory->contains(new Slimeball(0,1))) {
         $event->setCancelled();
         $player->sendMessage(C::GREEN . "Congratulations You Opened GachaBox!");
-        $player->sendMessage(C::AQUA . C::BOLD . "§bPlease Check Your Inventory!");
+        $player->sendMessage(C::AQUA . C::BOLD . "Â§bPlease Check Your Inventory!");
         $level = $player->getLevel();
         $x = $block->getX();
         $y = $block->getY();
@@ -345,7 +356,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 				{
 					if(strtolower($args[0]) === "$command")
 					{
-						$event->getPlayer()->sendMessage(MT::RED."Eiyy LMOA dats commands huh?\n§cNot Available >.<'");
+						$event->getPlayer()->sendMessage(MT::RED."Eiyy LMOA dats commands huh?\nÂ§cNot Available >.<'");
 						$event->setCancelled(true);
 					}
 				}
@@ -680,7 +691,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 		$p = $e->getPlayer();
 		if($e->isCancelled()) return;
    if($e->getItem()->getId() === 341){
-			$p->sendPopup("§aG§ba§cc§dh§ea§fb§1o§2x §3T§4i§5c§6k§7e§8t§9s");
+			$p->sendPopup("Â§aGÂ§baÂ§ccÂ§dhÂ§eaÂ§fbÂ§1oÂ§2x Â§3TÂ§4iÂ§5cÂ§6kÂ§7eÂ§8tÂ§9s");
 		}
 	}
 /*Plugin OnPlayerMove*/
@@ -990,6 +1001,188 @@ Server::broadcastPacket($level->getPlayers(),$light);
       }
     }
   }
+/*Plugin OnJoinStats*/
+		public function onJoinStats(PlayerJoinEvent $ev){
+		$ign=$ev->getPlayer()->getName();
+		$p=$ev->getPlayer();
+		$player=$p;
+		 $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+		 
+		 if($this->PlayerFile->get("Deaths") === 0 && $this->PlayerFile->get("Kills") === 0){
+
+         }else{
+
+		$this->addPlayer($p);
+
+		}
+  }
+/*Plugin OnHitStats*/
+public function onHitStats(EntityDamageEvent $ev){
+
+
+$p = $ev->getEntity();
+
+if($ev instanceof EntityDamageByEntityEvent){
+$damager = $ev->getDamager();
+if($damager instanceof Player){
+
+$this->DamagerFile = new Config($this->getDataFolder()."Stats/".$damager->getName()."_Stats.yml", Config::YAML);
+
+$this->PlayerFile = new Config($this->getDataFolder()."Stats/".$p->getName()."_Stats.yml", Config::YAML);
+}
+}
+}
+/*Plugin OnPlayerLoginStats*/
+		 public function onPlayerLoginStats(PlayerPreLoginEvent $event){
+        $ign = $event->getPlayer()->getName();
+        $player = $event->getPlayer();
+        $file = ($this->getDataFolder()."Stats/".$ign."_Stats.yml");  
+      if(!file_exists($file)){
+                $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+                $this->PlayerFile->set("Deaths", 0);
+                $this->PlayerFile->set("Kills", 0);
+                $this->PlayerFile->set("Mining_Level", 0);
+                
+                $this->PlayerFile->set("Blocks_Broken", 0);
+                $this->PlayerFile->set("Power_Level", 0);
+                $this->PlayerFile->set("Sword_Level", 0);
+                $this->PlayerFile->save();
+            }
+            $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+            
+        } 
+/*Plugin OnDeathStats*/
+        public function onDeathStats(PlayerDeathEvent $ev){
+        $p=$ev->getEntity();
+        $player=$ev->getEntity();
+        $ign=$player->getName();
+        $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+        $i=$this->PlayerFile->get("Deaths");
+        $ii=$this->PlayerFile->get("Power_Level");
+       $n = $i+1;
+       $p=$ii-3;
+       $this->PlayerFile->set("Deaths", $n);
+       $this->PlayerFile->set("Power_Level", $p);
+       $level = $player->getLevel();
+                $level->addSound(new BlazeShootSound($player->getLocation()));
+       $this->PlayerFile->save();
+       
+       $cause = $ev->getEntity()->getLastDamageCause();
+
+	 			 if($ev->getEntity()->getLastDamageCause() instanceof EntityDamageByEntityEvent){
+                   $killer = $ev->getEntity()->getLastDamageCause()->getDamager();
+                $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$killer->getName()."_Stats.yml", Config::YAML);
+                if(!$killer->hasPermission("vip")){
+                $iii=$this->PlayerFile->get("Kills");
+                $nn = $iii+1;
+                $this->PlayerFile->set("Kills", $nn);
+                $iiii=$this->PlayerFile->get("Power_Level");
+                $nnn = $iiii+3;
+                $this->PlayerFile->set("Power_Level", $nnn);
+                $level = $killer->getLevel();
+                $level->addSound(new GhastShootSound($killer->getLocation()));
+                $this->PlayerFile->save();
+                $this->updatePlayer($killer);
+      $this->removePlayer($player);
+       
+      $this->addPlayer($player);
+                }else{
+     $iii=$this->PlayerFile->get("Kills");
+                $nn = $iii+1;
+                $this->PlayerFile->set("Kills", $nn);
+                $iiii=$this->PlayerFile->get("Power_Level");
+                $nnn = $iiii+6;
+                $this->PlayerFile->set("Power_Level", $nnn);
+                $killer->sendTip("Â§5+6 Power Level");
+                $level = $killer->getLevel();
+                $level->addSound(new GhastShootSound($killer->getLocation()));
+
+                $this->PlayerFile->save();
+      $this->updatePlayer($killer);
+      $this->removePlayer($player);
+       
+      $this->addPlayer($player);
+      }
+        
+       }
+       }
+/*Plugin OnBreakStats*/
+       public function onBreakStats(BlockBreakEvent $ev){
+       $player=$ev->getPlayer();
+       $ign=$player->getName();
+        $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+        $i=$this->PlayerFile->get("Blocks_Broken");
+       $n = $i+1;
+       $this->PlayerFile->set("Blocks_Broken", $n);
+       $this->PlayerFile->save();
+       }
+       public function popupStats(){
+       foreach($this->getServer()->getOnlinePlayers() as $p){
+       $ign=$p->getName();
+       $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+       if($p->getLevel()->getName() == "nt"){
+         if($this->PlayerFile->get("Kills") > 0 && $this->PlayerFile->get("Deaths") > 0){
+
+         
+           
+              $p->sendTip("Â§5KillStreaksÂ§8: Â§c".$this->players[$p->getName()]["kills"]);
+            
+       }
+         
+       }
+              if($p->getLevel()->getName() == "BRAWLPE"){
+        $p->sendPopup("Â§8> Â§5KÂ§8: Â§c".$this->PlayerFile->get("Kills")."Â§8- Â§5DÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§8> Â§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2)."Â§8- Â§5KillStreaksÂ§8: Â§c".$this->players[$p->getName()]["kills"]);
+		}
+		}
+  }
+		
+    
+    public function updatePlayer(Player $player) {
+        
+            $this->players[$player->getName()] = array(
+              "kills" => $this->players[$player->getName()]["kills"] + 1  
+            );
+        
+    }
+
+    public function addPlayer(Player $player) {
+        $this->players[$player->getName()] = array(
+            "kills" => 0
+        );
+    }
+    
+    public function isPlayerSet(Player $player) {
+        return in_array($player->getName(), $this->players);
+    }
+    
+    public function removePlayer(Player $player) {
+        unset($this->players[$player->getName()]);
+    }
+
+    public function onCommand(CommandSender $sender, Command $cmd, $label, array $args) {
+        $name = $sender->getName();
+        $ign = $sender->getName();
+
+        $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$ign."_Stats.yml", Config::YAML);
+        
+        if(strtolower($cmd->getName()) === 'stats'){
+
+          if($sender->hasPermission("rpg.stats")) {
+
+            if($this->PlayerFile->get("Kills") > 0 or $this->PlayerFile->get("Deaths") > 0 or $this->PlayerFile->get("Power_Level") > 0 or $this->PlayerFile->get("Sword_Level") > 0 or $this->PlayerFile->get("Mining_Level") > 0){
+
+
+           $sender->sendMessage("Â§lÂ§bÂ»Â§rÂ§e".$ign." StatusÂ§0:"."\nÂ§lÂ§bÂ»Â§rÂ§5Power LevelÂ§8: Â§c".$this->PlayerFile->get("Power_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Sword LevelÂ§8: Â§c".$this->PlayerFile->get("Sword_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Mining LevelÂ§8: Â§c".$this->PlayerFile->get("Mining_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5KillsÂ§8: Â§c".$this->PlayerFile->get("Kills")."\nÂ§lÂ§bÂ»Â§rÂ§5DeathsÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§lÂ§bÂ»Â§rÂ§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
+        } else {
+          $sender->sendMessage("Â§lÂ§bÂ»Â§rÂ§e".$ign." StatusÂ§0:"."\nÂ§lÂ§bÂ»Â§rÂ§5Power LevelÂ§8: Â§c".$this->PlayerFile->get("Power_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Sword LevelÂ§8: Â§c".$this->PlayerFile->get("Sword_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Mining LevelÂ§8: Â§c".$this->PlayerFile->get("Mining_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5KillsÂ§8: Â§c".$this->PlayerFile->get("Kills")."\nÂ§lÂ§bÂ»Â§rÂ§5DeathsÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§lÂ§bÂ»Â§rÂ§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
+            }
+          }
+        }
+      
+
+		}
+		
+		
   
 
 
@@ -1006,7 +1199,8 @@ Server::broadcastPacket($level->getPlayers(),$light);
 
 
 
-}
+ }
+
 
 class ArchParticles extends PluginTask {
   public function __construct($plugin)
