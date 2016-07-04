@@ -139,11 +139,11 @@ class Main extends PluginBase implements Listener{
 //load level/world
         $this->getServer()->loadLevel("ARCHRPG_LOBBY");
 /*Server Name*/
-		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "BetaÂ§lÂ§8Â»v0.1 ");
+		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
 
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
 
-       $this->getLogger()->info("\n\nÂ§e==========\nÂ§aRegister\nÂ§bArchRPGÂ§eCore\nÂ§e==========\n\n");
+       $this->getLogger()->info("\n\n§e==========\n§aRegister\n§bArchRPG§eCore\n§e==========\n\n");
 /*/====Using EconomyAPI====/*/
 			$this->api = EconomyAPI::getInstance();
 /*-=-=-=-Config-=-=-=-*/
@@ -175,13 +175,13 @@ class Main extends PluginBase implements Listener{
 	}
 /*Plugins OnDisable*/
    public function onDisable(){
-       $this->getLogger()->info("\n\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\nÂ§cServer Shutting Down!\n\n");
+       $this->getLogger()->info("\n\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n§cServer Shutting Down!\n\n");
    }
 /*Plugin AddParticle*/
    public function addParticle(PlayerJoinEvent $event){ 
        $level = $this->getServer()->getLevelByName("ARCHRPG_LOBBY");
        $player = $event->getPlayer();
-       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "Â§aWelcome Beginner!\nÂ§eYou Will Randomly Teleport\nÂ§eTo Random City When You Tap The Doors!"));
+       $level->addParticle(new FloatingTextParticle(new Vector3(1.55, 17.20, 6.55),"", "§aWelcome Beginner!\n§eYou Will Randomly Teleport\n§eTo Random City When You Tap The Doors!"));
    }
 /*Plugin OnJoin*/
    public function onJoin(PlayerJoinEvent $event){ 
@@ -199,7 +199,7 @@ class Main extends PluginBase implements Listener{
        $cmd3 = explode(" ", strtolower($event->getMessage()));
        $player = $event->getPlayer();
    if($cmd3[0] === "/?"){ 
-       $player->sendMessage("Â§bÂ§lÂ»Â§rÂ§eHelp Commands AvailableÂ§lÂ§bÂ«");
+       $player->sendMessage("§b§l»§r§eHelp Commands Available§l§b«");
        $player->sendMessage("");
        $player->sendMessage("");
        $player->sendMessage("");
@@ -212,7 +212,7 @@ class Main extends PluginBase implements Listener{
        $cmd4 = explode(" ", strtolower($event->getMessage()));
        $player = $event->getPlayer();
    if($cmd4[0] === "/help"){ 
-       $player->sendMessage("Â§bÂ§lÂ»Â§rÂ§eHelp Commands AvailableÂ§lÂ§bÂ«");
+       $player->sendMessage("§b§l»§r§eHelp Commands Available§l§b«");
        $player->sendMessage("");
        $player->sendMessage("");
        $player->sendMessage("");
@@ -225,7 +225,7 @@ class Main extends PluginBase implements Listener{
         if($event instanceof EntityDamageByChildEntityEvent){
             $target = $event->getEntity();
             $player = $event->getDamager();
-            $event->getDamager()->sendPopup("Â§aShot A Player!");
+            $event->getDamager()->sendPopup("§aShot A Player!");
             $player->getLevel()->addSound(new AnvilFallSound($player), [$player]);
                 }
         }
@@ -269,7 +269,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
         if($event instanceof EntityDamageByChildEntityEvent){
             $target = $event->getEntity();
             $player = $event->getDamager();
-            $event->getDamager()->sendPopup("Â§aShot A Player!");
+            $event->getDamager()->sendPopup("§aShot A Player!");
             $player->getLevel()->addSound(new AnvilFallSound($player), [$player]);
                 }
         }
@@ -302,7 +302,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
         if($inventory->contains(new Slimeball(0,1))) {
         $event->setCancelled();
         $player->sendMessage(C::GREEN . "Congratulations You Opened GachaBox!");
-        $player->sendMessage(C::AQUA . C::BOLD . "Â§bPlease Check Your Inventory!");
+        $player->sendMessage(C::AQUA . C::BOLD . "§bPlease Check Your Inventory!");
         $level = $player->getLevel();
         $x = $block->getX();
         $y = $block->getY();
@@ -356,7 +356,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 				{
 					if(strtolower($args[0]) === "$command")
 					{
-						$event->getPlayer()->sendMessage(MT::RED."Eiyy LMOA dats commands huh?\nÂ§cNot Available >.<'");
+						$event->getPlayer()->sendMessage(MT::RED."Eiyy LMOA dats commands huh?\n§cNot Available >.<'");
 						$event->setCancelled(true);
 					}
 				}
@@ -691,7 +691,7 @@ public function OpGoldenApple(PlayerItemConsumeEvent $event){
 		$p = $e->getPlayer();
 		if($e->isCancelled()) return;
    if($e->getItem()->getId() === 341){
-			$p->sendPopup("Â§aGÂ§baÂ§ccÂ§dhÂ§eaÂ§fbÂ§1oÂ§2x Â§3TÂ§4iÂ§5cÂ§6kÂ§7eÂ§8tÂ§9s");
+			$p->sendPopup("§aG§ba§cc§dh§ea§fb§1o§2x §3T§4i§5c§6k§7e§8t§9s");
 		}
 	}
 /*Plugin OnPlayerMove*/
@@ -1093,7 +1093,7 @@ $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$p->getName()."_S
                 $iiii=$this->PlayerFile->get("Power_Level");
                 $nnn = $iiii+6;
                 $this->PlayerFile->set("Power_Level", $nnn);
-                $killer->sendTip("Â§5+6 Power Level");
+                $killer->sendTip("§5+6 Power Level");
                 $level = $killer->getLevel();
                 $level->addSound(new GhastShootSound($killer->getLocation()));
 
@@ -1125,13 +1125,13 @@ $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$p->getName()."_S
 
          
            
-              $p->sendTip("Â§5KillStreaksÂ§8: Â§c".$this->players[$p->getName()]["kills"]);
+              $p->sendTip("§5KillStreaks§8: §c".$this->players[$p->getName()]["kills"]);
             
        }
          
        }
               if($p->getLevel()->getName() == "BRAWLPE"){
-        $p->sendPopup("Â§8> Â§5KÂ§8: Â§c".$this->PlayerFile->get("Kills")."Â§8- Â§5DÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§8> Â§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2)."Â§8- Â§5KillStreaksÂ§8: Â§c".$this->players[$p->getName()]["kills"]);
+        $p->sendPopup("§8> §5K§8: §c".$this->PlayerFile->get("Kills")."§8- §5D§8: §c".$this->PlayerFile->get("Deaths")."\n§8> §5KDR§8: §c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2)."§8- §5KillStreaks§8: §c".$this->players[$p->getName()]["kills"]);
 		}
 		}
   }
@@ -1172,9 +1172,9 @@ $this->PlayerFile = new Config($this->getDataFolder()."Stats/".$p->getName()."_S
             if($this->PlayerFile->get("Kills") > 0 or $this->PlayerFile->get("Deaths") > 0 or $this->PlayerFile->get("Power_Level") > 0 or $this->PlayerFile->get("Sword_Level") > 0 or $this->PlayerFile->get("Mining_Level") > 0){
 
 
-           $sender->sendMessage("Â§lÂ§bÂ»Â§rÂ§e".$ign." StatusÂ§0:"."\nÂ§lÂ§bÂ»Â§rÂ§5Power LevelÂ§8: Â§c".$this->PlayerFile->get("Power_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Sword LevelÂ§8: Â§c".$this->PlayerFile->get("Sword_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Mining LevelÂ§8: Â§c".$this->PlayerFile->get("Mining_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5KillsÂ§8: Â§c".$this->PlayerFile->get("Kills")."\nÂ§lÂ§bÂ»Â§rÂ§5DeathsÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§lÂ§bÂ»Â§rÂ§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
+           $sender->sendMessage("§l§b»§r§e".$ign." Status§0:"."\n§l§b»§r§5Power Level§8: §c".$this->PlayerFile->get("Power_Level")."\n§l§b»§r§5Sword Level§8: §c".$this->PlayerFile->get("Sword_Level")."\n§l§b»§r§5Mining Level§8: §c".$this->PlayerFile->get("Mining_Level")."\n§l§b»§r§5Kills§8: §c".$this->PlayerFile->get("Kills")."\n§l§b»§r§5Deaths§8: §c".$this->PlayerFile->get("Deaths")."\n§l§b»§r§5KDR§8: §c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
         } else {
-          $sender->sendMessage("Â§lÂ§bÂ»Â§rÂ§e".$ign." StatusÂ§0:"."\nÂ§lÂ§bÂ»Â§rÂ§5Power LevelÂ§8: Â§c".$this->PlayerFile->get("Power_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Sword LevelÂ§8: Â§c".$this->PlayerFile->get("Sword_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5Mining LevelÂ§8: Â§c".$this->PlayerFile->get("Mining_Level")."\nÂ§lÂ§bÂ»Â§rÂ§5KillsÂ§8: Â§c".$this->PlayerFile->get("Kills")."\nÂ§lÂ§bÂ»Â§rÂ§5DeathsÂ§8: Â§c".$this->PlayerFile->get("Deaths")."\nÂ§lÂ§bÂ»Â§rÂ§5KDRÂ§8: Â§c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
+          $sender->sendMessage("§l§b»§r§e".$ign." Status§0:"."\n§l§b»§r§5Power Level§8: §c".$this->PlayerFile->get("Power_Level")."\n§l§b»§r§5Sword Level§8: §c".$this->PlayerFile->get("Sword_Level")."\n§l§b»§r§5Mining Level§8: §c".$this->PlayerFile->get("Mining_Level")."\n§l§b»§r§5Kills§8: §c".$this->PlayerFile->get("Kills")."\n§l§b»§r§5Deaths§8: §c".$this->PlayerFile->get("Deaths")."\n§l§b»§r§5KDR§8: §c".round($this->PlayerFile->get("Kills")/$this->PlayerFile->get("Deaths"), 2));
             }
           }
         }
