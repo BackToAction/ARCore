@@ -1,4 +1,4 @@
- name: ArchCoreSystem
+name: ArchCoreSystem
 author: GamerXzavier
 main: ARCHCore\Main
 api: [2.0.0]
@@ -9,11 +9,16 @@ commands:
   description: Help Command
  news:
   description: See Newss!!
+ stats:
+  permission: rpg.stats
+  default: true
 
   permissions:
     N.F.D:
-      description: User Doesnt Have Falling Damage Events.
       default: true
     Fire.Bows:
-       description: Now Player Fire Some Flame Arrows!
        default: true
+    rpg.stats:
+       default: true
+       description: "Shows Your stats"
+
