@@ -1,3 +1,3 @@
 # ArchCoreSystem
 
-For Personal Uses
+LoL Just For Hobby.
