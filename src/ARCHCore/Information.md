@@ -2,6 +2,13 @@
 
 - Giving Details About ArchCoreSystem.
 
+# Features:
+
+- Custom Server Name.
+- Player Health Into 100.
+- No Falling Damage.
+- Custom Help Commands.
+
 # Updates:
 
 - Bugs Fixs.
@@ -22,6 +29,11 @@
 - We Will Update As Long As We Can.
 - The Plugin Were Rewrite And To Be Public.
 - The Plugin Are Not For Any Others Development Server.
+
+# Up Coming Features:
+
+- Add Songs.
+- Custom Code.
 
 # Copyrights @ License:
 
