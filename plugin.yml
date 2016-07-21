@@ -2,7 +2,7 @@ name: ArchCoreSystem
 author: GamerXzavier
 main: ARCHCore\Main
 api: [2.0.0]
-version: 1#Beta
+version: 0.1#Beta
 commands:
  help:
   usage: /help or /?
@@ -16,8 +16,6 @@ commands:
   permissions:
     N.F.D:
       default: true
-    Fire.Bows:
-       default: true
     rpg.stats:
        default: true
        description: "Shows Your stats"
