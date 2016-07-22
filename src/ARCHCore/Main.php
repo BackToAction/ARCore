@@ -246,5 +246,6 @@ public function onEnable(){
             }
           }
         }
+}
         
         // I'm going to test this now
