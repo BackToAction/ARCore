@@ -191,8 +191,8 @@ public function onEnable(){
                         $warp = new EndermanTeleportSound($hitpos);
                         
                         $particle = new DustParticle($c, $r, $g, $b, $a);
-				              	$particle->setComponents($hitpos);
-				              	$hitpos->addParticle($particle);
+			$particle->setComponents($hitpos);
+			$hitpos->addParticle($particle);
                         
                         $hitpos->getLevel()->addSound($warp);
                         $this->setKnockBack(1);
