@@ -144,6 +144,7 @@ public function onEnable(){
         * along with this program.  If not, see <http://www.gnu.org/licenses/>.
         *
         *");
+}
         
         public function onJoin(PlayerJoinEvent $event){
           $player = $event->getPlayer();
