@@ -31,3 +31,10 @@ Copyrights And License Are Under Authorized By NeuroBinds Project Corps.
 - Rewriten From Beginning.
 - In Development.
 - None Suitable For Any Server.
+
+# Others:
+
+- Feel Free To Follow My Twitter Account : [@MyrulXzavier](https://twitter.com/MyrulXzavier/)
+- Stars For Shine.
+- Any Helpers Are Welcome.
+
