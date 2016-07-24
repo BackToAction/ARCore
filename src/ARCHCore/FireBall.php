@@ -18,7 +18,7 @@ class FireBall extends Projectile{
     public $width = 0.5;
     public $height = 0.5;
 
-    protected $damage = 4;
+    protected $damage = 3;
 
     protected $drag = 0.01;
     protected $gravity = 0.05;
