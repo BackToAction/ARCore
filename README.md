@@ -9,4 +9,4 @@ LoL Just For Hobby.
 - Lagg
 - NBS Song
 - And Much More
-- Note: You Might Need To Edit Some Of The Core At Main.php file.
+- Note: You Might Need To Edit Some Of The Code At Main.php file.
