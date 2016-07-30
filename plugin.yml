@@ -1,24 +1,6 @@
-name: ArchCoreSystem
-author: GamerXzavier
-main: ARCHCore\Main
+name: ARCore
+author: HyGlobalHD,GamerXzavier
+main: ARCore\ARCore
 api: [2.0.0]
-version: 1#Beta
-commands:
- help:
-  usage: /help or /?
-  description: Help Command
- news:
-  description: See Newss!!
- stats:
-  permission: rpg.stats
-  default: true
-
-  permissions:
-    N.F.D:
-      default: true
-    Fire.Bows:
-       default: true
-    rpg.stats:
-       default: true
-       description: "Shows Your stats"
+version: 0.1#_Beta
 
