@@ -6,7 +6,7 @@ namespace ARCore;
  *
  * You May Edit,Sell,Share And Contribute.
  *
- * Somewhow I Hate This.
+ * Somehow I Hate This.
  *
 /*/
 
