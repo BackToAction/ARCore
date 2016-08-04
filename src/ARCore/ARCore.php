@@ -117,14 +117,16 @@ class ARCore extends PluginBase implements Listener{
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
 
        $this->getLogger()->info("Loading...");
-       $this->getLogger()->info("Enable...");
+       $this->getLogger()->info("Enabling...");
+       $this->getLogger()->info("Enabled...");
 			}
 
    
 /*Plugins OnDisable*/
    public function onDisable(){
        $this->getLogger()->info("Loading...");
-       $this->getLogger()->info("Disable...");
+       $this->getLogger()->info("Disabling...");
+       $this->getLogger()->info("Disabled...");
    }
 /*Plugin OnJoin*/
    public function onJoin(PlayerJoinEvent $event){ 
