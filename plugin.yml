@@ -1,6 +1,6 @@
 name: ARCore
-author: HyGlobalHD,GamerXzavier
+authors: [HyGlobalHD,GamerXzavier,Adam1609,NeuroBinds,Skull3x]
 main: ARCore\ARCore
 api: [2.0.0]
-version: 0.1#_Beta
+version: 0.0.1#_Beta
 
