@@ -132,13 +132,13 @@ class ARCore extends PluginBase implements Listener{
    public function onJoin(PlayerJoinEvent $event){ 
        $player = $event->getPlayer(); 
        $player->setFood(20);
-       $player->setHealth(200);
+       $player->setHealth(10);
    }
 /*Plugins PRE*/
     public function PRE(PlayerRespawnEvent $event){
        $player = $event->getPlayer(); 
        $player->setFood(20);
-       $player->setHealth(200);
+       $player->setHealth(10);
     }
 /*Plugin dropdeath*/
   public function dropdeath(PlayerDeathEvent $event){
