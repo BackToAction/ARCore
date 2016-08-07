@@ -1,10 +1,13 @@
 <?php
 //might rename this namespace
-namespace ARCore;
+namespace ARCore\Level;
 //between I'm writing this using phone so might mess up and if anyone see this message when to update this make sure to delete this comment.
-use pocketmine\player;
-use pocketmine\server;
+use pocketmine\Player;
+use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
+//we need 2 of this event and soon will start the project
+use pocketmine\event\player\PlayerJoinEvent;
+use pocketmine\event\player\PlayerQuitEvent;
 use pocketmine\level\Position;
 use pocketmine\level\Location;
 use pocketmine\level\Position\getLevel;
