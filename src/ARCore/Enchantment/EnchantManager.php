@@ -1,6 +1,6 @@
 <?php
 
-namespace ARCore;
+namespace ARCore\Enchantment;
 
 use pocketmine\entity\Arrow;
 use pocketmine\event\entity\ProjectileHitEvent;
