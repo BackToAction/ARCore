@@ -964,6 +964,7 @@ class FactionCommands {
                            
                     
 					/////////////////////////////// ABOUT ///////////////////////////////
+					/////////Credit to 2 developer here/////////////////////////////////
 					
 					if(strtolower($args[0] == 'about')) {
 						$sender->sendMessage(TextFormat::GREEN . "Power/Economy by §6Infernus101 " . TextFormat::AQUA . "fallentech.tk 19132");
