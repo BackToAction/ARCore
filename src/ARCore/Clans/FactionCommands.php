@@ -2,7 +2,7 @@
 
 <?php
 
-namespace ARCore\Guilds;
+namespace ARCore\Clans;
 //Base on FactionsPro!
 use onebone\economyapi\EconomyAPI;
 use pocketmine\plugin\PluginBase;
