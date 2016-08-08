@@ -1,6 +1,5 @@
 <?php
 
-<?php
 
 namespace ARCore\Clans;
 //Base on FactionsPro!
@@ -20,12 +19,12 @@ use pocketmine\utils\Config;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\math\Vector3;
 use pocketmine\level\level;
-use ARCore\ARCore
+use ARCore\ARCore;
 class FactionCommands {
 	
 	public $plugin;
 	
-	public function __construct(FactionMain $pg) {
+	public function __construct(ARCore $pg) {
 		$this->plugin = $pg;
 	}
 	
@@ -38,7 +37,7 @@ class FactionCommands {
 			$allyr = $this->plugin->prefs->get("AllyCost");
 			$allya = $this->plugin->prefs->get("AllyPrice");
 			$home = $this->plugin->prefs->get("SetHomeCost");
-			if(strtolower($command->getName('c'))) {
+			if(strtolower($command->getName('c'))) {//clans commands
 				if(empty($args)) {
 					$sender->sendMessage($this->plugin->formatMessage("§bPlease use §e/c help §bfor a list of commands"));
 					return true;
@@ -1019,4 +1018,3 @@ class FactionCommands {
 		}
     }   
 }
-

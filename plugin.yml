@@ -3,4 +3,12 @@ authors: [HyGlobalHD,GamerXzavier,Adam1609,NeuroBinds,Skull3x]
 main: ARCore\ARCore
 api: [2.0.0]
 version: 0.0.1#_Beta
+commands:
+  c:
+    description: use /c help for all parameters
+    permission: f.command
+permissions:
+  f.command:
+    default: true
+    description: "Allow use of all clans commands"
 
