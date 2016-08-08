@@ -1,6 +1,6 @@
 <?php
 
-namespace FactionsPro;
+namespace ARCore\Clans;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandSender;
@@ -18,6 +18,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerDeathEvent;
+use ARCore\ARCore;
 class FactionListener implements Listener {
 	
 	public $plugin;
