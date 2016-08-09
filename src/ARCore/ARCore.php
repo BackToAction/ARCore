@@ -108,6 +108,8 @@ use pocketmine\permission\Permission;
 //trying to add clans
 use ARCore\Clans\FactionCommands;
 use ARCore\Clans\FactionListener;
+//others.
+use ARCore\Enchantment\EnchantManager;
 
 class ARCore extends PluginBase implements Listener{
 	
