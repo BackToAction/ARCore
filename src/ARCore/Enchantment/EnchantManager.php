@@ -15,6 +15,10 @@ use ARCore\ARCore;
 
 class EnchantManager implements Listener {
 
+    public function __construct(ARCore $plugin){
+        $this->plugin = $plugin;
+    }
+
     public function onProjectile(ProjectileHitEvent $e){
         /** @var Player $p */
         if ($e->getEntity() instanceof Arrow and ($p = $e->getEntity()->shootingEntity) instanceof Player){
