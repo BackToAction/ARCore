@@ -11,6 +11,7 @@ use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Listener;
 use pocketmine\Player;
 use pocketmine\Server;
+use ARCore\ARCore;
 
 class EnchantManager implements Listener {
 
