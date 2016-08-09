@@ -4,11 +4,11 @@
 - Create ARCServer.php (custom Server Setting)
 - Create ARCWeapon.php (custom damage for weapon)
 - Make The Project More Stylist.
-- Add Simple Authentication System.
+- Add Simple Authentication System.(base on HereAuth(modified by HyGlobalHD)/ServerAuth/SimpleAuth)
 - Add Light Weight Pets System.
-- Add Modified Mobs.
+- Add Modified Mobs.(Base on PureEntities(modded)
 - Add Skills System.
-- Add Custom Currency System.
+- Add Custom Currency System.(base on EconomyAPI)
 - Add Job/Class .
 - Add Leaderboard.
 - Add Kits.
