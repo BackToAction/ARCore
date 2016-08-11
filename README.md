@@ -6,6 +6,7 @@ The Plugin core you must have for MMORPG Server!
 - This plugin support for PocketMine-MP, ClearSky, Genisys and other software!
 - This plugin is use for MMORPG Server Base
 - Right now this plugin is under construction. But feel free to help us if you can!
+- Join [Gitter Now](https://gitter.im/neurobinds-project/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
 
 # TODO:
 - [ ] Custom Player Management
