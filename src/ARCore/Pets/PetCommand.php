@@ -1,16 +1,16 @@
 <?php
 
-namespace pets;
+namespace ARCore\Pets;
 
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use pets\main;
+use ARCore\ARCore;
 use pocketmine\utils\Config;
 use pocketmine\utils\TextFormat as TF;
 use onebone\economyapi\EconomyAPI;
 class PetCommand extends PluginCommand {
 
-	public function __construct(main $main, $name) {
+	public function __construct(ARCore $main, $name) {
 		parent::__construct(
 				$name, $main
 		);
