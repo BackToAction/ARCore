@@ -23,7 +23,7 @@ class FactionListener implements Listener {
 	
 	public $plugin;
 	
-	public function __construct(FactionMain $pg) {
+	public function __construct(ARCore $pg) {
 		$this->plugin = $pg;
 	}
 	
