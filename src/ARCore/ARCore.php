@@ -159,8 +159,8 @@ class ARCore extends PluginBase implements Listener{
 //implementing clans!	
 		@mkdir($this->getDataFolder());
 		
-		if(!file_exists($this->getDataFolder() . "BannedNames.txt")) {
-			$file = fopen($this->getDataFolder() . "BannedNames.txt", "w");
+		if(!file_exists($this->getDataFolder() . "PlayerClanBanned.txt")) {
+			$file = fopen($this->getDataFolder() . "PlayerClanBanned.txt", "w");
 			$txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
 			fwrite($file, $txt);
 		}
