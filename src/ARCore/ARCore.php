@@ -108,6 +108,8 @@ use pocketmine\permission\Permission;
 //trying to add clans
 use ARCore\Clans\FactionCommands;
 use ARCore\Clans\FactionListener;
+//implement pets (need test)
+use ARCore\Pets\Main;
 //others.
 use ARCore\Enchantment\EnchantManager;
 
