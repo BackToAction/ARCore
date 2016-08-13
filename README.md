@@ -1,12 +1,12 @@
 # ARCore
 
-The Plugin core you must have for MMORPG Server!
+A must-have plugin core for an mmoRPG server!
 
-# A Little Description
-- This plugin support for PocketMine-MP, ClearSky, Genisys and other software!
-- This plugin is use for MMORPG Server Base
-- Right now this plugin is under construction. But feel free to help us if you can!
-- Join [Gitter Now](https://gitter.im/neurobinds-project/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link)
+# Description
+- This plugin has support for PocketMine-MP, ClearSky, Genisys and other software!
+- This plugin is use for an mmoRPG server base!
+- This plugin is currently under construction. Feel free to help us if you can!
+- Join our [Gitter](https://gitter.im/neurobinds-project/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) chat!
 
 # TODO:
 - [ ] Custom Player Management
@@ -41,7 +41,7 @@ The Plugin core you must have for MMORPG Server!
 - [ ] Custom Craft Recipes
 - [ ] Custom Chat
 
-#Feel free to make pull request to help us complete the plugin!
+#Feel free to make pull requests to help us complete this plugin!
 
 # Others :-
 - Get [The Old Core Here.](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core) (P.S: Its Might Be Laggy :P)
