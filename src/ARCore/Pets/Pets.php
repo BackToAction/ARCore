@@ -1,5 +1,5 @@
 <?php
-namespace Pets;
+namespace ARCore\Pets;
 use pocketmine\entity\Creature;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Timings;
