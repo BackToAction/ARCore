@@ -11,7 +11,7 @@ use pocketmine\math\Math;
 use pocketmine\block\Air;
 use pocketmine\block\Liquid;
 use pocketmine\utils\TextFormat;
-use pets\main;
+use ARCore\ARCore;
 abstract class Pets extends Creature {
 	
 	protected $owner = null;
