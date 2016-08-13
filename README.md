@@ -16,7 +16,7 @@ A must-have plugin core for an mmoRPG server!
 - [x] Add Pets (with EconomyAPI support)
 - [ ] Custom Modified Entity
 - [ ] Add Skill System.
-- [ ] Custom Currency (just base on EconomyAPI)
+- [x] Custom Currency (just base on EconomyAPI)
 - [ ] Add Jobs/Class
 - [ ] Add Leaderboard, Achievement Rewards
 - [ ] Add Kits for each Class.
