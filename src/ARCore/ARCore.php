@@ -110,6 +110,7 @@ use ARCore\Clans\FactionCommands;
 use ARCore\Clans\FactionListener;
 //others.
 use ARCore\Enchantment\EnchantManager;
+use ARCore\Pets\PetCommand;
 
 class ARCore extends PluginBase implements Listener{
 	
