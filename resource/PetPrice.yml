@@ -1,0 +1,58 @@
+############################################################
+##### Set the message for when you turn off the Pet   ######
+############################################################
+PetOffMsg: §b[Pet -> Me]§f - §eOkay, I'll be around.
+############################################################
+##### Set Cost Of A Dog & Message When it's Selected  ######
+############################################################
+SpawnDogMsg: §bYour Dog is Here ! §aCost - $10,000
+DogCost: 10000
+############################################################
+##### Set Cost Of A Cat & Message When it's Selected  ######
+############################################################
+SpawnCatMsg: §bYour Cat is Here ! §aCost - $10,000
+CatCost: 10000
+############################################################
+#### Set Cost Of A Rabbit & Message When it's Selected  ####
+############################################################
+SpawnDogMsg: §bYour Rabbit is Here ! §aCost - $10,000
+RabbitCost: 10000
+############################################################
+##### Set Cost Of A Pig & Message When it's Selected  ######
+############################################################
+SpawnPigMsg: §bYour Pig is Here ! §aCost - $5,000
+PigCost: 5000
+############################################################
+#### Set Cost Of A Sheep & Message When it's Selected  #####
+############################################################
+SpawnSheepMsg: §bYour Sheep is Here ! §aCost - $5,000
+SheepCost: 5000
+############################################################
+#####  Set Cost Of A Chicken & Message When Selected  ######
+############################################################
+SpawnChickenMsg: §bYour Chicken is Here ! §aCost - $5,000
+ChickenCost: 5000
+############################################################
+####  Set Cost Of A Silverfish & Message When Selected  ####
+############################################################
+SpawnSilverfishMsg: §bYour Silverfish is Here ! §aCost - $100,000
+SilverfishCost: 100000
+############################################################
+######  Set Cost Of A Magma & Message When Selected   ######
+############################################################
+SpawnMagmaMsg: §bYour Magma is Here ! §aCost - $5,000
+MagmaCost: 5000
+############################################################
+######  Set Cost Of A Bat & Message When Selected   ########
+############################################################
+SpawnBatMsg: §bYour Bat is Here ! §aCost - $5,000
+BatCost: 5000
+############################################################
+######  Set Cost Of A Block & Message When Selected   ######
+############################################################
+SpawnBlockMsg: §bYour Blockin is Here ! §aCost - $5,000
+BlockCost: 5000
+############################################################
+#### EDIT THIS TO SHOW CORRECT PRICE IN /PETS COMMAND  #####
+############################################################
+PetPrices: §bTypes §f- §aDog $10,000; §eCat $10,000; §aRabbit $10,000; §ePig $5,000; §aSheep $5,000; §eChicken $5,000; §aSilverfish $100,000; §eMagma $5,000; §aBat $5,000; §eBlock $5,000.
