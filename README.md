@@ -44,4 +44,4 @@ A must-have plugin core for an mmoRPG server!
 #Feel free to make pull requests to help us complete this plugin!
 
 # Others :-
-- Get [The Old Core Here.](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core) (P.S: Its Might Be Laggy :P)
+- Get the old, unstable version of ARCore [here](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core). (P.S: It might be laggy :P)
