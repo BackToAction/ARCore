@@ -2,7 +2,7 @@
 
 namespace ARCore;
 
-class swordDamages{
+class swordManage{
 
     const DAMAGE_VALUES = array(
         "SWORD" => 5,
