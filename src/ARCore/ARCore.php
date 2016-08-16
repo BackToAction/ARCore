@@ -139,7 +139,9 @@ class ARCore extends PluginBase implements Listener{
 
 /*Plugins OnEnable*/
    public function onEnable(){
-/*Pets Plugin*/
+
+
+/////////THE START OF PETS [ON ENABLE]/////////
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "PetPlayer");
 		$server = Server::getInstance();
@@ -156,7 +158,9 @@ class ARCore extends PluginBase implements Listener{
 		Entity::registerEntity(BlockPet::class);
 		$this->saveDefaultConfig();
 
-//implementing clans!	
+/////////Ends Of Pets [ On Enable]///////
+
+/////Start Of Clans [OnEnable]/////
 		@mkdir($this->getDataFolder());
 		
 		if(!file_exists($this->getDataFolder() . "PlayerClanBanned.txt")) {
@@ -164,17 +168,6 @@ class ARCore extends PluginBase implements Listener{
 			$txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
 			fwrite($file, $txt);
 		}
-//load level/world
-        $this->getServer()->loadLevel("ArchLobby");
-/*Server Name*/
-		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
-
-       $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-
-       $this->getLogger()->info("Loading...");
-       $this->getLogger()->info("Enabling...");
-       $this->getLogger()->info("Enabled...");
-	//trying to implement clans!
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 		$this->fCommand = new FactionCommands($this);
 		
@@ -210,6 +203,30 @@ class ARCore extends PluginBase implements Listener{
 		$this->db->exec("CREATE TABLE IF NOT EXISTS home(faction TEXT PRIMARY KEY, x INT, y INT, z INT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS strength(faction TEXT PRIMARY KEY, power INT);");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
+/////Clans Ends On Enable////
+
+//Todo.
+/*
+* Config.
+* Clean Up..
+* ReWrite.
+* Pure Code.
+*/
+
+//Under Here Making Config..
+
+//load level/world
+        $this->getServer()->loadLevel("ArchLobby");
+/*Server Name*/
+		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
+
+
+///This Is To register Events!
+///Dont Write It Again Or Else It Will Send 2 Events On A Row..
+       $this->getServer()->getPluginManager()->registerEvents($this ,$this);
+
+       $this->getLogger()->info("Loading...");
+       $this->getLogger()->info("Enabled...");
 			}
 
    
@@ -221,18 +238,26 @@ class ARCore extends PluginBase implements Listener{
 		$this->db->close();
 	
    }
+///START OF SIMPLE CUSTOM PLAYERS///
+
+/*Making Config For MaxHP And Hunger When Player Join And Die*/
+
 /*Plugin OnJoin*/
    public function onJoiningPlayerHealth(PlayerJoinEvent $event){ 
        $player = $event->getPlayer(); 
-       $player->setFood(20);
-       $player->setHealth(10);
+       $player->setFood(20000);
+       $player->setMaxHealth(1);
+       $player->setHealth(40);
    }
 /*Plugins PRE*/
     public function PRE(PlayerRespawnEvent $event){
        $player = $event->getPlayer(); 
-       $player->setFood(20);
-       $player->setHealth(10);
+       $player->setFood(20000);
+       $player->setMaxHealth(1);
+       $player->setHealth(40);
     }
+//This Function Will Add Percentage To Gain The Items..
+//Add Config..
 /*Plugin dropdeath*/
   public function dropdeath(PlayerDeathEvent $event){
     $entity = $event->getEntity();
@@ -243,6 +268,9 @@ class ARCore extends PluginBase implements Listener{
     }
   }
 }
+///ENDS OF SIMPLE CUSTOM PLAYERS///
+
+///START OF ENCHANTS ///
     public function calculateEndDamage($damage, $reduction)
     {
         return $damage - $reduction;
@@ -561,8 +589,11 @@ class ARCore extends PluginBase implements Listener{
         }
         return "NONE";
     }
-//trying to implement clans!
+///ENDS OF ENCHANTS///
 
+///START OF CLANS///
+//Todo. Rewrite Anythings That Have factions to clan cause we want a clean code.
+//Add Clans Wars(base on NeuroBinds Project Guilds Plugs)
 		
 	public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
 		$this->fCommand->onCommand($sender, $command, $label, $args);
@@ -771,7 +802,19 @@ class ARCore extends PluginBase implements Listener{
 		
 		$this->db->query("DELETE FROM motdrcv WHERE player='$player';");
 	}
-/*Mostly Pets Implements*/
+///ENDS OF EXTRAS CLANS ////
+
+///START OF PETS ///
+//Todo. Rewrite To Make The AI movement to be like in Vanilla.
+/*
+*Add AI pets message..
+* Like OnJoin.
+* Get To The Lobby Back.
+* OnPets Change..
+* OnPets Remove..
+* OnPets Create..
+//Note this is possible by sendMessage(); at every events lol.
+*/
 	
 	public function create($player,$type, Position $source, ...$args) {
 		$chunk = $source->getLevel()->getChunk($source->x >> 4, $source->z >> 4, true);
@@ -873,7 +916,19 @@ class ARCore extends PluginBase implements Listener{
 		}
 
 }
+/// Ends Of Pets ////
 
+//Any under here wait till i unbusy or you can start without me...
+
+/// START OF AUTHS ///
+/*Still Finding A Way For A Good Way To Encrypt The Password
+Note To Myself: Dont Use Multiplication Hash..*/
+//I finding a way to make a security password without to worry any leaked..
+///ENDS OF AUTHS///
+
+///STARTS OF SKILLS///
+/*Im gonna start with simple thing*/
+///ENDS OF SKILLS///
 
 }
 ?>
