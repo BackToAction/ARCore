@@ -5,6 +5,7 @@ A must-have plugin core for an mmoRPG server!
 # Test Server
 - Test on my Vietnam Server (Sorry, all of them are Vietnam, but you can speak English and they understand you)
 - sur.redvn.xyz Port 19132 (Survival - Faction - Pets)
+- Right now we need help from all the developer!
 
 # Description
 - This plugin has support for PocketMine-MP, ClearSky, Genisys and other software!
