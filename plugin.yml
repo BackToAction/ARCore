@@ -2,12 +2,17 @@ name: ARCore
 authors: [HyGlobalHD,GamerXzavier,Adam1609,NeuroBinds,Skull3x]
 main: ARCore\ARCore
 api: [2.0.0]
-version: 0.0.1#_Beta
+version: 0.0.2#_STABLE
 commands:
   c:
-    description: use /c help for all parameters
+    description: "use /c help for all parameters"
     permission: f.command
 permissions:
+  nofall.damage:
+    default: true
+  saver.inventory.switch:
+    description: "Allows switching inventory on world change"
+    default: true
   f.command:
     default: true
     description: "Allow use of all clans commands"

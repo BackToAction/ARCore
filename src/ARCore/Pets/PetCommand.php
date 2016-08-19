@@ -10,6 +10,8 @@ use pocketmine\utils\TextFormat as TF;
 use onebone\economyapi\EconomyAPI;
 class PetCommand extends PluginCommand {
 
+  public $main;
+
 	public function __construct(ARCore $main, $name) {
 		parent::__construct(
 				$name, $main
@@ -23,10 +25,10 @@ class PetCommand extends PluginCommand {
 	if($sender->hasPermission('pets.command')){
 		if (!isset($args[0])) {
 			$sender->sendMessage("§b======PetHelp======");
-			$sender->sendMessage("§e/pets spawn [type] §f-§a để mua pet. VD: /pets spawn Bat");
-			$sender->sendMessage("§e/pets off §f- để thả tự do cho Pet");
-			$sender->sendMessage("§e/pets setname [name] §f-§a Đặt tên cho Pets");
-			$sender->sendMessage($this->main->getConfig()->get("PetPrices"));
+			$sender->sendMessage("§e/pets spawn [type] §f- Spawn A Pets");
+			$sender->sendMessage("§e/pets off §f- Turn Off Your Pets");
+			$sender->sendMessage("§e/pets setname [name] §f- Set Pets A Name");
+			$sender->sendMessage("§e/pets prices §f- See The Pets Prices And List");
 			return true;
 		}
 		switch (strtolower($args[0])){
@@ -36,34 +38,42 @@ class PetCommand extends PluginCommand {
 					unset($args[0]);
 					$name = implode(" ", $args);
 					$this->main->getPet($sender->getName())->setNameTag($name);
-					$sender->sendMessage("§aTên thú nuôi của bạn đã đổi thành ".$name);
-					$data = new Config($this->main->getDataFolder() . "players/" . strtolower($sender->getName()) . ".yml", Config::YAML);
-					$data->set("name", $name); 
+					$sender->sendMessage("§aSucced Set Pets Name To ".$name);
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
 					$data->save();
 				}
 				return true;
 			break;
 			case "help":
-				$sender->sendMessage("§e======PetHelp======");
-				$sender->sendMessage("§e/pets spawn [type] §f-§a để mua pet. VD: /pets spawn Bat");
-				$sender->sendMessage("§e/pets off §f-§a để thả tự do cho Pet");
-				$sender->sendMessage("§e/pets setname [name] §f-§a Đặt tên cho Pets");
-				$sender->sendMessage($this->main->getConfig()->get("PetPrices"));
+				$sender->sendMessage("§b======PetHelp======");
+			$sender->sendMessage("§e/pets spawn [type] §f- Spawn A Pets");
+			$sender->sendMessage("§e/pets off §f- Turn Off Your Pets");
+			$sender->sendMessage("§e/pets setname [name] §f- Set Pets A Name");
+			$sender->sendMessage("§e/pets prices §f- See The Pets Prices And List");
+				return true;
+			case "prices":
+			$sender->sendMessage($this->main->PetPrices->get("PetPrices"));
 				return true;
 			break;
 			case "off":
 				$this->main->disablePet($sender);
-				$sender->sendMessage($this->main->getConfig()->get("PetOffMsg"));
+			$sender->sendMessage($this->main->PetPrices->get("PetOffMsg"));
 			break;
 			case "spawn":
 				if (isset($args[1])){
 					switch ($args[1]){
 						case "Dog":
-						$price = ($this->main->getConfig()->get("DogCost"));
+						$price = ($this->main->PetPrices->get("DogCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "WolfPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Dog";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnDogMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnDogMsg"));
 							return true;} 
 							else {
 
@@ -83,11 +93,16 @@ class PetCommand extends PluginCommand {
 					}
 							break;
 						case "Pig":
-						$price = ($this->main->getConfig()->get("PigCost"));
+						$price = ($this->main->PetPrices->get("PigCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "PigPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Pig";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnPigMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnPigMsg"));
 							return true;} 
 							else {
 
@@ -107,11 +122,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Sheep":
-						$price = ($this->main->getConfig()->get("SheepCost"));
+						$price = ($this->main->PetPrices->get("SheepCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "SheepPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Sheep";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnSheepMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnSheepMsg"));
 							return true;} 
 							else {
 
@@ -131,11 +151,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Rabbit":
-						$price = ($this->main->getConfig()->get("RabbitCost"));
+						$price = ($this->main->PetPrices->get("RabbitCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "RabbitPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Rabbit";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnRabbitMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnRabbitMsg"));
 							return true;} 
 							else {
 
@@ -155,11 +180,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Cat":
-						$price = ($this->main->getConfig()->get("CatCost"));
+						$price = ($this->main->PetPrices->get("CatCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "OcelotPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Cat";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnCatMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnCatMsg"));
 							return true;} 
 							else {
 
@@ -179,11 +209,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Silverfish":
-						$price = ($this->main->getConfig()->get("SilverfishCost"));
+						$price = ($this->main->PetPrices->get("SilverfishCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "SilverfishPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Silverfish";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnSilverfishMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnSilverfishMsg"));
 							return true;} 
 							else {
 
@@ -203,11 +238,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Magma":
-						$price = ($this->main->getConfig()->get("MagmaCost"));
+						$price = ($this->main->PetPrices->get("MagmaCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "MagmaPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Magma";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnMagmaMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnMagmaMsg"));
 							return true;} 
 							else {
 
@@ -227,11 +267,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Bat":
-						$price = ($this->main->getConfig()->get("BatCost"));
+						$price = ($this->main->PetPrices->get("BatCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "BatPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Bat";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnBatMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnBatMsg"));
 							return true;} 
 							else {
 
@@ -251,11 +296,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Block":
-						$price = ($this->main->getConfig()->get("BlockCost"));
+						$price = ($this->main->PetPrices->get("BlockCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "BlockPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Block";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnBlockMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnBlockMsg"));
 							return true;} 
 							else {
 
@@ -275,11 +325,16 @@ class PetCommand extends PluginCommand {
 					}
 						break;
 						case "Chicken":
-						$price = ($this->main->getConfig()->get("ChickenCost"));
+						$price = ($this->main->PetPrices->get("ChickenCost"));
 						    if($r = EconomyAPI::getInstance()->reduceMoney($sender, $price)) { 
 							$this->main->changePet($sender, "ChickenPet");
+					$name = implode(" ", $args);
+					$this->main->getPet($sender->getName())->setNameTag("§8".$sender->getName()."§8's Pet");
+					$data = new Config($this->main->getDataFolder() . "PetPlayer/" . strtolower($sender->getName()) . ".yml", Config::YAML);
+					$data->set("name", "§8$name"); 
+					$data->save();
 							$pettype = "Chicken";
-							$sender->sendMessage($this->main->getConfig()->get("SpawnChickenMsg"));
+							$sender->sendMessage($this->main->PetPrices->get("SpawnChickenMsg"));
 							return true;} 
 							else {
 
@@ -300,7 +355,6 @@ class PetCommand extends PluginCommand {
 						break;
 					default:
 						$sender->sendMessage("§b/pets spawn [type]");
-						$sender->sendMessage($this->main->getConfig()->get("PetPrices"));
 					break;	
 					return true;
 					}
