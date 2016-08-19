@@ -14,8 +14,8 @@ A must-have plugin core for an mmoRPG server!
 - Join our [Gitter](https://gitter.im/neurobinds-project/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) chat!
 
 # TODO:
-- [ ] Custom Player Management
-- [ ] Custom Server Management
+- [x] Custom Player Management
+- [x] Custom Server Management
 - [x] Custom Damage Management
 - [ ] Simple Authentication System.
 - [x] Add Pets (with EconomyAPI support)
@@ -26,10 +26,10 @@ A must-have plugin core for an mmoRPG server!
 - [ ] Add Leaderboard, Achievement Rewards
 - [ ] Add Kits for each Class.
 - [ ] Add Translation
-- [ ] Add Money For Killing
+- [x] Add Money For Killing
 - [ ] Custom NPC
 - [ ] Custom Commands
-- [ ] Custom Enchants
+- [x] Custom Enchants
 - [ ] Add AntiLagg System
 - [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
@@ -39,7 +39,7 @@ A must-have plugin core for an mmoRPG server!
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
 - [ ] Using private database to players
-- [ ] Custom Inventory Management
+- [x] Custom Inventory Management
 - [ ] Add Auto-Updater
 - [ ] AntiHack System
 - [ ] Custom Items.
