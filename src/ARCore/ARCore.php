@@ -8,6 +8,30 @@ namespace ARCore;
  *
  * Somehow I Hate This.
  *
+ *
+ * Change Log (20 August 2016) : -
+ * - Update To v0.0.2#STABLE
+ * - Add Config.
+ * - Fix Various Bugs
+ * - Add Auths System(buggy(need to fix some code))
+ * - Add MultiWorld Inventory Saver(idk if this working properly cause might have bugs)
+ * - Add ByeBye Voids Feature(works charmly)
+ * - Player Settings Added.(config)
+ * - Remove Useless Codes.(hmm idk)
+ * - Add Coins For Killing And Dying(maybe work charmly)
+ * - Add Player Have No Fall Damage(working perfectly with permission)
+ * - More Bugs (lol jk,need to fix some code)
+ *
+ * Todo: -
+ * - Add Player Stats(base on ArchStats)
+ * - Fix Some Bugs
+ * - Rewrite clans code from faction to clans (to make the code not to be so confuse)
+ * - Add Some Features..
+ * NOTE: Need Help With LevelSystem And Skills Also Class/Jobs.
+ * - Need To Add Friends System
+ * - Need To Add PartyQuest System
+ * - Need To Add Quest
+ * - Need To Add Custom Mobs
 /*/
 
 //player
@@ -17,11 +41,11 @@ use pocketmine\inventory\Inventory;
 use pocketmine\inventory\ChestInventory;
 use pocketmine\inventory\DoubleChestInventory;
 //events
+use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\entity\EntityInventoryChangeEvent;
 use pocketmine\event\player\PlayerItemHeldEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\event\player\PlayerChatEvent;
-use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\event\entity\EntityTeleportEvent;
 use pocketmine\event\entity\ProjectileHitEvent;
 use pocketmine\event\entity\EntityShootBowEvent;
@@ -39,11 +63,14 @@ use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
+use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
 //items
 use pocketmine\item\Slimeball;
 use pocketmine\item\Item;
 //commands
+use pocketmine\command\CommandExecutor;
+use pocketmine\command\ConsoleCommandExecutor;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\command\ConsoleCommandSender;
@@ -57,8 +84,8 @@ use pocketmine\utils\TextFormat as C;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\Binary;
 //entity
-use pocketmine\entity\Effect;
 use pocketmine\entity\Entity;
+use pocketmine\entity\Effect;
 use pocketmine\entity\Arrow;
 //level
 use pocketmine\level\sound\BlazeShootSound;
@@ -124,24 +151,192 @@ use ARCore\Pets\RabbitPet;
 use ARCore\Pets\SheepPet;
 use ARCore\Pets\SilverfishPet;
 use ARCore\Pets\WolfPet;
+//Auths Implement
+use ARCore\Auth\EventListener;
+use ARCore\Auth\Tasks\PopupTipTick;
+use ARCore\Auth\Tasks\TimeoutTask;
+use ARCore\Auth\Tasks\MessageTick;
+use ARCore\Auth\Commands\ChangePasswordCommand;
+use ARCore\Auth\Commands\ForgotPasswordCommand;
+use ARCore\Auth\Commands\LoginCommand;
+use ARCore\Auth\Commands\LogoutCommand;
+use ARCore\Auth\Commands\PinCommand;
+use ARCore\Auth\Commands\RegisterCommand;
+use ARCore\Auth\Commands\ResetPasswordCommand;
+//economys
+use onebone\economyapi\EconomyAPI;
 
 class ARCore extends PluginBase implements Listener{
-	
+	/*Clans*/
 	public $db;
 	public $prefs;
+  /*Pets*/
 	public static $pet;
 	public static $petState;
+	public static $isPetChanging;
+	public static $type;
 	public $pettype;
 	public $price;
 	public $wishPet;
-	public static $isPetChanging;
-	public static $type;
+  /*Inventory Saver*/
+	public $inventories;
+  /*Auths*/
+	public $authenticated;
+	public $confirmPassword;
+	public $messagetick;
+	public $tries;
 
 /*Plugins OnEnable*/
    public function onEnable(){
+//Using EconomyAPI by onebone
+			$this->api = EconomyAPI::getInstance();
+//Inventory Saver OnEnable//
+        $this->inventories = new \SQLite3($this->getDataFolder()."inventories.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+        $level = strtolower($this->getServer()->getDefaultLevel()->getFolderName());
+        $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$level` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
+//Inventory Saver OnEnable///
+///Auth OnEnable///
+		$this->auth = new Config($this->getDataFolder() . "AuthsSetting.yml", CONFIG::YAML, array(
+
+		"join-message" => "\n \n \n§l§8-§6»\n \n  §r§8This Server Using An Authentication System.",
+
+		"login" => "\n \n  §8Please Login By Typing In §b/log <password>\n \n§l§8-§6»",
+
+		"login-popup" => "§8Not Authenticate",
+
+		"authentication-success" => "§aYou Have Being Authenticate!",
+
+		"already-authenticated" => "§8You have already logged in.",
+
+		"incorrect-password" => "§8Incorrect password.You Have §5{tries} §8Tries left.",
+
+		"not-registered" => "§5%null%{error}",
+
+		"register" => "\n \n  §8Please Login By Typing In §b/reg <password> <confirm password>\n \n \n§l§8-§6»",
+
+		"register-popup" => "§8Not Authenticate",
+
+		"register-success" => "§aYou have been registered.Your pin is {pin}.",
+
+		"already-registered" => "§8You are already registered.",
+
+		"password-too-short" => "§8Password is too short.",
+
+		"password-not-match" => "§5%null%{error}",
+
+		"confirm-password" => "§dPlease confirm your password.",
+
+		"change-password-success" => "§eYour password has been changed.",
+
+		"forgot-password-success" => "§aYour password has been changed. Your new pin is {pin}.",
+
+		"incorrect-pin" => "§cIncorrect pin.",
+
+		"password-reset-success" => "§aPlayers password has been reset.",
+
+		"not-registered-two" => "§cPlayer not registered.",
+
+		"pin" => "§aYour pin= {pin}",
+
+		"dont-say-password" => "§5%null%{error}",
+
+		"timeout-message" => "§cLogin Timeout",
+
+		"too-many-tries" => "§cToo Many Tries to Login",
+
+		"timeout" => 12000,
+
+		"allow-movement" => false,
+
+		"chat-login" => false,
+
+		"auto-authentication" => false,
+
+		"minimum-password-length" => 6,
+
+		"tries" => 10,
+
+		"popup" => true,
+
+		"seconds-til-next-message" => 1000000,
+
+		"invisible" => true,
+
+		"blindness" => true,
+
+		"see-messages" => false,
+		));
+        if(!file_exists($this->getDataFolder() . "AuthsData.db")) {
+            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+            $this->auths->exec("CREATE TABLE players (name TEXT PRIMARY KEY, password TEXT, pin INT, uuid INT, attempts INT);");
+        } else {
+            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE);
+
+                //$this->auths->exec("ALTER TABLE players ADD COLUMN pins INT");
+
+                //$this->auths->exec("ALTER TABLE players ADD COLUMN attempts INT");
+            }
+        $this->getServer()->getCommandMap()->register('cpwd', new ChangePasswordCommand('cpwd', $this));
+        $this->getServer()->getCommandMap()->register('fpwd', new ForgotPasswordCommand('fpwd', $this));
+        $this->getServer()->getCommandMap()->register('log', new LoginCommand('log', $this));
+        $this->getServer()->getCommandMap()->register('logout', new LogoutCommand('logout', $this));
+        $this->getServer()->getCommandMap()->register('reg', new RegisterCommand('reg', $this));
+        $this->getServer()->getCommandMap()->register('pin', new PinCommand('pin', $this));
+        $this->getServer()->getCommandMap()->register('rpwd', new ResetPasswordCommand('rpwd', $this));
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new MessageTick($this), 20);
+        if($this->auth->get("popup")) {
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PopupTipTick($this), 20);
+        }
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+
+///Auth OnEnable///
+
+//config for custom //		
+		$this->custom = new Config($this->getDataFolder() . "CustomSetting.yml", CONFIG::YAML, array(
+		"ServerName" => "§aArch§eRPG",
+		"LoadDefaultWorld" => "Lobby-202",
+		"SetPlayerFoodBarOnJoin" => 20000,
+		"SetMaxPlayerHealthOnJoin" => 1,
+		"SetPlayerHealthOnJoin" => 40,
+		"SetPlayerFoodBarOnRespawn" => 20000,
+		"SetMaxPlayerHealthOnRespawn" => 1,
+		"SetPlayerHealthOnRespawn" => 40,
+		"DropDeath" => "388,0,1",
+		"NoVoid-SetPlayerMaxHealth" => 1,
+		"NoVoid-SetPlayerHealth" => 1,
+		"NoVoid-SetPlayerFood" => 200000,
+   "Player-Gain-Coins-PerKill" => 20,
+   "Player-Lose-Coins-PerDeath" => 10,
+   "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
+   "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
+		));
 
 
-/////////THE START OF PETS [ON ENABLE]/////////
+/////////THE START OF PETS [ON ENABLE]/////////		
+		$this->PetPrices = new Config($this->getDataFolder() . "PetPrices.yml", CONFIG::YAML, array(
+		"PetOffMsg" => "§b[Pet -> Me]§f - §eOkay, Ill be around",
+		"SpawnDogMsg" => "§bYour Dog is Here ! §aCost - $10000",
+		"DogCost" => 10000,
+		"SpawnCatMsg" => "§bYour Cat is Here ! §aCost - $10000",
+		"CatCost" => 10000,
+		"SpawnRabbitMsg" => "§bYour Rabbit is Here ! §aCost - $10000",
+		"RabbitCost" => 10000,
+		"SpawnPigMsg" => "§bYour Pig is Here ! §aCost - $5000",
+		"PigCost" => 5000,
+		"SpawnSheepMsg" => "§bYour Sheep is Here ! §aCost - $5000",
+		"SheepCost" => 5000,
+		"SpawnChickenMsg" => "§bYour Chicken is Here ! §aCost - $5000",
+		"ChickenCost" => 5000,
+                "SpawnSilverfishMsg" => "§bYour Silverfish is Here ! §aCost - $100000",
+                "SilverfishCost" => 100000,
+                "SpawnMagmaMsg" => "§bYour Magma is Here ! §aCost - $5000",
+                "MagmaCost" => 5000,
+                "SpawnBatMsg" => "§bYour Bat is Here ! §aCost - $5000", 
+		"BatCost" => 5000,
+                "SpawnBlockMsg" => "§bYour Blockin is Here ! §aCost - $5000",
+                "BlockCost" => 5000,
+                "PetPrices" => "§bTypes\n §aDog $10000\n §eCat $10000\n §aRabbit $10000\n §ePig $5000\n §aSheep $5000\n §eChicken $5000\n §aSilverfish $100000\n §eMagma $5000\n §aBat $5000\n §eBlock $5000.",
+		));
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "PetPlayer");
 		$server = Server::getInstance();
@@ -216,9 +411,9 @@ class ARCore extends PluginBase implements Listener{
 //Under Here Making Config..
 
 //load level/world
-        $this->getServer()->loadLevel("ArchLobby");
+        $this->getServer()->loadLevel($this->custom->get("LoadDefaultWorld"));
 /*Server Name*/
-		$this->getServer()->getNetwork()->setName(TextFormat::GREEN . "Arch" . TextFormat::GOLD . "RPG " . TextFormat::RED . "Online" . TextFormat::WHITE . "\n" . TextFormat::BLACK . "Beta§l§8»v0.1 ");
+		$this->getServer()->getNetwork()->setName($this->custom->get("ServerName"));
 
 
 ///This Is To register Events!
@@ -236,25 +431,27 @@ class ARCore extends PluginBase implements Listener{
        $this->getLogger()->info("Disabling...");
        $this->getLogger()->info("Disabled...");    
 		$this->db->close();
+   $this->inventories->close();
 	
    }
+
 ///START OF SIMPLE CUSTOM PLAYERS///
 
 /*Making Config For MaxHP And Hunger When Player Join And Die*/
-
+//DONE!
 /*Plugin OnJoin*/
    public function onJoiningPlayerHealth(PlayerJoinEvent $event){ 
        $player = $event->getPlayer(); 
-       $player->setFood(20000);
-       $player->setMaxHealth(1);
-       $player->setHealth(40);
+       $player->setFood($this->custom->get("SetPlayerFoodBarOnJoin"));
+       $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnJoin"));
+       $player->setHealth($this->custom->get("SetPlayerHealthOnJoin"));
    }
 /*Plugins PRE*/
     public function PRE(PlayerRespawnEvent $event){
        $player = $event->getPlayer(); 
-       $player->setFood(20000);
-       $player->setMaxHealth(1);
-       $player->setHealth(40);
+       $player->setFood($this->custom->get("SetPlayerFoodBarOnRespawn"));
+       $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnRespawn"));
+       $player->setHealth($this->custom->get("SetPlayerHealthOnRespawn"));
     }
 //This Function Will Add Percentage To Gain The Items..
 //Add Config..
@@ -264,20 +461,64 @@ class ARCore extends PluginBase implements Listener{
     $cause = $entity->getLastDamageCause();
     if($entity instanceof Player){
        if($cause instanceof Player){
-        $killer->getInventory()->addItem(Item::get(388,0,1));
+        $killer->getInventory()->addItem(Item::get($this->custom->get("DropDeath")));//388
     }
   }
 }
+
+    public function ByeVoidz(PlayerMoveEvent $event){
+        if($event->getTo()->getFloorY() < 5){
+			$player = $event->getPlayer();
+			$x = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
+			$y = $this->getServer()->getDefaultLevel()->getSafeSpawn()-> getY()+1.3;
+			$z = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getZ();
+			$level = $this->getServer()->getDefaultLevel();
+			$player->setLevel($level);
+            $player = $event->getPlayer();
+                $player->setMaxHealth($this->custom->get("NoVoid-SetPlayerMaxHealth"));
+                $player->setHealth($this->custom->get("NoVoid-SetPlayerHealth"));
+                $player->setFood($this->custom->get("NoVoid-SetPlayerFood"));
+			$player->teleport(new Vector3($x, $y, $z, $level));
+            }
+        }	
+
+		public function PlayerKillCoins(PlayerDeathEvent $event){
+			$player = $event->getEntity();
+			$name = strtolower($player->getName());
+     if ($player instanceof Player){
+				$cause = $player->getLastDamageCause();
+		if($cause instanceof EntityDamageByEntityEvent){
+					$damager = $cause->getDamager();
+					if($damager instanceof Player){
+						$PlayerKiller = $this->custom->get("Player-Gain-Coins-PerKill");
+						$PlayerKilled = $this->custom->get("Player-Lose-Coins-PerDeath");
+						$damager->sendTip($this->custom->get("Player-Gains-Coins-For-Killing-Message"));
+						$player->sendTip($this->custom->get("Player-Lose-Coins-For-Dying-Message"));
+						$this->api->addMoney($damager, $PlayerKiller);
+						$this->api->reduceMoney($player, $PlayerKilled);
+					}
+				}
+			}
+		}
+
+	public function NoDamageForFall(EntityDamageEvent $event){
+		$entity = $event->getEntity();
+		$cause = $event->getCause();
+		if($entity instanceof Player && $entity->hasPermission("nofall.damage")){
+			if($cause == EntityDamageEvent::CAUSE_FALL){
+				$event->setCancelled(true);
+			}
+		}
+	}
+
 ///ENDS OF SIMPLE CUSTOM PLAYERS///
 
 ///START OF ENCHANTS ///
-    public function calculateEndDamage($damage, $reduction)
-    {
+    public function calculateEndDamage($damage, $reduction){
         return $damage - $reduction;
     }
 
-    public function calculateDamage($type, $material, $sharpness)
-    {
+    public function calculateDamage($type, $material, $sharpness){
         $type = strtoupper($type);
         $damage = swordDamages::DAMAGE_VALUES;
         $damage = $damage[$type];
@@ -293,14 +534,13 @@ class ARCore extends PluginBase implements Listener{
         return $damage;
     }
 
-    public function onArrowShoot(EntityInventoryChangeEvent $event)
-    {
+    public function onArrowShoot(EntityInventoryChangeEvent $event){
         $player = $event->getEntity();
-        if ($player instanceof Player) {
-            if ($event->getOldItem()->getId() === Item::ARROW) {
-                if ($player->getInventory()->getItemInHand()->getId() === Item::BOW) {
+        if ($player instanceof Player){
+            if($event->getOldItem()->getId() === Item::ARROW){
+                if($player->getInventory()->getItemInHand()->getId() === Item::BOW){
                     $infinty = $player->getInventory()->getItemInHand()->getEnchantment(22);
-                    if ($infinty !== null) {
+                    if($infinty !== null){
                         $event->setCancelled(true);
                     }
                 }
@@ -701,7 +941,7 @@ class ARCore extends PluginBase implements Listener{
 	}
 	
 	public function isNameBanned($name) {
-		$bannedNames = explode(":", file_get_contents($this->getDataFolder() . "BannedNames.txt"));
+		$bannedNames = explode(":", file_get_contents($this->getDataFolder() . "PlayerClanBanned.txt"));
 		return in_array($name, $bannedNames);
 	}
 	
@@ -775,9 +1015,9 @@ class ARCore extends PluginBase implements Listener{
 	
 	public function formatMessage($string, $confirm = false) {
 		if($confirm) {
-			return "" . TextFormat::RED . "•RED Clan•" . TextFormat::WHITE . "•" . TextFormat::GREEN . "$string";
+			return "" . TextFormat::RED . "" . TextFormat::WHITE . "§l§b»§r" . TextFormat::GREEN . "$string";
 		} else {	
-			return "" . TextFormat::RED . "•RED Clan•" . TextFormat::WHITE . "•" . TextFormat::RED . "$string";
+			return "" . TextFormat::RED . "" . TextFormat::WHITE . "§l§b»§r " . TextFormat::RED . "$string";
 		}
 	}
 	
@@ -835,7 +1075,7 @@ class ARCore extends PluginBase implements Listener{
 					]),
 		]);
 		$pet = Entity::createEntity($type, $chunk, $nbt, ...$args);
-		$data = new Config($this->getDataFolder() . "players/" . strtolower($player->getName()) . ".yml", Config::YAML);
+		$data = new Config($this->getDataFolder() . "PetPlayer/" . strtolower($player->getName()) . ".yml", Config::YAML);
 		$data->set("type", $type); 
 		$data->save();
 		$pet->setOwner($player);
@@ -848,7 +1088,7 @@ class ARCore extends PluginBase implements Listener{
 			$x = (-sin(deg2rad($player->yaw))) * $len  + $player->getX();
 			$z = cos(deg2rad($player->yaw)) * $len  + $player->getZ();
 			$y = $player->getLevel()->getHighestBlockAt($x, $z);
-			$source = new Position($x , $y + 2, $z, $player->getLevel());
+			$source = new Position($x , $y + 2.5, $z, $player->getLevel());
 			if (isset(self::$type[$player->getName()])){
 				$type = self::$type[$player->getName()];
 			}
@@ -902,32 +1142,345 @@ class ARCore extends PluginBase implements Listener{
 	public function getPet($player) {
 		return self::$pet[$player];
 	}
-	
-	public function onJoin(PlayerJoinEvent $event){
+	public function onJoinPets(PlayerJoinEvent $event){
 		$player = $event->getPlayer();
-		$data = new Config($this->getDataFolder() . "players/" . strtolower($player->getName()) . ".yml", Config::YAML);
+		$data = new Config($this->getDataFolder() . "PetPlayer/" . strtolower($player->getName()) . ".yml", Config::YAML);
 		if($data->exists("type")){ 
 			$type = $data->get("type");
 			$this->changePet($player, $type);
 		}
 		if($data->exists("name")){ 
 			$name = $data->get("name");
-			$this->getPet($player->getName())->setNameTag($name);
+			$this->getPet($player->getName())->setNameTag("§8"."§8$name");
 		}
-
-}
+	}
 /// Ends Of Pets ////
+
+
+///Inventory Saver START ///
+
+//Known Bugs:
+/*/
+ * Works Only When Player On Survivals Mode (GM 1)
+ * Creative Player Have Bugs
+ *
+/*/
+    public function onLevelChange(EntityLevelChangeEvent $event){
+        $ent = $event->getEntity();
+        if($ent instanceof Player and $ent->hasPermission("saver.inventory.switch")){
+            $this->saveInv($ent, $event->getOrigin());
+            $ent->getInventory()->clearAll();
+            $this->loadInv($ent, $event->getTarget());
+        }
+    }
+
+    public function saveInv(Player $player, Level $from){
+        $from = strtolower($from->getFolderName());
+        $name = strtolower($player->getName());
+        $contents = base64_encode(serialize($player->getInventory()->getContents()));
+        $armor = base64_encode(serialize($player->getInventory()->getArmorContents()));
+
+        $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$from` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
+
+        $stmt = $this->inventories->prepare("UPDATE `$from` SET slots = :slots, armor = :armor WHERE name = :name");
+        $stmt->bindValue(":slots", $contents, SQLITE3_TEXT);
+        $stmt->bindValue(":armor", $armor, SQLITE3_BLOB);
+        $stmt->bindValue(":name", $name, SQLITE3_BLOB);
+        $stmt->execute();
+        $stmt->close();
+
+        $stmt = $this->inventories->prepare("INSERT OR IGNORE INTO `$from` (name, slots, armor) VALUES (:name, :slots, :armor)");
+        $stmt->bindValue(":name", $name, SQLITE3_TEXT);
+        $stmt->bindValue(":slots", $contents, SQLITE3_BLOB);
+        $stmt->bindValue(":armor", $armor, SQLITE3_BLOB);
+        $stmt->execute();
+        $stmt->close();
+    }
+
+    public function loadInv(Player $player, Level $to){
+        $to = strtolower($to->getFolderName());
+
+        $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$to` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
+
+        $stmt = $this->inventories->prepare("SELECT * FROM `$to` WHERE name = :name");
+        $stmt->bindValue(":name", strtolower($player->getName()), SQLITE3_TEXT);
+        $query = $stmt->execute();
+        if($query instanceof \SQLite3Result){
+            $data = $query->fetchArray(SQLITE3_ASSOC);
+            if(isset($data["slots"]) and isset($data["armor"])){
+                $player->getInventory()->setContents(unserialize(base64_decode($data["slots"])));
+                $player->getInventory()->setArmorContents(unserialize(base64_decode($data["armor"])));
+            }
+        }
+        $query->finalize();
+        $stmt->close();
+    }
+///Inventory Saver END///
 
 //Any under here wait till i unbusy or you can start without me...
 
-/// START OF AUTHS ///
 /*Still Finding A Way For A Good Way To Encrypt The Password
 Note To Myself: Dont Use Multiplication Hash..*/
 //I finding a way to make a security password without to worry any leaked..
-///ENDS OF AUTHS///
+
+//Update: Delay XBox Login
+//Info: Code Taken From SimpleAuths(by Soghicp), ArchAuths(by GamerXzavier/HyGlobalHD) And Edited.
+
+///Start Of Auths Code///
+
+    public function getPlayer($player) {
+        $player = strtolower($player);
+        $statement = $this->auths->prepare("SELECT * FROM players WHERE name = :name");
+        $statement->bindValue(":name", $player, SQLITE3_TEXT);
+        $result = $statement->execute();
+        if($result instanceof \SQLite3Result) {
+            $data = $result->fetchArray(SQLITE3_ASSOC);
+            $result->finalize();
+            if(isset($data["name"])) {
+                unset($data["name"]);
+                $statement->close();
+                return $data;
+            }
+        }
+        $statement->close();
+        return null;
+    }
+
+    public function updatePlayer(Player $player, $password, $pin, $uuid, $attempts) {
+        $statement = $this->auths->prepare("UPDATE players SET pin = :pin, password = :password, uuid = :uuid, attempts = :attempts WHERE name = :name");
+        $statement->bindValue(":name", strtolower($player->getName()), SQLITE3_TEXT);
+        $statement->bindValue(":password", $password, SQLITE3_TEXT);
+        $statement->bindValue(":pin", $pin, SQLITE3_INTEGER);
+        $statement->bindValue(":uuid", $uuid, SQLITE3_INTEGER);
+        $statement->bindValue(":attempts", $attempts, SQLITE3_INTEGER);
+        $statement->execute();
+    }
+
+    public function getPin(Player $player) {
+        $data = $this->getPlayer($player->getName());
+        if(!is_null($data)) {
+            if(!isset($data["pin"])) {
+                $pin = mt_rand(1000, 9999); //If you use $this->generatePin(), there will be issues!
+                $this->updatePlayer($player, $pin, $this->getPassword($player), $this->getUUID($player), $this->getAttempts($player));
+                return $pin;
+            }
+            return $data["pin"];
+        }
+        return null;
+    }
+
+    public function getPassword(Player $player) { //ENCRYPTED!
+        $data = $this->getPlayer($player->getName());
+        if(!is_null($data)) {
+            return $data["password"];
+        }
+        return null;
+    }
+
+    public function getUUID(Player $player) {
+        $data = $this->getPlayer($player->getName());
+        if(!is_null($data)) {
+            return $data["uuid"];
+        }
+        return null;
+    }
+
+    public function getAttempts(Player $player) {
+        $data = $this->getPlayer($player->getName());
+        if(!is_null($data)) {
+            if(!isset($data["attempts"])) {
+                $this->updatePlayer($player, $this->getPin($player), $this->getPassword($player), $this->getUUID($player), 0);
+                return 0;
+            }
+            return $data["attempts"];
+        }
+        return null;
+    }
+
+    public function generatePin(Player $player) {
+        $newpin = mt_rand(1000, 9999);
+        if($this->isCorrectPin($player, $newpin)){
+            return $this->generatePin($player);
+        }
+        return $newpin;
+    }
+
+    public function isCorrectPassword(Player $player, $password) {
+        if(password_verify($password, $this->getPassword($player))) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isCorrectPin(Player $player, $pin) {
+        if($pin == $this->getPin($player)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function isAuthenticated(Player $player) {
+        if(isset($this->authenticated[strtolower($player->getName())])) return true;
+        return false;
+    }
+
+    public function isRegistered($player) {
+        return $this->getPlayer(strtolower($player)) !== null;
+    }
+
+    public function login(Player $player, $password) {
+        if($this->isAuthenticated($player)) {
+            $player->sendMessage($this->auth->get("already-authenticated"));
+            return false;
+        }
+        if(!$this->isRegistered($player->getName())) {
+            $player->sendMessage($this->auth->get("not-registered"));
+            return false;
+        }
+        if(!$this->isCorrectPassword($player, $password)) {
+            if(isset($this->tries[strtolower($player->getName())])) {
+                $this->tries[strtolower($player->getName())]++;
+                if($this->tries[strtolower($player->getName())] >= $this->auth->get("tries")) {
+                    $this->updatePlayer($player, $this->getPassword($player), $this->getPin($player), $this->getUUID($player), $this->getAttempts($player) + 1);
+                    $player->kick($this->auth->get("too-many-tries"));
+                    return false;
+                }
+            } else {
+                $this->tries[strtolower($player->getName())] = 1;
+            }
+            $tries = $this->auth->get("tries") - $this->tries[strtolower($player->getName())];
+            $player->sendMessage(str_replace("{tries}", $tries, $this->auth->get("incorrect-password")));
+            return false;
+        }
+        $this->force($player);
+        return true;
+    }
+
+    public function force(Player $player, $login = true) {
+        if(isset($this->messagetick[strtolower($player->getName())])) {
+            unset($this->messagetick[strtolower($player->getName())]);
+        }
+        if(isset($this->tries[strtolower($player->getName())])) {
+            unset($this->tries[strtolower($player->getName())]);
+        }
+        $this->authenticated[strtolower($player->getName())] = true;
+        if($this->auth->get("invisible")) {
+            $player->setDataFlag(Entity::DATA_FLAGS, Entity::DATA_FLAG_INVISIBLE, false);
+            $player->setDataProperty(Entity::DATA_SHOW_NAMETAG, Entity::DATA_TYPE_BYTE, 1);
+        }
+        if($this->auth->get("blindness")) {
+            $player->removeEffect(15);
+            $player->removeEffect(16);
+        }
+        if($login) {
+            $player->sendMessage(str_replace("{attempts}", $this->getAttempts($player), $this->auth->get("authentication-success")));
+        } else {
+            $player->sendMessage(str_replace("{pin}", $this->getPin($player), $this->auth->get("register-success")));
+        }
+        $this->updatePlayer($player, $this->getPassword($player), $this->getPin($player), $player->getUniqueId()->toString(), 0);
+        return true;
+    }
+
+    public function register(Player $player, $password, $confirmpassword) {
+        if($this->isRegistered($player->getName())) {
+            $player->sendMessage($this->auth->get("already-registered"));
+            return false;
+        }
+        if(strlen($password) < $this->auth->get("minimum-password-length")) {
+            $player->sendMessage($this->auth->get("password-too-short"));
+            return false;
+        }
+        if($password !== $confirmpassword) {
+            $player->sendMessage($this->auth->get("password-not-match"));
+            return false;
+        }
+        $statement = $this->auths->prepare("INSERT INTO players (name, password, pin, uuid, attempts) VALUES (:name, :password, :pin, :uuid, :attempts)");
+        $statement->bindValue(":name", strtolower($player->getName()), SQLITE3_TEXT);
+        $statement->bindValue(":password", password_hash($password, PASSWORD_BCRYPT), SQLITE3_TEXT);
+        $statement->bindValue(":pin", $this->generatePin($player), SQLITE3_INTEGER);
+        $statement->bindValue(":uuid", $player->getUniqueId()->toString(), SQLITE3_INTEGER);
+        $statement->bindValue(":attempts", 0, SQLITE3_INTEGER);
+        $statement->execute();
+        $this->force($player, false);
+        return true;
+    }
+
+    public function changepassword(Player $player, $oldpassword, $newpassword) {
+        if(!$this->isRegistered($player->getName())) {
+            $player->sendMessage($this->auth->get("not-registered"));
+            return false;
+        }
+        if(!$this->isCorrectPassword($player, $oldpassword)) {
+            $player->sendMessage($this->auth->get("incorrect-password"));
+            return false;
+        }
+        $pin = $this->generatePin($player);
+        $this->updatePlayer($player, password_hash($newpassword, PASSWORD_BCRYPT), $newpin, $player->getUniqueId()->toString(), 0);
+        $player->sendMessage($this->auth->get("password-change-success"));
+        return true;
+    }
+
+    public function forgotpassword(Player $player, $pin, $newpassword) {
+        if(!$this->isRegistered($player->getName())) {
+            $player->sendMessage($this->auth->get("not-registered"));
+            return false;
+        }
+        if($this->isAuthenticated($player)) {
+            $player->sendMessage($this->auth->get("already-authenticated"));
+            return false;
+        }
+        if(!$this->isCorrectPin($player, $pin)) {
+            $player->sendMessage($this->auth->get("incorrect-pin"));
+            return false;
+        }
+        $newpin = $this->generatePin($player);
+        $this->updatePlayer($player, password_hash($newpassword, PASSWORD_BCRYPT), $newpin, $this->getUUID($player), $this->getPlayer($player)["attempts"]);
+        $player->sendMessage(str_replace("{pin}", $newpin, $this->auth->get("forgot-password-success")));
+    }
+
+    public function resetpassword($player, $sender) {
+        $player = strtolower($player);
+        if($this->isRegistered($player)) {
+            $statement = $this->auths->prepare("DELETE FROM players WHERE name = :name");
+            $statement->bindValue(":name", $player, SQLITE3_TEXT);
+            $statement->execute();
+            if(isset($this->authenticated[$player])) {
+                unset($this->authenticated[$player]);
+            }
+            $sender->sendMessage($this->auth->get("password-reset-success"));
+            return true;
+        }
+        $sender->sendMessage($this->auth->get("not-registered-two"));
+        return false;
+    }
+
+    public function logout(Player $player, $quit = true) {
+        if($this->isAuthenticated($player)) {
+            unset($this->authenticated[strtolower($player->getName())]);
+            if(!$quit) {
+                $this->messagetick[strtolower($player->getName())] = 5;
+                $this->getServer()->getScheduler()->scheduleDelayedTask(new TimeoutTask($this, $player), $this->auth->get("timeout") * 20);
+            }
+        } else {
+            if(isset($this->confirmPassword[strtolower($player->getName())])) {
+                unset($this->confirmPassword[strtolower($player->getName())]);
+            }
+            if(isset($this->messagetick[strtolower($player->getName())])) {
+                unset($this->messagetick[strtolower($player->getName())]);
+            }
+            if(isset($this->tries[strtolower($player->getName())])) {
+                unset($this->tries[strtolower($player->getName())]);
+            }
+        }
+    }
+
+///Ends Of Auths Code///
+
+
 
 ///STARTS OF SKILLS///
 /*Im gonna start with simple thing*/
+//DELAY //
 ///ENDS OF SKILLS///
 
 }
