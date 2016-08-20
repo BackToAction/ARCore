@@ -367,7 +367,7 @@ class ARCore extends PluginBase implements Listener{
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 		$this->fCommand = new FactionCommands($this);
 		
-		$this->prefs = new Config($this->getDataFolder() . "FactionOptions.yml", CONFIG::YAML, array(
+		$this->prefs = new Config($this->getDataFolder() . "ClanOptions.yml", CONFIG::YAML, array(
 		"CreateCost" => 3000,
 		"ClaimCost" => 100000,
 		"OverClaimCost" => 25000,
