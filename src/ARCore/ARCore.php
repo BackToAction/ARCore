@@ -191,6 +191,7 @@ class ARCore extends PluginBase implements Listener{
 //Using EconomyAPI by onebone
 			$this->api = EconomyAPI::getInstance();
 //Inventory Saver OnEnable//
+        @mkdir($this->getDataFolder());
         $this->inventories = new \SQLite3($this->getDataFolder()."inventories.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $level = strtolower($this->getServer()->getDefaultLevel()->getFolderName());
         $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$level` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
@@ -402,7 +403,7 @@ class ARCore extends PluginBase implements Listener{
 
 //Todo.
 /*
-* Config.
+* Config. [DONE]
 * Clean Up..
 * ReWrite.
 * Pure Code.
@@ -1165,6 +1166,7 @@ class ARCore extends PluginBase implements Listener{
  * Creative Player Have Bugs
  *
 /*/
+
     public function onLevelChange(EntityLevelChangeEvent $event){
         $ent = $event->getEntity();
         if($ent instanceof Player and $ent->hasPermission("saver.inventory.switch")){
@@ -1215,6 +1217,7 @@ class ARCore extends PluginBase implements Listener{
         $query->finalize();
         $stmt->close();
     }
+
 ///Inventory Saver END///
 
 //Any under here wait till i unbusy or you can start without me...
