@@ -7,6 +7,9 @@ commands:
   c:
     description: "use /c help for all parameters"
     permission: f.command
+  pets:
+    description: "Pet for you, just for you!
+    permission: pets.command
 permissions:
   nofall.damage:
     default: true
@@ -16,4 +19,7 @@ permissions:
   f.command:
     default: true
     description: "Allow use of all clans commands"
+  pets.command:
+    default: true
+    description: "Allow use of all Pets commands"
 
