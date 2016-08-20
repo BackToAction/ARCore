@@ -37,9 +37,7 @@ class LevelSystem extends PluginBase implements Listener {
         }
         $this->exps = new Config($this->getDataFolder() . "exps.json", Config::JSON, array());
     }
-    public function onDisable() {
-        $this->getLogger()->info(TextFormat::GREEN . "Exp function is disable!");
-    }
+    
     public function onCommand(CommandSender $sender, Command $command, $label, array $args) {
         return false;
     }
