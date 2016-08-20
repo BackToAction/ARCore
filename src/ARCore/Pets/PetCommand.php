@@ -25,10 +25,10 @@ class PetCommand extends PluginCommand {
 	if($sender->hasPermission('pets.command')){
 		if (!isset($args[0])) {
 			$sender->sendMessage("§b======PetHelp======");
-			$sender->sendMessage("§e/pets spawn [type] §f- Spawn A Pets");
-			$sender->sendMessage("§e/pets off §f- Turn Off Your Pets");
-			$sender->sendMessage("§e/pets setname [name] §f- Set Pets A Name");
-			$sender->sendMessage("§e/pets prices §f- See The Pets Prices And List");
+			$sender->sendMessage("§e/pets spawn [type] §f- Spawn your pets");
+			$sender->sendMessage("§e/pets off §f- Turn off your pets");
+			$sender->sendMessage("§e/pets setname [name] §f- Name your pets);
+			$sender->sendMessage("§e/pets prices §f- List Pet Price");
 			return true;
 		}
 		switch (strtolower($args[0])){
@@ -47,10 +47,10 @@ class PetCommand extends PluginCommand {
 			break;
 			case "help":
 				$sender->sendMessage("§b======PetHelp======");
-			$sender->sendMessage("§e/pets spawn [type] §f- Spawn A Pets");
-			$sender->sendMessage("§e/pets off §f- Turn Off Your Pets");
-			$sender->sendMessage("§e/pets setname [name] §f- Set Pets A Name");
-			$sender->sendMessage("§e/pets prices §f- See The Pets Prices And List");
+			        $sender->sendMessage("§e/pets spawn [type] §f- Spawn your pets");
+			        $sender->sendMessage("§e/pets off §f- Turn off your pets");
+			        $sender->sendMessage("§e/pets setname [name] §f- Name your pets);
+			        $sender->sendMessage("§e/pets prices §f- List Pet Price");
 				return true;
 			case "prices":
 			$sender->sendMessage($this->main->PetPrices->get("PetPrices"));
