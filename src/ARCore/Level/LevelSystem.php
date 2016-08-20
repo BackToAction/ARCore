@@ -57,10 +57,10 @@ class LevelSystem extends PluginBase implements Listener {
             if ($killer instanceof Player) {
                 $exp = $this->exps->get($killer->getName());
                 $exp = intval($exp) + 8; //?o?±?l
-				$killer->sendMessage("§b【RED】 Bạn nhận được 8 điểm kinh nghiệm");
-				$killer->sendMessage("§b【RED】 Số kinh nghiệm của bạn hiện tại là: ".$exp." điểm");
-				$killer->sendPopUp("§b【RED】 Bạn nhận được 8 điểm kinh nghiệm");//Popupの上にメッセージを表示
-				$killer->sendPopUp("§b【RED】 Số kinh nghiệm: ".$exp." điểm");
+				$killer->sendMessage("§b【Level】 Recieve 8 points of experience!");
+				$killer->sendMessage("§b【Level】 Current experiences: ".$exp." points");
+				$killer->sendPopUp("§b【Level】 Recieve 8 points of experience!");
+				$killer->sendPopUp("§b【Level】 Exp: ".$exp." points");
                 $this->exps->set($killer->getName(), $exp);
                 $this->exps->save();
             }
