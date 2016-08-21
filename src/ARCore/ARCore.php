@@ -188,6 +188,8 @@ class ARCore extends PluginBase implements Listener{
 
 /*Plugins OnEnable*/
    public function onEnable(){
+/*Enchant Manager */
+        $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
 //Using EconomyAPI by onebone
 			$this->api = EconomyAPI::getInstance();
 //Inventory Saver OnEnable//
