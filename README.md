@@ -29,7 +29,7 @@ A must-have plugin core for an mmoRPG server!
 - [x] Add Money For Killing
 - [ ] Custom NPC
 - [ ] Custom Commands
-- [x] Custom Enchants
+- [ ] Custom Enchants
 - [ ] Add AntiLagg System
 - [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
