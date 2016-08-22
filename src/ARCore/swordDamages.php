@@ -2,8 +2,9 @@
 
 namespace ARCore;
 
-class swordManage{
-
+class swordDamages{
+//under here is the damage lol xP
+//don't change the name !
     const DAMAGE_VALUES = array(
         "SWORD" => 5,
         "AXE" => 4,
