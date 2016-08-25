@@ -3,9 +3,9 @@
 A must-have plugin core for an mmoRPG server!
 
 # Test Server
-- Test on my Vietnam Server (Sorry, all of them are Vietnam, but you can speak English and they understand you)
+- Test this plugin on my Vietnam Server (Sorry, all players are Vietnam, but you can speak English if some understand you!)
 - sur.redvn.xyz Port 19132 (Survival - Faction - Pets)
-- Right now we need help from all the developer!
+- Right now we need help from developers!
 
 # Description
 - This plugin has support for PocketMine-MP, ClearSky, Genisys and other software!
@@ -38,7 +38,7 @@ A must-have plugin core for an mmoRPG server!
 - [x] Clans System (with EconomyAPI support)
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
-- [ ] Using private database to players
+- [ ] Using private database for players
 - [x] Custom Inventory Management
 - [ ] Add Auto-Updater
 - [ ] AntiHack System
