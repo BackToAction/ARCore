@@ -17,7 +17,7 @@ A must-have plugin core for an mmoRPG server!
 - [x] Custom Player Management
 - [x] Custom Server Management
 - [x] Custom Damage Management
-- [ ] Simple Authentication System.
+- [x] Simple Authentication System.
 - [x] Add Pets (with EconomyAPI support)
 - [ ] Custom Modified Entity
 - [ ] Add Skill System.
