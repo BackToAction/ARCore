@@ -122,7 +122,8 @@ class EventListener implements Listener {
             "/forgotpwd",
             "/forgetpwd",
             "/fpw",
-            "/fpwd");
+            "/fpwd",
+            "/forgot");
         if(!$this->plugin->isAuthenticated($player)) {
             if($message[0] == "/") {
                 if(!in_array($args[0], $forgotpasswordaliases) && $args[0] !== "/log" && $args[0] !== "/reg") {
