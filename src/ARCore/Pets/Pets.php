@@ -168,20 +168,27 @@ abstract class Pets extends Creature {
 	}
 	
 	public function fastClose() {
-		parent::kill();
+		parent::close();
 	}
 	public function close(){
 		if(!($this->owner instanceof Player) || $this->owner->closed) {
- 			$this->fastClose();
- 			return;
- 		}
- 		if(is_null($this->closeTarget)) {
-			$len = rand(12, 15);
-			$x = (-sin(deg2rad( $this->owner->yaw + 20))) * $len  +  $this->owner->getX();
-			$z = cos(deg2rad( $this->owner->yaw + 20)) * $len  +  $this->owner->getZ();
-			$this->closeTarget = new Vector3($x, $this->owner->getY() + 1, $z);
+			$this->fastClose();
+			return;
+		}
+		if(is_null($this->closeTarget)) {
+// 			$len = rand(12, 15);
+// 			$x = (-sin(deg2rad( $this->owner->yaw + 20))) * $len  +  $this->owner->getX();
+// 			$z = cos(deg2rad( $this->owner->yaw + 20)) * $len  +  $this->owner->getZ();
+// 			$this->closeTarget = new Vector3($x, $this->owner->getY() + 1, $z);
+			$this->kill();
+			$this->despawnFromAll();
+			$this->setHealth(0);
 		} else {
-			parent::kill();
+			if (isset(main::$pet[$this->owner->getName()])) {
+				$this->kill();
+				$this->despawnFromAll();
+				$this->setHealth(0);
+			}
 		}
 	}
 	
