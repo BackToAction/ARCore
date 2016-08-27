@@ -1,6 +1,6 @@
 <?php
 
-namespace ARCore\Pets;
+namespace pets;
 
 class SilverfishPet extends Pets {
 
@@ -10,11 +10,12 @@ class SilverfishPet extends Pets {
 	public $height = 0.75;
 	
 	public function getName() {
-		return "SilverfishPet";
+		return "SilverFish";
 	}
 
 	public function getSpeed() {
 		return 1.5;
 	}
 	
+
 }

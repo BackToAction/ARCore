@@ -1,12 +1,12 @@
 <?php
 
-namespace ARCore\Pets;
+namespace pets;
 
 class RabbitPet extends Pets {
 
 	const NETWORK_ID = 18;
 	
-	const TYPE_BROWN = 0;
+	const TYPE_WHITE = 1;
 
 	public $width = 0.5;
 	public $height = 0.5;
@@ -18,4 +18,6 @@ class RabbitPet extends Pets {
 	public function getSpeed() {
 		return 1.5;
 	}
+	
+
 }

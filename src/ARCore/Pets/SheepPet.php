@@ -1,21 +1,21 @@
 <?php
 
-namespace ARCore\Pets;
-
-class SheepPet extends Pets {
-
-	const NETWORK_ID = 13;
-
-    public $width = 1.45;
-    public $height = 1.12;
+namespace pets;
 
 
-	public function getName() {
-		return "SheepPet";
-	}
+class SheepPet extends Pets{
+const NETWORK_ID = 13;
 
-	public function getSpeed() {
-		return 1.1;
-	}
-
+	public $width = 0.625;
+	public $length = 1.4375;
+	public $height = 1.8;
+	
+	public function getName(){
+	  return "SheepPet";
+	  }
+	  
+	  public function getSpeed(){
+	  return 0.7;
+	  }
+	  
 }

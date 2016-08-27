@@ -1,6 +1,6 @@
 <?php
 
-namespace ARCore\Pets;
+namespace pets;
 
 class BlockPet extends Pets {
 
