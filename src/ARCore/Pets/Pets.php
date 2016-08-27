@@ -1,5 +1,5 @@
 <?php
-namespace ARCore\Pets;
+namespace Pets;
 use pocketmine\entity\Creature;
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\Timings;
@@ -11,9 +11,8 @@ use pocketmine\math\Math;
 use pocketmine\block\Air;
 use pocketmine\block\Liquid;
 use pocketmine\utils\TextFormat;
-use ARCore\ARCore;
+use pets\main;
 abstract class Pets extends Creature {
-	
 	protected $owner = null;
 	protected $distanceToOwner = 0;
 	public $closeTarget = null;
@@ -32,6 +31,7 @@ abstract class Pets extends Creature {
 				$pk->x = $this->x;
 				$pk->y = $this->y;
 				$pk->z = $this->z;
+				
 				$pk->speedX = 0;
 				$pk->speedY = 0;
 				$pk->speedZ = 0;
@@ -41,9 +41,7 @@ abstract class Pets extends Creature {
 				if (static::NETWORK_ID == 66){
 					$pk->metadata = [
 							15 => [0,1],
-							20 => [2,86],
-							23 => [7, -1],
-							24 => [0, 0]
+							20 => [2,86]
 					];
 					$pk->y = $this->y + 0.6;
 				}
@@ -53,7 +51,9 @@ abstract class Pets extends Creature {
 		}
 	}
 	public function updateMovement() {
-		if ($this->lastX !== $this->x || $this->lastY !== $this->y || $this->lastZ !== $this->z || $this->lastYaw !== $this->yaw || $this->lastPitch !== $this->pitch){
+		if (
+				$this->lastX !== $this->x || $this->lastY !== $this->y || $this->lastZ !== $this->z || $this->lastYaw !== $this->yaw || $this->lastPitch !== $this->pitch
+		) {
 			$this->lastX = $this->x;
 			$this->lastY = $this->y;
 			$this->lastZ = $this->z;
@@ -88,7 +88,7 @@ abstract class Pets extends Creature {
 			$this->motionZ = 0;
 			$this->motionY = 0;
 			if(!is_null($this->closeTarget)) {
-				parent::kill();
+				$this->close();
 			}
 			return;
 		} else {
@@ -145,6 +145,15 @@ abstract class Pets extends Creature {
 			$this->fastClose();
 			return false;
 		}
+
+		if($this->getHealth() == 0){
+			return false;
+		}
+		
+		if(!$this->isAlive()){
+			return false;
+		}
+		
 		if($this->closed){
 			return false;
 		}
