@@ -2,7 +2,7 @@
 namespace ARCore\Pets;
 use pocketmine\command\CommandSender;
 use pocketmine\command\PluginCommand;
-use ARCore\Pets\Main;
+use ARCore\Pets\main;
 use pocketmine\utils\TextFormat;
 class PetCommand extends PluginCommand {
 	public function __construct(main $main, $name) {
