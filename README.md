@@ -34,17 +34,18 @@ A must-have plugin core for an mmoRPG server!
 - [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
 - [ ] Custom Accessories
-- [x] Custom LevelUP System (base on Enchantment level)
+- [ ] Custom LevelUP System (base on Enchantment level)(not finish yet)
 - [x] Clans System (with EconomyAPI support)
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
 - [ ] Using private database for players
-- [x] Custom Inventory Management
+- [ ] Custom Inventory Management(bugs)
 - [ ] Add Auto-Updater
-- [ ] AntiHack System
+- [ ] AntiHack System(soon)
 - [ ] Custom Items.
 - [ ] Custom Craft Recipes
 - [ ] Custom Chat
+- [ ] Cusom Ranks (People Can Add Ranks Easily)
 
 #Feel free to make pull requests to help us complete this plugin!
 
