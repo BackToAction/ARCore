@@ -448,6 +448,8 @@ class ARCore extends PluginBase implements Listener{
        $player->setFood($this->custom->get("SetPlayerFoodBarOnJoin"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnJoin"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnJoin"));
+       $player->setMovement(0.15);//DO NOT TOUCH IF YOU DON'T KNOW WHAT TO DO
+       $player->setGamemode(0);//No Creative On Join
    }
 /*Plugins PRE*/
     public function PRE(PlayerRespawnEvent $event){
@@ -455,6 +457,8 @@ class ARCore extends PluginBase implements Listener{
        $player->setFood($this->custom->get("SetPlayerFoodBarOnRespawn"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnRespawn"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnRespawn"));
+       $player->setMovement(0.15);//DO NOT TOUCH IF YOU DON'T KNOW WHAT TO DO
+       $player->setGamemode(0);
     }
 //This Function Will Add Percentage To Gain The Items..
 //Add Config..
