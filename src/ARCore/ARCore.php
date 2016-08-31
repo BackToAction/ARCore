@@ -9,29 +9,6 @@ namespace ARCore;
  * Somehow I Hate This.
  *
  *
- * Change Log (20 August 2016) : -
- * - Update To v0.0.2#STABLE
- * - Add Config.
- * - Fix Various Bugs
- * - Add Auths System(buggy(need to fix some code))
- * - Add MultiWorld Inventory Saver(idk if this working properly cause might have bugs)
- * - Add ByeBye Voids Feature(works charmly)
- * - Player Settings Added.(config)
- * - Remove Useless Codes.(hmm idk)
- * - Add Coins For Killing And Dying(maybe work charmly)
- * - Add Player Have No Fall Damage(working perfectly with permission)
- * - More Bugs (lol jk,need to fix some code)
- *
- * Todo: -
- * - Add Player Stats(base on ArchStats)
- * - Fix Some Bugs
- * - Rewrite clans code from faction to clans (to make the code not to be so confuse)
- * - Add Some Features..
- * NOTE: Need Help With LevelSystem And Skills Also Class/Jobs.
- * - Need To Add Friends System
- * - Need To Add PartyQuest System
- * - Need To Add Quest
- * - Need To Add Custom Mobs
 /*/
 
 //player
@@ -58,6 +35,7 @@ use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\event\player\PlayerDeathEvent;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
@@ -65,6 +43,9 @@ use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\level\LevelLoadEvent;
 use pocketmine\event\Listener;
+use pocketmine\event\player\PlayerBedEnterEvent;
+use pocketmine\event\player\PlayerDropItemEvent;
+use pocketmine\event\player\PlayerHungerChangeEvent;
 //items
 use pocketmine\item\Slimeball;
 use pocketmine\item\Item;
@@ -136,7 +117,7 @@ use pocketmine\permission\Permission;
 use ARCore\Clans\FactionCommands;
 use ARCore\Clans\FactionListener;
 //others.
-use ARCore\Enchantment\EnchantManager;
+//use ARCore\Enchantment\EnchantManager;
 //pets implements
 use ARCore\Pets\PetCommand;
 use ARCore\Pets\OcelotPet;
@@ -166,7 +147,19 @@ use ARCore\Auth\Commands\ResetPasswordCommand;
 //economys
 use onebone\economyapi\EconomyAPI;
 
+//use  ARCore\AntiHack\AntiHack;//NON-OFFICIAL ANTIHACK
+
 class ARCore extends PluginBase implements Listener{
+
+ //TODO
+ //Dont Use EconomyAPI [Write Our Own Currency](Why??A:Because this plugin is a core and can be as lagg as freak if there another plugin)[Core are suppose to be ALONE]
+ //Rewrite Pets [HURRY]      
+ //Re-Implement AntiHack(NON-FUNCTIONAL)
+ //Add Background Sounds(URGENT)
+ //Rewrite Auths(Having Unknown Bugs)
+ //Custom Ranks(GOOD BYE PUREPERMS)
+ //BLABLA   
+
 	/*Clans*/
 	public $db;
 	public $prefs;
@@ -188,8 +181,10 @@ class ARCore extends PluginBase implements Listener{
 
 /*Plugins OnEnable*/
    public function onEnable(){
+
+	//	AntiHack::enable($this);
 /*Enchant Manager */
-        $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
+       // $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
 //Using EconomyAPI by onebone
 			$this->api = EconomyAPI::getInstance();
 //Inventory Saver OnEnable//
@@ -200,73 +195,39 @@ class ARCore extends PluginBase implements Listener{
 //Inventory Saver OnEnable///
 ///Auth OnEnable///
 		$this->auth = new Config($this->getDataFolder() . "AuthsSetting.yml", CONFIG::YAML, array(
-
 		"join-message" => "\n \n \n§l§8-§6»\n \n  §r§8This Server Using An Authentication System.",
-
 		"login" => "\n \n  §8Please Login By Typing In §b/log <password>\n \n§l§8-§6»",
-
 		"login-popup" => "§8Not Authenticate",
-
 		"authentication-success" => "§aYou Have Being Authenticate!",
-
 		"already-authenticated" => "§8You have already logged in.",
-
 		"incorrect-password" => "§8Incorrect password.You Have §5{tries} §8Tries left.",
-
 		"not-registered" => "§5%null%{error}",
-
 		"register" => "\n \n  §8Please Login By Typing In §b/reg <password> <confirm password>\n \n \n§l§8-§6»",
-
 		"register-popup" => "§8Not Authenticate",
-
 		"register-success" => "§aYou have been registered.Your pin is {pin}.",
-
 		"already-registered" => "§8You are already registered.",
-
 		"password-too-short" => "§8Password is too short.",
-
 		"password-not-match" => "§5%null%{error}",
-
 		"confirm-password" => "§dPlease confirm your password.",
-
 		"change-password-success" => "§eYour password has been changed.",
-
 		"forgot-password-success" => "§aYour password has been changed. Your new pin is {pin}.",
-
 		"incorrect-pin" => "§cIncorrect pin.",
-
 		"password-reset-success" => "§aPlayers password has been reset.",
-
 		"not-registered-two" => "§cPlayer not registered.",
-
 		"pin" => "§aYour pin= {pin}",
-
 		"dont-say-password" => "§5%null%{error}",
-
 		"timeout-message" => "§cLogin Timeout",
-
 		"too-many-tries" => "§cToo Many Tries to Login",
-
 		"timeout" => 12000,
-
 		"allow-movement" => false,
-
 		"chat-login" => false,
-
 		"auto-authentication" => false,
-
 		"minimum-password-length" => 6,
-
 		"tries" => 10,
-
 		"popup" => true,
-
 		"seconds-til-next-message" => 1000000,
-
 		"invisible" => true,
-
 		"blindness" => true,
-
 		"see-messages" => false,
 		));
         if(!file_exists($this->getDataFolder() . "AuthsData.db")) {
@@ -308,10 +269,10 @@ class ARCore extends PluginBase implements Listener{
 		"NoVoid-SetPlayerMaxHealth" => 1,
 		"NoVoid-SetPlayerHealth" => 1,
 		"NoVoid-SetPlayerFood" => 200000,
-   "Player-Gain-Coins-PerKill" => 20,
-   "Player-Lose-Coins-PerDeath" => 10,
-   "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
-   "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
+        "Player-Gain-Coins-PerKill" => 20,
+        "Player-Lose-Coins-PerDeath" => 10,
+        "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
+        "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
 		));
 
 
@@ -330,15 +291,15 @@ class ARCore extends PluginBase implements Listener{
 		"SheepCost" => 5000,
 		"SpawnChickenMsg" => "§bYour Chicken is Here ! §aCost - $5000",
 		"ChickenCost" => 5000,
-                "SpawnSilverfishMsg" => "§bYour Silverfish is Here ! §aCost - $100000",
-                "SilverfishCost" => 100000,
-                "SpawnMagmaMsg" => "§bYour Magma is Here ! §aCost - $5000",
-                "MagmaCost" => 5000,
-                "SpawnBatMsg" => "§bYour Bat is Here ! §aCost - $5000", 
+        "SpawnSilverfishMsg" => "§bYour Silverfish is Here ! §aCost - $100000",
+        "SilverfishCost" => 100000,
+        "SpawnMagmaMsg" => "§bYour Magma is Here ! §aCost - $5000",
+        "MagmaCost" => 5000,
+        "SpawnBatMsg" => "§bYour Bat is Here ! §aCost - $5000", 
 		"BatCost" => 5000,
-                "SpawnBlockMsg" => "§bYour Blockin is Here ! §aCost - $5000",
-                "BlockCost" => 5000,
-                "PetPrices" => "§bTypes\n §aDog $10000\n §eCat $10000\n §aRabbit $10000\n §ePig $5000\n §aSheep $5000\n §eChicken $5000\n §aSilverfish $100000\n §eMagma $5000\n §aBat $5000\n §eBlock $5000.",
+        "SpawnBlockMsg" => "§bYour Blockin is Here ! §aCost - $5000",
+        "BlockCost" => 5000,
+        "PetPrices" => "§bTypes\n §aDog $10000\n §eCat $10000\n §aRabbit $10000\n §ePig $5000\n §aSheep $5000\n §eChicken $5000\n §aSilverfish $100000\n §eMagma $5000\n §aBat $5000\n §eBlock $5000.",
 		));
 		@mkdir($this->getDataFolder());
 		@mkdir($this->getDataFolder() . "PetPlayer");
@@ -369,7 +330,7 @@ class ARCore extends PluginBase implements Listener{
 		$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
 		$this->fCommand = new FactionCommands($this);
 		
-		$this->prefs = new Config($this->getDataFolder() . "ClanOptions.yml", CONFIG::YAML, array(
+		$this->prefs = new Config($this->getDataFolder() . "ClansOptions.yml", CONFIG::YAML, array(
 		"CreateCost" => 3000,
 		"ClaimCost" => 100000,
 		"OverClaimCost" => 25000,
@@ -381,15 +342,15 @@ class ARCore extends PluginBase implements Listener{
 		"OnlyLeadersAndOfficersCanInvite" => true,
 		"OfficersCanClaim" => false,
 		"PlotSize" => 30,
-                "PlayersNeededInFactionToClaimAPlot" => 5,
-                "PowerNeededToClaimAPlot" => 1000,
-                "PowerNeededToSetOrUpdateAHome" => 250,
-                "PowerGainedPerPlayerInFaction" => 50,
-                "PowerGainedPerKillingAnEnemy" => 15, 
+        "PlayersNeededInFactionToClaimAPlot" => 5,
+        "PowerNeededToClaimAPlot" => 1000,
+        "PowerNeededToSetOrUpdateAHome" => 250,
+        "PowerGainedPerPlayerInFaction" => 50,
+        "PowerGainedPerKillingAnEnemy" => 15, 
 		"PowerReducedPerDeathByAnEnemy" => 10,
-                "PowerGainedPerAlly" => 100,
-                "TheDefaultPowerEveryFactionStartsWith" => 0,
-                "EnableOverClaim" => true,
+        "PowerGainedPerAlly" => 100,
+        "TheDefaultPowerEveryFactionStartsWith" => 0,
+        "EnableOverClaim" => true,
 		));
 		$this->db = new \SQLite3($this->getDataFolder() . "FactionPower.db");
 		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
@@ -422,48 +383,77 @@ class ARCore extends PluginBase implements Listener{
 ///This Is To register Events!
 ///Dont Write It Again Or Else It Will Send 2 Events On A Row..
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-
-       $this->getLogger()->info("Loading...");
        $this->getLogger()->info("Enabled...");
+       $this->getServer()->getDefaultLevel();
+       $this->getServer()->getDefaultLevel()->setTime(5000);
+       $this->getServer()->getDefaultLevel()->stopTime();
 			}
 
    
 /*Plugins OnDisable*/
    public function onDisable(){
-       $this->getLogger()->info("Loading...");
-       $this->getLogger()->info("Disabling...");
        $this->getLogger()->info("Disabled...");    
-		$this->db->close();
-   $this->inventories->close();
+       $this->db->close();
+       $this->inventories->close();
 	
    }
 
 ///START OF SIMPLE CUSTOM PLAYERS///
-
 /*Making Config For MaxHP And Hunger When Player Join And Die*/
 //DONE!
 /*Plugin OnJoin*/
-   public function onJoiningPlayerHealth(PlayerJoinEvent $event){ 
+   public function onJoiningPlayerSettings(PlayerJoinEvent $event){ 
+       $event->setJoinMessage("");
        $player = $event->getPlayer(); 
        $player->setFood($this->custom->get("SetPlayerFoodBarOnJoin"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnJoin"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnJoin"));
-       $player->setMovement(0.15);//DO NOT TOUCH IF YOU DON'T KNOW WHAT TO DO
-       $player->setGamemode(0);//No Creative On Join
+       $player->setMovementSpeed(0.14);//DO NOT MESS WITH THIS!!
+       $player->setGamemode(0);//Forgot To Set A Player Gamemode To Survival??LOL NOW YOU WONT FORGOT!!
+       //under here is non stable code 
+       $positionx = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
+       $positiony = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getY()+1.3;
+       $positionz = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getZ();
+       $worldlevel = $this->getServer()->getDefaultLevel();
+       $player->setLevel($worldlevel);
+       $player->teleport(new Vector3($positionx, $positiony, $positionz, $worldlevel));
+       $player->setRotation(270, 0);//DAFUQ TO USE THIS??!!
    }
+/*TEST*/
+  public function disableBed(PlayerBedEnterEvent $event){
+        $player = $event->getPlayer();
+        if($player->getServer()->getDefaultLevel()){
+        $player->sendMessage("  §8[§b§lBED§r§8] §0> §7Sorry,You Can't Slept Here Its Mine!!!");
+        $event->setCancelled(true);
+   }
+  }
+    public function onHungerChange(PlayerHungerChangeEvent $e){
+        $p = $e->getPlayer();
+        if($p->getServer()->getDefaultLevel()){
+            $e->setCancelled();
+        }
+    }
+    public function lol(PlayerQuitEvent $event){
+        $event->setQuitMessage("");
+    }
+
+    public function onPlayerKick(PlayerKickEvent $e){
+        $e->setQuitMessage("");
+    }
 /*Plugins PRE*/
     public function PRE(PlayerRespawnEvent $event){
        $player = $event->getPlayer(); 
        $player->setFood($this->custom->get("SetPlayerFoodBarOnRespawn"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnRespawn"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnRespawn"));
-       $player->setMovement(0.15);//DO NOT TOUCH IF YOU DON'T KNOW WHAT TO DO
+       $player->setMovementSpeed(0.14);
        $player->setGamemode(0);
     }
 //This Function Will Add Percentage To Gain The Items..
-//Add Config..
+//Add Config..[DONE]
 /*Plugin dropdeath*/
   public function dropdeath(PlayerDeathEvent $event){
+      $event->setMessage("");
     $entity = $event->getEntity();
     $cause = $entity->getLastDamageCause();
     if($entity instanceof Player){
@@ -482,9 +472,10 @@ class ARCore extends PluginBase implements Listener{
 			$level = $this->getServer()->getDefaultLevel();
 			$player->setLevel($level);
             $player = $event->getPlayer();
-                $player->setMaxHealth($this->custom->get("NoVoid-SetPlayerMaxHealth"));
-                $player->setHealth($this->custom->get("NoVoid-SetPlayerHealth"));
-                $player->setFood($this->custom->get("NoVoid-SetPlayerFood"));
+            $player->setMaxHealth($this->custom->get("NoVoid-SetPlayerMaxHealth"));
+            $player->setHealth($this->custom->get("NoVoid-SetPlayerHealth"));
+            $player->setFood($this->custom->get("NoVoid-SetPlayerFood"));
+            $player->setMovementSpeed(0.14);
 			$player->teleport(new Vector3($x, $y, $z, $level));
             }
         }	
@@ -521,8 +512,17 @@ class ARCore extends PluginBase implements Listener{
 ///ENDS OF SIMPLE CUSTOM PLAYERS///
 
 ///START OF ENCHANTS ///
+/*/
+ *          [TODO]
+ *
+ *   Add Custom Enchantments
+ *   ReCalculate The Enchantment Code
+ *   Adds::Implement In Pets Custom Enchantments
+ *
+/*/
+//DO NOT CHANGE THE swordDamages.php name!!
     public function calculateEndDamage($damage, $reduction){
-        return $damage - $reduction;
+    return $damage - $reduction;
     }
 
     public function calculateDamage($type, $material, $sharpness){
@@ -532,12 +532,10 @@ class ARCore extends PluginBase implements Listener{
         $material = strtoupper($material);
         $plus = swordDamages::MATERIAL_VALUES;
         $plus = $plus[$material];
-
         if ($damage > 1)
             $damage += $plus;
-        $damage /= 2;
-        $damage += .625 * $sharpness;
-
+            $damage /= 2;
+            $damage += .625 * $sharpness;
         return $damage;
     }
 
@@ -555,8 +553,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function onArrowHit(ProjectileHitEvent $event)
-    {
+    public function onArrowHit(ProjectileHitEvent $event){
         $arrow = $event->getEntity();
         if ($arrow instanceof Arrow) {
             $player = $arrow->shootingEntity;
@@ -580,8 +577,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function onArrow(EntityDamageEvent $event)
-    {
+    public function onArrow(EntityDamageEvent $event){
         $player = $event->getEntity();
         if ($event instanceof EntityDamageByEntityEvent) {
             $damager = $event->getDamager();
@@ -601,8 +597,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function calculateArmorReduction($materials, $protections)
-    {
+    public function calculateArmorReduction($materials, $protections){
         $material_head = $materials[0];
         $protection_head = $protections[0];
         $material_chest = $materials[1];
@@ -636,8 +631,7 @@ class ARCore extends PluginBase implements Listener{
         return $reduction;
     }
 
-    public function onDamage(EntityDamageEvent $event)
-    {
+    public function onDamage(EntityDamageEvent $event){
         $player = $event->getEntity();
         if ($player instanceof Player) {
             if ($event instanceof EntityDamageByEntityEvent) {
@@ -717,8 +711,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function calculateFireAspect($level)
-    {
+    public function calculateFireAspect($level){
         $bool = false;
         switch ($level) {
             case 1:
@@ -741,8 +734,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function calculateKnockBack(Player $player, $level, Player $damager)
-    {
+    public function calculateKnockBack(Player $player, $level, Player $damager){
         switch ($level) {
             case 1:
                 $level = $level + 0.5;
@@ -759,8 +751,7 @@ class ARCore extends PluginBase implements Listener{
         }
     }
 
-    public function getWeaponMaterial($id)
-    {
+    public function getWeaponMaterial($id){
         $wood = array(268, 269, 270, 271);
         $gold = array(283, 284, 285, 286);
         $stone = array(272, 273, 274, 275);
@@ -780,8 +771,7 @@ class ARCore extends PluginBase implements Listener{
         return "WOOD";
     }
 
-    public function getWeaponType($id)
-    {
+    public function getWeaponType($id){
         $swords = array(267, 268, 272, 283, 276);
         $axes = array(258, 271, 275, 279, 286);
         $pickaxes = array(257, 270, 274, 278, 285);
@@ -798,8 +788,7 @@ class ARCore extends PluginBase implements Listener{
         return "OTHER";
     }
 
-    public function getArmorMaterial($id)
-    {
+    public function getArmorMaterial($id){
         $leather = array(298, 299, 300, 301);
         $chain = array(302, 303, 304, 305);
         $iron = array(306, 307, 308, 309);
@@ -819,8 +808,7 @@ class ARCore extends PluginBase implements Listener{
         return "LEATHER";
     }
 
-    public function getArmorType($id)
-    {
+    public function getArmorType($id){
         $head = array(298, 302, 306, 310, 314);
         $chest = array(299, 303, 307, 311, 315);
         $leggings = array(300, 304, 304, 312, 316);
@@ -1484,7 +1472,6 @@ Note To Myself: Dont Use Multiplication Hash..*/
     }
 
 ///Ends Of Auths Code///
-
 
 
 ///STARTS OF SKILLS///
