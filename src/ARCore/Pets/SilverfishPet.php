@@ -1,6 +1,6 @@
 <?php
 
-namespace pets;
+namespace ARCore\Pets;
 
 class SilverfishPet extends Pets {
 
