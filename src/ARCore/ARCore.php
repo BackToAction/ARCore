@@ -119,19 +119,26 @@ use ARCore\Clans\FactionListener;
 //others.
 //use ARCore\Enchantment\EnchantManager;
 //pets implements
-use ARCore\Pets\PetCommand;
-use ARCore\Pets\OcelotPet;
-use ARCore\Pets\BatPet;
-use ARCore\Pets\BlazePet;
-use ARCore\Pets\BlockPet;
-use ARCore\Pets\ChickenPet;
-use ARCore\Pets\MagmaPet;
-use ARCore\Pets\Pets;
-use ARCore\Pets\PigPet;
-use ARCore\Pets\RabbitPet;
-use ARCore\Pets\SheepPet;
-use ARCore\Pets\SilverfishPet;
-use ARCore\Pets\WolfPet;
+use ARCore\Pets\PetCommand;//
+use ARCore\Pets\OcelotPet;//
+use ARCore\Pets\BatPet;//
+use ARCore\Pets\BlazePet;//
+use ARCore\Pets\BlockPet;//
+use ARCore\Pets\ChickenPet;//
+use ARCore\Pets\MagmaPet;//
+use ARCore\Pets\Pets;//
+use ARCore\Pets\PigPet;//
+use ARCore\Pets\RabbitPet;//
+use ARCore\Pets\SheepPet;//
+use ARCore\Pets\SilverfishPet;//
+use ARCore\Pets\SpiderPet;//
+use ARCore\Pets\WitchPet;//
+use ARCore\Pets\WolfPet;//
+use ARCore\Pets\CowPet;//
+use ARCore\Pets\CreeperPet;//
+use ARCore\Pets\EndermanPet;//
+use ARCore\Pets\HuskPet;//
+use ARCore\Pets\IronGolemPet;//
 //Auths Implement
 use ARCore\Auth\EventListener;
 use ARCore\Auth\Tasks\PopupTipTick;
@@ -183,6 +190,8 @@ class ARCore extends PluginBase implements Listener{
    public function onEnable(){
 
 	//	AntiHack::enable($this);
+
+		//$this->getServer()->getPluginManager()->registerEvents(new \ARCore\Pets\main(), $this);
 /*Enchant Manager */
        // $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
 //Using EconomyAPI by onebone
@@ -240,6 +249,7 @@ class ARCore extends PluginBase implements Listener{
 
                 //$this->auths->exec("ALTER TABLE players ADD COLUMN attempts INT");
             }
+		//$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
         $this->getServer()->getCommandMap()->register('cpwd', new ChangePasswordCommand('cpwd', $this));
         $this->getServer()->getCommandMap()->register('fpwd', new ForgotPasswordCommand('fpwd', $this));
         $this->getServer()->getCommandMap()->register('log', new LoginCommand('log', $this));
@@ -276,7 +286,8 @@ class ARCore extends PluginBase implements Listener{
 		));
 
 
-/////////THE START OF PETS [ON ENABLE]/////////		
+/////////THE START OF PETS [ON ENABLE]/////////	
+/*	
 		$this->PetPrices = new Config($this->getDataFolder() . "PetPrices.yml", CONFIG::YAML, array(
 		"PetOffMsg" => "§b[Pet -> Me]§f - §eOkay, Ill be around",
 		"SpawnDogMsg" => "§bYour Dog is Here ! §aCost - $10000",
@@ -316,7 +327,7 @@ class ARCore extends PluginBase implements Listener{
 		Entity::registerEntity(SilverfishPet::class);
 		Entity::registerEntity(BlockPet::class);
 		$this->saveDefaultConfig();
-
+*/
 /////////Ends Of Pets [ On Enable]///////
 
 /////Start Of Clans [OnEnable]/////
@@ -385,14 +396,66 @@ class ARCore extends PluginBase implements Listener{
        $this->getServer()->getPluginManager()->registerEvents($this ,$this);
        $this->getLogger()->info("Enabled...");
        $this->getServer()->getDefaultLevel();
-       $this->getServer()->getDefaultLevel()->setTime(5000);
+       $this->getServer()->getDefaultLevel()->setTime(50000);
        $this->getServer()->getDefaultLevel()->stopTime();
+		//Pets OnEnable
+		$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
+		Entity::registerEntity(ChickenPet::class);
+		Entity::registerEntity(WolfPet::class);
+		Entity::registerEntity(PigPet::class);
+		Entity::registerEntity(BlazePet::class);
+		Entity::registerEntity(MagmaPet::class);
+		Entity::registerEntity(RabbitPet::class);
+		Entity::registerEntity(BatPet::class);
+		Entity::registerEntity(SilverfishPet::class);
+		Entity::registerEntity(SpiderPet::class);
+		Entity::registerEntity(CowPet::class);
+		Entity::registerEntity(CreeperPet::class);
+	    Entity::registerEntity(IronGolemPet::class);
+        Entity::registerEntity(HuskPet::class);
+        Entity::registerEntity(EndermanPet::class);
+        Entity::registerEntity(SheepPet::class);
+        Entity::registerEntity(WitchPet::class);
+		Entity::registerEntity(BlockPet::class);
+
+		$this->PetPrices = new Config($this->getDataFolder() . "PetPrices.yml", CONFIG::YAML, array(
+        "BlazePrices" => 1000,
+        "PigPrices" => 1000,
+		"ChickenPrices" => 1000,
+        "WolfPrices" => 1000,
+	    "RabbitPrices" => 1000,
+        "MagmaPrices" => 1000,
+        "BatPrices" => 1000,
+    	"SilverfishPrices" => 1000,
+	    "SpiderPrices" => 1000,
+        "CowPrices" => 1000,
+		"CreeperPrices" => 1000,
+		"IronGolemPrices" => 1000,
+        "HuskPrices" => 1000,
+	    "EndermanPrices" => 1000,
+        "SheepPrices" => 1000,
+        "WitchPrices" => 1000,
+        "BlockPrices" => 1000,
+		));
+		@mkdir($this->getDataFolder());
+		@mkdir($this->getDataFolder() . "PetPlayer");
+
+       $this->getLogger()->notice("Pets Loaded!");
+	   //Pets OnEnable
+       //
+       $this->getLogger()->notice("Clans Loaded!");
+       $this->getLogger()->notice("Authentication Loaded!");
+       $this->getLogger()->notice("Customize Player Loaded!");
 			}
 
    
 /*Plugins OnDisable*/
    public function onDisable(){
-       $this->getLogger()->info("Disabled...");    
+       $this->getLogger()->info("Disabled...");
+       $this->getLogger()->warning("Pets Unloaded!"); 
+       $this->getLogger()->warning("Clans Unloaded!");
+       $this->getLogger()->warning("Authentication Unloaded!");
+       $this->getLogger()->warning("Customize Player Unloaded!");   
        $this->db->close();
        $this->inventories->close();
 	
@@ -1050,7 +1113,7 @@ class ARCore extends PluginBase implements Listener{
 * OnPets Create..
 //Note this is possible by sendMessage(); at every events lol.
 */
-	
+	/*
 	public function create($player,$type, Position $source, ...$args) {
 		$chunk = $source->getLevel()->getChunk($source->x >> 4, $source->z >> 4, true);
 		$nbt = new CompoundTag("", [
@@ -1149,6 +1212,7 @@ class ARCore extends PluginBase implements Listener{
 			$this->getPet($player->getName())->setNameTag("§8"."§8$name");
 		}
 	}
+    */
 /// Ends Of Pets ////
 
 
@@ -1478,6 +1542,156 @@ Note To Myself: Dont Use Multiplication Hash..*/
 /*Im gonna start with simple thing*/
 //DELAY //
 ///ENDS OF SKILLS///
+	//PETS
+	public function create($player,$type, Position $source, ...$args) {
+		$chunk = $source->getLevel()->getChunk($source->x >> 4, $source->z >> 4, true);
+		$nbt = new CompoundTag("", [
+			"Pos" => new ListTag("Pos", [
+				new DoubleTag("", $source->x),
+				new DoubleTag("", $source->y),
+				new DoubleTag("", $source->z)
+					]),
+			"Motion" => new ListTag("Motion", [
+				new DoubleTag("", 0),
+				new DoubleTag("", 0),
+				new DoubleTag("", 0)
+					]),
+			"Rotation" => new ListTag("Rotation", [
+				new FloatTag("", $source instanceof Location ? $source->yaw : 0),
+				new FloatTag("", $source instanceof Location ? $source->pitch : 0)
+					]),
+		]);
+		$pet = Entity::createEntity($type, $chunk, $nbt, ...$args);
+		$data = new Config($this->getDataFolder() . "PetPlayer/" . strtolower($player->getName()) . ".yml", Config::YAML);
+		$data->set("type", $type); 
+        $data->save();
+		$pet->setOwner($player);
+		$pet->spawnToAll();
+        $pet->setNameTag(TF::BLUE."".$player->getName()."'s Pet");
+		return $pet; 
+	}
+
+	public function createPet(Player $player, $type, $holdType = "") {
+ 		if (isset($this->pet[$player->getName()]) != true) {	
+			$len = rand(8, 12); 
+			$x = (-sin(deg2rad($player->yaw))) * $len  + $player->getX();
+			$z = cos(deg2rad($player->yaw)) * $len  + $player->getZ();
+			$y = $player->getLevel()->getHighestBlockAt($x, $z);
+
+			$source = new Position($x , $y + 2, $z, $player->getLevel());
+			if (isset(self::$type[$player->getName()])){
+				$type = self::$type[$player->getName()];
+			}
+ 			switch ($type){
+ 				case "WolfPet":
+ 				break;
+ 				case "ChickenPet":
+ 				break;
+ 				case "PigPet":
+ 				break;
+ 				case "BlazePet":
+ 				break;
+ 				case "MagmaPet":
+				break;
+ 				case "RabbitPet":
+				break;
+ 				case "BatPet":
+				break;
+ 				case "SilverfishPet":
+ 				break;
+ 				case "SpiderPet":
+ 				break;
+ 				case "CowPet":
+ 				break;
+ 				case "CreeperPet":
+ 				break;
+ 				case "IronGolemPet":
+ 				break;
+                case "HuskPet":
+ 				break;
+                case "EndermanPet":
+ 				break;
+ 				case "SheepPet":
+ 				break;
+ 				case "WitchPet":
+ 				break;
+ 				case "BlockPet":
+ 				break;
+ 				default:
+ 					$pets = array("ChickenPet", "PigPet", "WolfPet", "BlazePet", "RabbitPet", "BatPet","SilverfishPet","SpiderPet","CowPet","CreeperPet","IronGolemPet","HuskPet","EndermanPet","SheepPet","WitchPet","BlockPet");
+ 					$type = $pets[rand(0, 3)];//Between Chicken And Wolf
+ 			}
+			$pet = $this->create($player,$type, $source);
+			return $pet;
+ 		}
+	}
+
+	public function onPlayerPetsQuit(PlayerQuitEvent $event) {
+		$player = $event->getPlayer();
+			$this->disablePet($player);
+	}
+	
+	/**
+	 * Get last damager name if it's another player
+	 * 
+	 * @param PlayerDeathEvent $event
+	 */
+	public function onPlayerPetsDeath(PlayerDeathEvent $event) {
+		$player = $event->getEntity();
+		$attackerEvent = $player->getLastDamageCause();
+		if ($attackerEvent instanceof EntityDamageByEntityEvent) {
+			$attacker = $attackerEvent->getDamager();
+			if ($attacker instanceof Player) {
+				$player->setLastDamager($attacker->getName());
+			}
+		}
+	}
+
+	//new Pets API By BalAnce cause LIFEBOAT's WAS SHIT!
+	//still probably buggy idk worked fine for me
+	
+	public function togglePet(Player $player){
+		if (isset(self::$pet[$player->getName()])){
+			self::$pet[$player->getName()]->close();
+			unset(self::$pet[$player->getName()]);
+			$this->disablePet($player);
+                        $player->sendMessage("Pet Disapeared");
+				
+			return;
+		}
+		self::$pet[$player->getName()] = $this->createPet($player, "");
+		$player->sendMessage("Enabled Pet!");
+	}
+	
+	public function disablePet(Player $player){
+		if (isset(self::$pet[$player->getName()])){
+			self::$pet[$player->getName()]->fastClose();
+			unset(self::$pet[$player->getName()]);
+		}
+	}
+	
+	public function changePet(Player $player, $newtype){
+		$type = $newtype;
+		$this->disablePet($player);
+		self::$pet[$player->getName()] = $this->createPet($player, $newtype);
+	}
+	
+	public function getPet($player) {
+		return self::$pet[$player];
+	}
+	public function onJoinPets(PlayerJoinEvent $event){
+		$player = $event->getPlayer();
+		$data = new Config($this->getDataFolder() . "PetPlayer/" . strtolower($player->getName()) . ".yml", Config::YAML);
+		if($data->exists("type")){ 
+			$type = $data->get("type");
+			$this->changePet($player, $type);
+		}
+		if($data->exists("name")){ 
+			$name = $data->get("name");
+			$this->getPet($player->getName())->setNameTag("§8".$player->getName() ."'Pets");
+		}
+	}
+	//PETS
 
 }
 ?>
