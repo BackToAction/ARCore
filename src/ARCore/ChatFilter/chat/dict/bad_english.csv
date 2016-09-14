@@ -1,0 +1,175 @@
+; Bad word list
+; Each line may have several entries with commas between.  Semicolon comments.
+;
+; All spaces are taken out of the text under text before comparison with this, so entries here should have spaces.
+;
+;
+; No need to double up on entries that will be caught by other entries.
+; If a longer version will be caught by the shorter, use only the shorter.
+; Faster to have fewer entries and take advantage of supersets.
+; e.g. 'bullshit' is caught by shit.
+;
+; Comment out the duplicates, but do not delete.  We know that we considered them.
+
+; Shorten a fraction of a word that has no other purpose, e.g. "masturb', 'asshol'
+;
+; Enter alternative spellings you can thing of.
+;
+; When you can, use the fact the leet will replace some things to avoid similar entries.
+; The leet replace will try substituting:
+; original   subsitute
+;    s           z
+;    f           ph
+;
+;
+poop ;keep easy test work at the top of the list.
+abortion,aborshun
+anal,aynal,aynel,anus
+arse
+; ass -- would cause too many false positives (compass,  as sure as soon)
+69, sixtynine
+asshol
+asswipe
+; baby
+balls ; ballz caught by leet check.
+bang
+bastard,basturd
+beastiality,bestiality
+bimbo,bihmbo
+bitch,bich
+blow, blojob
+;body
+bollocks
+boner,boener
+boob, bewb, bube
+bugger
+bukkake
+bullshit
+cex
+chay
+chode
+clit,clitoris
+cock,kock,cawk
+coon
+condom, condim, condem, kondom, kondem
+cornhole
+coitus
+copulate
+crap,
+cum
+cunt,kunt
+dafuq
+damn,dammit
+dick,dik, diq, dck
+;die
+dildo
+doggystyle
+dong
+douche, doosh, dusche, dewsh
+dyke,dike
+effin, effen, efin, efen
+fag, faggot,fagot, feg, fgt  ;ph substitutions are caught by leet checker.
+fanny,
+fart
+fatass
+foreskin
+fornicate
+fuck, fuk, phuk, fuc, phuc, fck, fcker, fckr,fcku, fcuk, fucker, fuckr, fuct, fuq, fks, fak
+fcuk ; Any ph replacements for f are caught by leet check.
+frekin, freakin
+fuggin
+gtfo
+gay
+gangbang
+genital, genitalia
+gloryhole
+gook
+goddam
+hardon
+handjob,hanjob
+hell
+homo,hohmo
+horny, horney, horni
+idgaf,idgad,iwtfu,iwtfy,iwu,iwthswy,iwthswu,iwyb,iwythmb,iw2f,isfly
+jew
+jizz,jiz
+kill
+kike
+kkk
+labia
+lesbian, lesbain, lesbo, lesbyan, lisbian, leasben
+lmfao
+lick, liq
+masturb, masterba
+milf
+moan
+molest
+moron
+motherf, mutha
+muff,muph
+naked, nayked
+nazi
+negro,nigger,nigga, niger, nig
+nude, nudie, nudy
+nutsack
+orgasm
+pecker
+pedofile,pedophile,paedo,paedophile
+penis, penus
+perv, prv
+pimp
+piss
+poof
+porn, pron
+prick, prik
+prostitute, prostat, prostit
+pube, pewb, pubic
+pussy, pusy, pssy
+queer,quear,qweer, kweer
+rape,raip, rapist
+rectal,rectum,rektum
+rimjob
+screw
+scrotum, scrotem
+semen
+stfu
+sax  ; apologies to all who play this fine instrument.
+sex,seks, secs
+sexy
+shag
+shemale
+shit,schit, shite, tish
+shiz
+slag
+slut
+smd
+spastic
+spaz
+sperm
+spick
+spoo
+spooge
+spunk
+strip
+suck, suk
+swallow
+tart
+; Cannot look for this because too many false positives tit, tits,
+titties
+throat,
+thong
+turd, terd
+twat, twot
+twerk, twerc, twurk
+uterus,uteris,uteres
+vagina,vajina, vag
+vibrator, vybrator, vibrat
+vulva
+wank,wanker
+weed
+wetback, wetbak
+whore, hore, hoar
+wtf, wdf
+xxx
+;------------------ Phrases ----------------
+shutup

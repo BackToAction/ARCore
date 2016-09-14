@@ -1,0 +1,16 @@
+; Topics we would rather keep off our servers
+; Each line may have several entries with commas between.  Semicolon comments.
+republican
+democrat
+president
+trump
+obama
+hillary
+hilary
+sanders
+huckabee
+;kill, killed  taking off the list, too many false positives
+hater, hate
+ugly
+hitler
+heil

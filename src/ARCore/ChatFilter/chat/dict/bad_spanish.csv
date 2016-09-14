@@ -1,0 +1,93 @@
+; Spanish Bad word list
+; Each line may have several entries with commas between.  Semicolon comments.
+;
+; All spaces are taken out of the text under text before comparison with this, so entries here should have spaces.
+;
+; No need to double up on entries that will be caught by other entries.
+; If a longer version will be caught by the shorter, use only the shorter.
+; Faster to have fewer entries and take advantage of supersets.
+; e.g. 'bullshit' is caught by shit.
+;
+; Comment out the duplicates, but do not delete.  We know that we considered them.
+; Shorten a fraction of a word that has no other purpose, e.g. "masturb', 'asshol'
+;
+; Enter alternative spellings you can thing of.
+;
+; When you can, use the fact the leet will replace some things to avoid similar entries.
+; The leet replace will try substituting:
+; original   subsitute
+;    s           z
+;    f           ph
+;
+; Do not include any of the special characters of Spanish, as the un-leet will
+; convert things like ó to o.
+bollera   		; Lesbian
+cabron   		; Dickhead
+;cabrona   		; Dickhead (feminine)
+cabronazo   	; Bastard
+capull;a   		; Asshole (feminine)
+;capullo   		; Asshole
+chichi   		; Pussy
+chocho   		; Pussy
+cojon   		; Testicle (slang)
+;cojones   		; Testicles (slang)
+comepollas   	; Cocksucker
+cono   			; Cunt
+;coño   			; Cunt
+culo   			; Ass
+follar   		; Fuck
+follen   		; Go fuck
+furcia   		; Whore
+gilipollas   	; Jerk
+hijaput;a   		; Son of a bitch (feminine)
+;hijo puta   	; Son of a bitch
+;hijoputa   		; Son of a bitch
+hostia   		; Bastard  shit  to hit
+joder   		; Fuck
+jodete   		; Go fuck yourself
+joputa   		; Abbreviation of "hijo de puta" (son of a bitch)
+mamada   		; Blowjob
+mamon   		; Sucker
+mamona   		; Sucker (feminine)
+marica   		; Faggy
+maricon   		; Faggot
+;maricón   		; Faggot
+maricona   		; Drag queen  lesbian
+;mariconazo   	; Faggot
+ojete   		; Anus (slang)
+ostia   		; Abbreviation of "hostia" (bastard  shit  to hit)
+pajillero   	; Wanker
+pendon   		; Slob
+;pendón   		; Slob
+picha   		; Dick
+polla   		; Dick
+pollon   		; Dick
+polvo   		; To ejaculate
+potorro   		; Vagina
+puta   			; Bitch/whore
+puto   			; Bitch/whore (masculine)  faggot
+puton   		; Bitch/whore
+;putón   		; Bitch/whore
+tortillera   	; Lesbian
+zorron   		; To be/act slutty
+;
+;----------------- Ramennoodles contributions, thanks!
+cachondo        ; Horny
+cago            ; Shit
+carajo          ; Damn or hell
+chingar         ; Fuck
+chingada        ; Fucking hell
+chingate        ; Fuck yourself
+guey            ; Asshole
+maldito         ; Damn you
+maldita         ; Damn you (feminine)
+joto            ; Gay
+mierda          ; Shit
+nalgona         ; Big ass
+pendejo         ; Asshole
+panocha         ; Pussy
+pendeja         ; Asshole (feminine)
+pito            ; Dick
+pinche          ; Fucking
+toto            ; Verga
+verga           ; Dick (edited)

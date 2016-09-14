@@ -1,0 +1,51 @@
+; German bad word list
+; Special characters (like ä) are replaced with plain characters
+; because we do that before comparison.
+abtreibung
+; adoption
+vergewalt
+arsch, popo
+arschloch
+eier
+spast
+hure
+hurensohn
+missgeburt, misset
+fehlgeburt
+wichser, wixxer
+kondom, lummeltute ;
+schwanz, dodel, glied, latte, pimmel, eichel, stander
+muschi, mose, scheide, lustgrotte, fotz
+titten, bruste, busen, mopse, brust, hupen
+transe
+prostituiert, nutte
+;scheiß, kack, kot
+;dumm
+fett, dick
+fick, bums, befrucht, popp, knall, rammel, vogeln
+hoden  ;sack - false positive in English
+wichs, wix
+; pups  -- too many English false positives
+kotz
+schimmel
+; puff
+fresse
+schwul
+lesb
+blas, blaser
+schlag
+kehle
+messer
+schwarzer
+spritz
+pedo
+nackt, nackig
+feucht
+tanga
+peitsche
+schlampe, flittchen, luder
+stohnen
+lecken
+holle
+hasslig, hasslich
+hass

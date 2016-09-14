@@ -1,0 +1,60 @@
+; Each line may have several entries with commas between.  Semicolon comments.
+; Words that mean someone is probably dating
+babe
+bimbo
+boy
+bof ; blocking b()f, which is bof
+boyfriend, bfreind, bfriend, bofriend, bofreind, bofrnd
+chick
+dame
+date, dating
+doll
+foxy
+;gf would cause too many false positives.
+girl, gurl
+girlfriend, grf, gfreind, gfriend, grfrnd, gfrend, gerlfriend
+hookup
+hot
+hump
+husband
+intimat
+kiss
+makeout
+;ravish
+wife
+affair
+;------------------ Phrases ----------------
+foolaround
+getlaid
+getlucky, getluky
+goingatit
+gotobed
+haveanaffair
+haverelations
+laywith
+letsdothenasty
+getiton
+makebab
+makelove
+makinbacon
+pinav, pinv ;penis in a vagina
+sleepw
+youarehot,urhot,areyouhot,ruhot
+;------------------ Spanish Here ------------------------
+novia, nobia
+novio, nobio
+;------------------ German Here ------------------------
+schatz
+weib
+kuss, küssen
+heiß
+süß
+tussi, chica
+liebe
+affäre
+bistgeil
+lassficken
+rummachen
+knutschen
+abschleppen
+hinreißen
