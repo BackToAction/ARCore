@@ -2,7 +2,7 @@ name: ARCore
 authors: [HyGlobalHD,GamerXzavier,Adam1609,NeuroBinds,Skull3x]
 main: ARCore\ARCore
 api: [2.0.0]
-version: 0.0.3#STABLE
+version: 0.0.3_2#UNSTABLE
 commands:
   c:
     description: "use /c help for all parameters"
