@@ -154,6 +154,7 @@ use ARCore\Auth\Commands\ResetPasswordCommand;
 //economys
 use onebone\economyapi\EconomyAPI;
 
+//use ARCore\Listener\EventListenerz;
 //use  ARCore\AntiHack\AntiHack;//NON-OFFICIAL ANTIHACK
 
 class ARCore extends PluginBase implements Listener{
@@ -186,16 +187,45 @@ class ARCore extends PluginBase implements Listener{
 	public $messagetick;
 	public $tries;
 
+
 /*Plugins OnEnable*/
    public function onEnable(){
+
+		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"onRun"]), 20);
+  //  $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
+    //$this->getCommand("quest")->setExecutor(new QuestCommands($this));
+   // $this->getCommand("party")->setExecutor(new PartyCommands($this));
+    //$this->getServer ()->getScheduler()->scheduleRepeatingTask (new ManaTask($this), 40);
+		//$this->mmorpg = new Config($this->getDataFolder() . "MMOSettings.yml", CONFIG::YAML, array(
+            //"TargetWorld" => "",
+           // "Alllow Block Placing" => false,
+           // "Allow Block Breaking" => false,
+           // "Disable Item Losing" => true,
+      //  ));
 
 	//	AntiHack::enable($this);
 
 		//$this->getServer()->getPluginManager()->registerEvents(new \ARCore\Pets\main(), $this);
 /*Enchant Manager */
        // $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
+       //Trying To Squash All The Setting (yml file)
+       //might be ugly
+       /*
+       $this->arcore = new Config($this->getDataFolder() . "ARCoreSettings.yml", CONFIG::YAML, array(
+
+       ))
+
+
+
+
+
+
+
+      */
+       //
 //Using EconomyAPI by onebone
 			$this->api = EconomyAPI::getInstance();
+   // $this->getServer()->getPluginManager()->registerEvents(new EventListenerz($this), $this);
 //Inventory Saver OnEnable//
         @mkdir($this->getDataFolder());
         $this->inventories = new \SQLite3($this->getDataFolder()."inventories.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
@@ -446,6 +476,7 @@ class ARCore extends PluginBase implements Listener{
        $this->getLogger()->notice("Clans Loaded!");
        $this->getLogger()->notice("Authentication Loaded!");
        $this->getLogger()->notice("Customize Player Loaded!");
+       
 			}
 
    
@@ -463,6 +494,22 @@ class ARCore extends PluginBase implements Listener{
 
 ///START OF SIMPLE CUSTOM PLAYERS///
 /*Making Config For MaxHP And Hunger When Player Join And Die*/
+/*
+  public function testonQuit(PlayerQuitEvent $event) {
+    $p = $event->getPlayer ();
+    $datazz = new Config ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml");
+    unlink ($datazz);
+  }
+
+  public function testonjoin(PlayerJoinEvent $event) {
+    $p = $event->getPlayer ();
+    @mkdir($this->getDataFolder () . "plugins/ARCore/Player/");
+    @file_put_contents ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml", yaml_emit([
+    "Health" => 40,
+    "MaxHealth" => 40
+    ]));
+  }
+*/
 //DONE!
 /*Plugin OnJoin*/
    public function onJoiningPlayerSettings(PlayerJoinEvent $event){ 
@@ -516,7 +563,7 @@ class ARCore extends PluginBase implements Listener{
 //Add Config..[DONE]
 /*Plugin dropdeath*/
   public function dropdeath(PlayerDeathEvent $event){
-      $event->setMessage("");
+      $event->setDeathMessage("");
     $entity = $event->getEntity();
     $cause = $entity->getLastDamageCause();
     if($entity instanceof Player){
@@ -571,6 +618,16 @@ class ARCore extends PluginBase implements Listener{
 			}
 		}
 	}
+  public function onRun($tick) {
+    foreach($this->getServer()->getOnlinePlayers() as $player) {
+      if($player->hasPermission("hud.information")) {
+        $player->sendTip("\n                                                             §7| §6"."§f". $player->getName()."\n                                                             §7| §e". $this->api->myMoney($player->getName())." Coins"."\n                                                             §7| §3". $this->getPlayerFaction($player->getName()) ."\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        } else {
+          $player->sendPopup("§5ERROR");
+          }//. UserDataManager::getGroup($player)
+       }//. EconomyAPI::myMoney($player->getName()
+//. EconomyAPI::myMoney($player->getName()
+     }
 
 ///ENDS OF SIMPLE CUSTOM PLAYERS///
 
