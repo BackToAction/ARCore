@@ -41,13 +41,15 @@ A must-have plugin core for an mmoRPG server!
 - [ ] Using private database for players
 - [ ] Custom Inventory Management(bugs)
 - [ ] Add Auto-Updater
-- [ ] AntiHack System(soon)
+- [x] AntiHack System [ Had Bugs ]
 - [ ] Custom Items.
 - [ ] Custom Craft Recipes
 - [ ] Custom Chat
 - [ ] Cusom Ranks (People Can Add Ranks Easily)
+- [x] Chat Filter
+- [x] Particle [Not Working Properly]
 
-#Feel free to make pull requests to help us complete this plugin!
 
 # Others :-
 - Get the old, unstable version of ARCore [here](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core). (P.S: It might be laggy :P)
+- Feel free to make pull requests to help us complete this plugin!
