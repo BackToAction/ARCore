@@ -39,6 +39,7 @@ use pocketmine\event\player\PlayerKickEvent;
 use pocketmine\event\player\PlayerCommandPreprocessEvent;
 use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\player\PlayerPreLoginEvent;
+use pocketmine\event\player\PlayerLoginEvent;
 use pocketmine\event\player\PlayerJoinEvent;
 use pocketmine\event\entity\EntityLevelChangeEvent;
 use pocketmine\event\level\LevelLoadEvent;
@@ -153,6 +154,10 @@ use ARCore\Auth\Commands\RegisterCommand;
 use ARCore\Auth\Commands\ResetPasswordCommand;
 //economys
 use onebone\economyapi\EconomyAPI;
+use ARCore\Particle\ParticleManager;
+use ARCore\AntiHack\AntiHack;
+use ARCore\ChatFilter\ChatFilter;
+use ARCore\ChatFilter\ChatFilterTask;
 
 //use ARCore\Listener\EventListenerz;
 //use  ARCore\AntiHack\AntiHack;//NON-OFFICIAL ANTIHACK
@@ -168,6 +173,8 @@ class ARCore extends PluginBase implements Listener{
  //Custom Ranks(GOOD BYE PUREPERMS)
  //BLABLA   
 
+    public $players = [];
+    public $particle = [];
 	/*Clans*/
 	public $db;
 	public $prefs;
@@ -203,7 +210,8 @@ class ARCore extends PluginBase implements Listener{
            // "Disable Item Losing" => true,
       //  ));
 
-	//	AntiHack::enable($this);
+		AntiHack::enable($this);
+        $this->antihack = AntiHack::getInstance();
 
 		//$this->getServer()->getPluginManager()->registerEvents(new \ARCore\Pets\main(), $this);
 /*Enchant Manager */
@@ -476,6 +484,14 @@ class ARCore extends PluginBase implements Listener{
        $this->getLogger()->notice("Clans Loaded!");
        $this->getLogger()->notice("Authentication Loaded!");
        $this->getLogger()->notice("Customize Player Loaded!");
+       $this->getLogger()->notice("Particles Loaded!");
+       $this->getLogger()->notice("ChatFilter Loaded!");
+       $this->getLogger()->notice("AntiHacks Loaded!");
+
+        $this->manager = new ParticleManager($this);
+        $this->filter = new ChatFilter();
+
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChatFilterTask($this), 30);
        
 			}
 
@@ -486,19 +502,196 @@ class ARCore extends PluginBase implements Listener{
        $this->getLogger()->warning("Pets Unloaded!"); 
        $this->getLogger()->warning("Clans Unloaded!");
        $this->getLogger()->warning("Authentication Unloaded!");
-       $this->getLogger()->warning("Customize Player Unloaded!");   
+       $this->getLogger()->warning("Customize Player Unloaded!");
+       $this->getLogger()->warning("Particles Unloaded!");    
+       $this->getLogger()->warning("ChatFilter Unloaded!");   
+       $this->getLogger()->warning("AntiHacks Unloaded!");
        $this->db->close();
        $this->inventories->close();
+        //$this->getConfig()->set('users', $this->users);, $this->users
+      //  $this->getConfig()->save();
 	
    }
+   //AntiHack
+    public function onCommandAntiHack(CommandSender $sender, Command $command, $label, array $args) {
+        $subcommand = strtolower(array_shift($args));
+        switch ($subcommand) {
+            default:
+                return false;
+        }
+    }
+   /*
+   ChatFilter
+   */
+    public function onPlayerChat(PlayerChatEvent $event) {
+        if (!in_array($event->getPlayer()->getDisplayName()) && !$this->filter->check($event->getPlayer(), $event->getMessage())) {
+            $event->setCancelled(true);
+            $event->getPlayer()->sendMessage(TextFormat::RED . " I'm sorry, I can't let you say that.");
+        }
+    }
+   /*
+   PARTICLES
+   
+   */
+    public function onCommandParticles(CommandSender $sender, Command $command, $label, array $args) {
+        $subcommand = strtolower($command->getName('arparticles'));
+        switch ($subcommand) {
+            case "give";
+                if(count($args) < 1){
+                    array_unshift($args, $sender->getDisplayName());
+                }
+
+                /**
+                 * Check perms, then give particles
+                 */
+                if ($sender->hasPermission("arparticles")) {
+                    if($this->giveParticle(...$args)) {
+                        $sender->sendMessage(TextFormat::BLUE . ' ' . $args[0] . ' has a new particle effect!');
+                    } else {
+                        $this->getServer()->broadcastMessage(TextFormat::BLUE . ' Unable to give ' . $args[0] . ' a new particle effect!');
+                    }
+                    return true;
+                }
+
+                $sender->sendMessage(TextFormat::RED . " You don't have permissions to do that...");
+                return true;
+            case "remove":
+                if(count($args) < 1){
+                    array_unshift($args, $sender->getDisplayName());
+                }
+
+                /**
+                 * Check perms, then remove particles
+                 */
+                if ($sender->hasPermission("arparticles")) {
+                    $args[] = true;
+                    if($this->removeParticle(...$args)) {
+                        $sender->sendMessage(TextFormat::RED . ' ' . $args[0] . '\'s particle effect was removed!');
+                    } else {
+                        $sender->sendMessage(TextFormat::RED . ' Unable to remove ' . $args[0] . '\'s particle effect!');
+                    }
+                    return true;
+                }
+
+                $sender->sendMessage(TextFormat::RED . " You don't have permissions to do that...");
+                return true;
+            case "help":
+                $sender->sendMessage(TextFormat::GREEN . ' Available commands: give, remove');
+                return true;
+                break;
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Give a player particles if they are in the config
+     *
+     * @param PlayerLoginEvent $event The login event
+     */
+    public function PlayerLoginEventParticles(PlayerLoginEvent $event) {
+        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
+            $this->giveParticle($event->getPlayer()->getDisplayName(), $this->players[$event->getPlayer()->getDisplayName()]);
+        }
+    }
+
+    /**
+     * Remove the particles from a player when they leave
+     *
+     * @param PlayerQuitEvent $event The quit event
+     */
+    public function PlayerQuitEventParticles(PlayerQuitEvent $event) {
+        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
+            $this->removeParticle($event->getPlayer()->getDisplayName());
+        }
+    }
+
+    /**
+     * Give a player particles when they respawn
+     *
+     * @param PlayerRespawnEvent $event The respawn event
+     */
+    public function PlayerRespawnEventParticles(PlayerRespawnEvent $event) {
+        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
+            $this->giveParticle($event->getPlayer()->getDisplayName(), $this->players[$event->getPlayer()->getDisplayName()]);
+        }
+    }
+
+    /**
+     * Give a user particles
+     *
+     * @param  string $user     The username of the person to give particles
+     * @param  string $particle The particle effect to give (The class name)
+     * @return boolean          Whether or not giving the particles was successful
+     */
+    public function giveParticle($user = '', $particle = '') {
+        if(($player = $this->getServer()->getPlayerExact($user)) instanceof Player) {
+            if(!isset($this->particles[$player->getDisplayName()])) {
+                $name = $this->getParticleClass($particle);
+                $this->particles[$player->getDisplayName()] = $this->manager->setPlayerParticleEffect($player, $this->manager::$$name);
+                $this->players[$player->getDisplayName()] = get_class($this->particles[$player->getDisplayName()]);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Remove the particles from the user
+     *
+     * @param  string $user  The username of the person to take the particles from
+     * @param  boolean $unset Whether or not to unset the user from the config
+     * @return boolean        Whether or not the command was successful
+     */
+    public function removeParticle($user = '', $unset = false) {
+        if(($player = $this->getServer()->getPlayerExact($user)) instanceof Player) {
+            if(isset($this->particles[$player->getDisplayName()])) {
+                unset($this->particles[$player->getDisplayName()]);
+                $this->manager->removeEffect($player);
+                if($unset) {
+                    unset($this->players[$player->getDisplayName()]);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the particle class for the manager
+     * @param  string $particle The particle class
+     * @return string           The particle
+     */
+    public function getParticleClass($particle) {
+        $path = explode('\\', $particle);
+        $particle = array_pop($path);
+        switch($particle) {
+            case 'LavaParticleEffect':
+                $var = 'lava';
+                break;
+            case 'PortalParticleEffect':
+                $var = 'portal';
+                break;
+            case 'RainbowParticleEffect':
+                $var = 'rainbow';
+                break;
+            case 'RedstoneParticleEffect':
+                $var = 'redstone';
+                break;
+            default:
+                $var = 'portal';
+                break;
+        }
+        return $var;
+    }
 
 ///START OF SIMPLE CUSTOM PLAYERS///
 /*Making Config For MaxHP And Hunger When Player Join And Die*/
 /*
   public function testonQuit(PlayerQuitEvent $event) {
     $p = $event->getPlayer ();
-    $datazz = new Config ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml");
-    unlink ($datazz);
+    $this->data = new Config ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml");
+    unlink ($this->data);
   }
 
   public function testonjoin(PlayerJoinEvent $event) {
@@ -508,8 +701,7 @@ class ARCore extends PluginBase implements Listener{
     "Health" => 40,
     "MaxHealth" => 40
     ]));
-  }
-*/
+  }*/
 //DONE!
 /*Plugin OnJoin*/
    public function onJoiningPlayerSettings(PlayerJoinEvent $event){ 
