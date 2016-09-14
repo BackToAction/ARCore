@@ -710,7 +710,7 @@ class ARCore extends PluginBase implements Listener{
        $player->setFood($this->custom->get("SetPlayerFoodBarOnJoin"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnJoin"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnJoin"));
-       $player->setMovementSpeed(0.14);//DO NOT MESS WITH THIS!!
+       $player->setMovementSpeed(0.12);//DO NOT MESS WITH THIS!!
        $player->setGamemode(0);//Forgot To Set A Player Gamemode To Survival??LOL NOW YOU WONT FORGOT!!
        //under here is non stable code 
        $positionx = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
@@ -748,7 +748,7 @@ class ARCore extends PluginBase implements Listener{
        $player->setFood($this->custom->get("SetPlayerFoodBarOnRespawn"));
        $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnRespawn"));
        $player->setHealth($this->custom->get("SetPlayerHealthOnRespawn"));
-       $player->setMovementSpeed(0.14);
+       $player->setMovementSpeed(0.12);
        $player->setGamemode(0);
     }
 //This Function Will Add Percentage To Gain The Items..
@@ -766,7 +766,7 @@ class ARCore extends PluginBase implements Listener{
 }
 
     public function ByeVoidz(PlayerMoveEvent $event){
-        if($event->getTo()->getFloorY() < 5){
+        if($event->getTo()->getFloorY() =< 7){//lucky 7
 			$player = $event->getPlayer();
 			$x = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
 			$y = $this->getServer()->getDefaultLevel()->getSafeSpawn()-> getY()+1.3;
@@ -777,7 +777,7 @@ class ARCore extends PluginBase implements Listener{
             $player->setMaxHealth($this->custom->get("NoVoid-SetPlayerMaxHealth"));
             $player->setHealth($this->custom->get("NoVoid-SetPlayerHealth"));
             $player->setFood($this->custom->get("NoVoid-SetPlayerFood"));
-            $player->setMovementSpeed(0.14);
+            $player->setMovementSpeed(0.12);
 			$player->teleport(new Vector3($x, $y, $z, $level));
             }
         }	
