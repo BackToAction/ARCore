@@ -966,8 +966,8 @@ class FactionCommands {
 					/////////Credit to 2 developer here/////////////////////////////////
 					
 					if(strtolower($args[0] == 'about')) {
-						$sender->sendMessage(TextFormat::GREEN . "Power/Economy by §6Infernus101 " . TextFormat::AQUA . "fallentech.tk 19132");
-						$sender->sendMessage(TextFormat::GREEN . "Economy Config by §6LordJoshie " . TextFormat::AQUA . "play.purecraftpe.ca 19132");
+						$sender->sendMessage(TextFormat::GREEN . "Clans Core for ARCore (Infernus101 made this)" . TextFormat::AQUA . "arch.redvn.xyz Port 19132");
+						$sender->sendMessage(TextFormat::GREEN . "Supported EconomyS (LordJoshie made this)" . TextFormat::AQUA . "play.redvn.xyz Port 19132");
 					}
 					 /////////////////////////////// TOPFACTIONS ///////////////////////////////
 					
