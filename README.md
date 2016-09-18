@@ -3,8 +3,7 @@
 A must-have plugin core for an mmoRPG server!
 
 # Test Server
-- Test this plugin on my Vietnam Server (Sorry, all players are Vietnam, but you can speak English if some understand you!)
-- sur.redvn.xyz Port 19132 (Survival - Faction - Pets)
+- You could test on play.redvn.xyz Port 19132
 - Right now we need help from developers!
 
 # Description
@@ -19,7 +18,7 @@ A must-have plugin core for an mmoRPG server!
 - [x] Custom Damage Management
 - [x] Simple Authentication System.
 - [x] Add Pets (with EconomyAPI support)
-- [ ] Custom Modified Entity
+- [ ] Custom Modified Entity (could be based on Minibosses)
 - [ ] Add Skill System.
 - [x] Custom Currency (just base on EconomyAPI)
 - [ ] Add Jobs/Class
