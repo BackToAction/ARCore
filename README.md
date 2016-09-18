@@ -27,7 +27,6 @@ A must-have plugin core for an mmoRPG server!
 - [ ] Add Translation
 - [x] Add Money For Killing
 - [ ] Custom NPC
-- [ ] Custom Inventories
 - [ ] Vaults
 - [ ] Pet Shop
 - [ ] Cosmetics
