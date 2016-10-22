@@ -1,6 +1,6 @@
 # ARCore
 
-A must-have plugin core for an mmoRPG server!
+A must-have plugin core for an mmoRPG server! Auth from @MCPEPIG.
 
 # Test Server
 - You could test on play.redvn.xyz Port 19132
