@@ -118,28 +118,27 @@ use pocketmine\permission\Permission;
 use ARCore\Clans\FactionCommands;
 use ARCore\Clans\FactionListener;
 //others.
-//use ARCore\Enchantment\EnchantManager;
 //pets implements
-use ARCore\Pets\PetCommand;//
-use ARCore\Pets\OcelotPet;//
-use ARCore\Pets\BatPet;//
-use ARCore\Pets\BlazePet;//
-use ARCore\Pets\BlockPet;//
-use ARCore\Pets\ChickenPet;//
-use ARCore\Pets\MagmaPet;//
-use ARCore\Pets\Pets;//
-use ARCore\Pets\PigPet;//
-use ARCore\Pets\RabbitPet;//
-use ARCore\Pets\SheepPet;//
-use ARCore\Pets\SilverfishPet;//
-use ARCore\Pets\SpiderPet;//
-use ARCore\Pets\WitchPet;//
-use ARCore\Pets\WolfPet;//
-use ARCore\Pets\CowPet;//
-use ARCore\Pets\CreeperPet;//
-use ARCore\Pets\EndermanPet;//
-use ARCore\Pets\HuskPet;//
-use ARCore\Pets\IronGolemPet;//
+use ARCore\Pets\PetCommand;
+use ARCore\Pets\OcelotPet;
+use ARCore\Pets\BatPet;
+use ARCore\Pets\BlazePet;
+use ARCore\Pets\BlockPet;
+use ARCore\Pets\ChickenPet;
+use ARCore\Pets\MagmaPet;
+use ARCore\Pets\Pets;
+use ARCore\Pets\PigPet;
+use ARCore\Pets\RabbitPet;
+use ARCore\Pets\SheepPet;
+use ARCore\Pets\SilverfishPet;
+use ARCore\Pets\SpiderPet;
+use ARCore\Pets\WitchPet;
+use ARCore\Pets\WolfPet;
+use ARCore\Pets\CowPet;
+use ARCore\Pets\CreeperPet;
+use ARCore\Pets\EndermanPet;
+use ARCore\Pets\HuskPet;
+use ARCore\Pets\IronGolemPet;
 //Auths Implement
 use ARCore\Auth\EventListener;
 use ARCore\Auth\Tasks\PopupTipTick;
@@ -159,19 +158,8 @@ use ARCore\AntiHack\AntiHack;
 use ARCore\ChatFilter\ChatFilter;
 use ARCore\ChatFilter\ChatFilterTask;
 
-//use ARCore\Listener\EventListenerz;
-//use  ARCore\AntiHack\AntiHack;//NON-OFFICIAL ANTIHACK
-
 class ARCore extends PluginBase implements Listener{
 
- //TODO
- //Dont Use EconomyAPI [Write Our Own Currency](Why??A:Because this plugin is a core and can be as lagg as freak if there another plugin)[Core are suppose to be ALONE]
- //Rewrite Pets [HURRY]      
- //Re-Implement AntiHack(NON-FUNCTIONAL)
- //Add Background Sounds(URGENT)
- //Rewrite Auths(Having Unknown Bugs)
- //Custom Ranks(GOOD BYE PUREPERMS)
- //BLABLA   
 
     public $players = [];
     public $particle = [];
@@ -322,51 +310,6 @@ class ARCore extends PluginBase implements Listener{
         "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
         "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
 		));
-
-
-/////////THE START OF PETS [ON ENABLE]/////////	
-/*	
-		$this->PetPrices = new Config($this->getDataFolder() . "PetPrices.yml", CONFIG::YAML, array(
-		"PetOffMsg" => "§b[Pet -> Me]§f - §eOkay, Ill be around",
-		"SpawnDogMsg" => "§bYour Dog is Here ! §aCost - $10000",
-		"DogCost" => 10000,
-		"SpawnCatMsg" => "§bYour Cat is Here ! §aCost - $10000",
-		"CatCost" => 10000,
-		"SpawnRabbitMsg" => "§bYour Rabbit is Here ! §aCost - $10000",
-		"RabbitCost" => 10000,
-		"SpawnPigMsg" => "§bYour Pig is Here ! §aCost - $5000",
-		"PigCost" => 5000,
-		"SpawnSheepMsg" => "§bYour Sheep is Here ! §aCost - $5000",
-		"SheepCost" => 5000,
-		"SpawnChickenMsg" => "§bYour Chicken is Here ! §aCost - $5000",
-		"ChickenCost" => 5000,
-        "SpawnSilverfishMsg" => "§bYour Silverfish is Here ! §aCost - $100000",
-        "SilverfishCost" => 100000,
-        "SpawnMagmaMsg" => "§bYour Magma is Here ! §aCost - $5000",
-        "MagmaCost" => 5000,
-        "SpawnBatMsg" => "§bYour Bat is Here ! §aCost - $5000", 
-		"BatCost" => 5000,
-        "SpawnBlockMsg" => "§bYour Blockin is Here ! §aCost - $5000",
-        "BlockCost" => 5000,
-        "PetPrices" => "§bTypes\n §aDog $10000\n §eCat $10000\n §aRabbit $10000\n §ePig $5000\n §aSheep $5000\n §eChicken $5000\n §aSilverfish $100000\n §eMagma $5000\n §aBat $5000\n §eBlock $5000.",
-		));
-		@mkdir($this->getDataFolder());
-		@mkdir($this->getDataFolder() . "PetPlayer");
-		$server = Server::getInstance();
-		$server->getCommandMap()->register('pets', new PetCommand($this,"pets"));
-		Entity::registerEntity(OcelotPet::class);
-		Entity::registerEntity(WolfPet::class);
-		Entity::registerEntity(PigPet::class);
-		Entity::registerEntity(SheepPet::class);
-		Entity::registerEntity(RabbitPet::class);
-		Entity::registerEntity(ChickenPet::class);
-		Entity::registerEntity(BatPet::class);
-		Entity::registerEntity(MagmaPet::class);
-		Entity::registerEntity(SilverfishPet::class);
-		Entity::registerEntity(BlockPet::class);
-		$this->saveDefaultConfig();
-*/
-/////////Ends Of Pets [ On Enable]///////
 
 /////Start Of Clans [OnEnable]/////
 		@mkdir($this->getDataFolder());
@@ -766,7 +709,7 @@ class ARCore extends PluginBase implements Listener{
 }
 
     public function ByeVoidz(PlayerMoveEvent $event){
-        if($event->getTo()->getFloorY() =< 7){//lucky 7
+        if($event->getTo()->getFloorY() <= 7){//lucky 7
 			$player = $event->getPlayer();
 			$x = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
 			$y = $this->getServer()->getDefaultLevel()->getSafeSpawn()-> getY()+1.3;
