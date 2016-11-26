@@ -1,3 +1,5 @@
+## Project STOP (Wont Be Any Others Update, The Authors LAZY)
+
 # ARCore
 
 A must-have plugin core for an mmoRPG server! Auth from @MCPEPIG.
