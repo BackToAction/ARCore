@@ -1,7 +1,7 @@
 ## Project STOP (Wont Be Any Others Update, The Authors LAZY)
-
+- Continued By [@LeonHazardMajestic](https://github.com/LeonHazard)
+- New Place https://github.com/LeonHazardMajestic/ARCore
 # ARCore
-
 A must-have plugin core for an mmoRPG server! Auth from @MCPEPIG.
 
 # Test Server
