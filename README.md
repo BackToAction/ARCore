@@ -1,18 +1,14 @@
 ## Project STOP (Wont Be Any Others Update, The Authors LAZY)
-- Continued By [@LeonHazardMajestic](https://github.com/LeonHazard)
-- New Place https://github.com/LeonHazardMajestic/ARCore
+
 # ARCore
 A must-have plugin core for an mmoRPG server! Auth from @MCPEPIG.
 
 # Test Server
-- You could test on play.redvn.xyz Port 19132
 - Right now we need help from developers!
 
 # Description
-- This plugin has support for PocketMine-MP, ClearSky, Genisys and other software!
 - This plugin is use for an mmoRPG server base!
 - This plugin is currently under construction. Feel free to help us if you can!
-- Join our [Gitter](https://gitter.im/neurobinds-project/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link) chat!
 
 # TODO:
 - [x] Custom Player Management
