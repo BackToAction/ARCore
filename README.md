@@ -4,7 +4,7 @@
 ### Note:
 - This Plugin Will Be Update 'Not To Frequently' Due To I(HyGlobalHD) Can't Test The Plugin Cause I Use x86 Window And Pocketmine Not Support It Anymore. Note: Sobb Sobb Cry Cry :P
 - See [TODO](https://github.com/BackToAction/ARCore/blob/master/TODO.md)
-
+- This Plugin Does Not Support Lastest Pocketmine-MP Server Or Something Similiar.
 
 # Others :-
 - Get the old, unstable version of ARCore [here](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core). (P.S: It might be laggy :P)
