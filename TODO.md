@@ -22,7 +22,7 @@
 - [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
 - [ ] Custom Accessories
-- [ ] Custom LevelUP System (base on Enchantment level)(not finish yet)
+- [x] Custom LevelUP System
 - [x] Clans System (with EconomyAPI support)
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
