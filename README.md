@@ -1,3 +1,10 @@
+# Note:
+ This branch is for the purpose to host ARCore dosc and chat room.
+ 
+
+
+
+
 # ARCore
 ##### Description: Used To Be Under Development Of [ArchRPG Organization](https://github.com/ArchRPG/) . Then Due To Certain Circumstances The Plugin Was Abandoned.
 
