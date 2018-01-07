@@ -1,17 +1,30 @@
 # TODO:
 - [x] Custom Player Management
 - [x] Custom Server Management
+   - [x] Server Name
 - [x] Custom Damage Management
 - [x] Simple Authentication System.
 - [x] Add Pets (with EconomyAPI support)
-- [ ] Custom Modified Entity (could be based on Minibosses)
-- [ ] Add Skill System.
 - [x] Custom Currency (just base on EconomyAPI)
+- [x] Add Money For Killing
+- [x] Support for API 2.0.0
+- [x] Custom LevelUP System
+- [x] Clans System (with EconomyAPI support)
+- [x] AntiHack System [ Had Bugs ]
+   - Will Be Disable Temporary
+   - [ ] Re-Format
+- [x] Chat Filter
+- [x] Particle [Not Working Properly]
+   - Will Be Disable Temporary
+   - [ ] Re-Format
+- [ ] Custom Modified Entity
+   - [ ] Entities With Specific Tag Will Hold Diff Purpose
+- [ ] Add Skill System.
+   - [ ] Under Jobs/Class 
 - [ ] Add Jobs/Class
 - [ ] Add Leaderboard, Achievement Rewards
 - [ ] Add Kits for each Class.
 - [ ] Add Translation
-- [x] Add Money For Killing
 - [ ] Custom NPC
 - [ ] Vaults
 - [ ] Pet Shop
@@ -19,20 +32,14 @@
 - [ ] Custom Commands
 - [ ] Custom Enchants
 - [ ] Add AntiLagg System
-- [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
 - [ ] Custom Accessories
-- [x] Custom LevelUP System
-- [x] Clans System (with EconomyAPI support)
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
 - [ ] Using private database for players
 - [ ] Custom Inventory Management(bugs)
 - [ ] Add Auto-Updater
-- [x] AntiHack System [ Had Bugs ]
 - [ ] Custom Items.
 - [ ] Custom Craft Recipes
 - [ ] Custom Chat
 - [ ] Cusom Ranks (People Can Add Ranks Easily)
-- [x] Chat Filter
-- [x] Particle [Not Working Properly]
