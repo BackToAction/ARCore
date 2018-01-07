@@ -18,9 +18,9 @@ use pocketmine\command\Command;
 class Main extends PluginBase implements Listener {
 
 
-    public function onEnable() {
+    public function onEnable() {// this function is no need
         @mkdir($this->getDataFolder());
-        @mkdir($this->getDataFolder()."lp/");
+        @mkdir($this->getDataFolder()."lp/"); // add this to the ARCore.php in onEnable
         $this->getLogger()->info("
           §7§l=[ §r§a================================================================================== §7§l]=
 
@@ -32,10 +32,10 @@ class Main extends PluginBase implements Listener {
           §7§l=[ §r§a================================================================================== §7§l]=
 
                                  §eThanks Ziken and AlbanWeill for this amazing plugin
-                  ");
-        $this->getServer()->getPluginManager()->registerEvents($this,$this);
+                  "); // this log doesn't needed
+        $this->getServer()->getPluginManager()->registerEvents($this,$this); // check if ARCore.php have this if not go add it, but i think there is this function.
     }
-	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){
+	public function onCommand(CommandSender $sender, Command $cmd, $label, array $args){ // need to seperate this into new file
 		$config = new Config($this->main->getDataFolder()."lp/".strtolower($sender->getName()).".yml", Config::YAML);
 		$p = $event->getPlayer();
         $n = $p->getName();
