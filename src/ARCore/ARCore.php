@@ -1,15 +1,6 @@
 <?php
 
 namespace ARCore;
-/*/
- * Copyrights Of NeuroBinds Project Corps.
- *
- * You May Edit,Sell,Share And Contribute.
- *
- * Somehow I Hate This.
- *
- *
-/*/
 
 //player
 use pocketmine\Player;
@@ -59,9 +50,6 @@ use pocketmine\command\ConsoleCommandSender;
 //utils
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\config;
-use pocketmine\utils\TextFormat as Color;
-use pocketmine\utils\TextFormat as TF;
-use pocketmine\utils\TextFormat as MT;
 use pocketmine\utils\TextFormat as C;
 use pocketmine\utils\BinaryStream;
 use pocketmine\utils\Binary;
@@ -158,35 +146,129 @@ use ARCore\AntiHack\AntiHack;
 use ARCore\ChatFilter\ChatFilter;
 use ARCore\ChatFilter\ChatFilterTask;
 
-class ARCore extends PluginBase implements Listener{
+use ARCore\Task\Hud;
+
+class ARCore extends PluginBase implements Listener
+{
 
 
-    public $players = [];
-    public $particle = [];
+//    public $players = [];
+//    public $particle = [];
 	/*Clans*/
-	public $db;
-	public $prefs;
+//	public $db;
+//	public $prefs;
   /*Pets*/
-	public static $pet;
-	public static $petState;
-	public static $isPetChanging;
-	public static $type;
-	public $pettype;
-	public $price;
-	public $wishPet;
+//	public static $pet;
+//	public static $petState;
+//	public static $isPetChanging;
+//	public static $type;
+//	public $pettype;
+//	public $price;
+//	public $wishPet;
   /*Inventory Saver*/
-	public $inventories;
+//	public $inventories;
   /*Auths*/
-	public $authenticated;
-	public $confirmPassword;
-	public $messagetick;
-	public $tries;
+//	public $authenticated;
+//	public $confirmPassword;
+//	public $messagetick;
+//	public $tries;
 
+//   public $points;
+    public $lang;
+    public $msg; // message : contain all the message that will be used in the plugin.
+    public $conf;
+    public $auth;
+
+    public function onLoad()
+    {
+        $this->getLogger()->info("Loading ARCore....");
+    }
+
+    public function onEnable()
+    {
+        $this->saveDefaultConfig();
+        $this->conf = new Config("config.yml"); // the config will be in english // i'm lazy to do this..
+        if (!file_exists($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml")) { //start // if message_<lang>.yml not exist do: 
+            if ($this->getResource("message_" . $this->conf->getNested("message.lang") . ".yml") !== null) { // get resource and check if not null (zero)
+                $this->saveResource("message_" . $this->conf->getNested("message.lang") . ".yml"); // save the message
+                $this->msg = new Config($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml"); // get it as msg
+            } else {
+                $this->getLogger()->error("Unknown language for message: " . $this->conf->getNested("message.lang") . ". Using english."); // if use unsupport lang // auto use english as default language
+                if (!file_exists($this->getDataFolder() . "message_eng.yml")) { // if not in the user Folder
+                    $this->saveResource("message_eng.yml"); // save it to Folder
+                }
+                $this->msg = new Config($this->getDataFolder() . "message_eng.yml"); // make the Config
+            }
+        } else { // if use others lang than English // load new config.
+            $this->msg = new Config($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml"); // example : message_<lang>.yml
+        } //end
+
+        if (!file_exists($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml")) { // start // if auths_<lang>.yml not exist do: 
+            if ($this->getResource("auths_" . $this->conf->getNested("auths.lang") . ".yml") !== null) { // get resource and check if not null (zero)
+                $this->saveResource("auths_" . $this->conf->getNested("auths.lang") . ".yml"); // save the auths file
+                $this->auth = new Config($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml"); // get it as auths
+            } else {
+                $this->getLogger()->error("Unknown language for auths: " . $this->conf->getNested("auths.lang") . ". Using english."); // if use unsupport lang // auto use english as default language
+                if (!file_exists($this->getDataFolder() . "auths_eng.yml")) { // if not in the user Folder
+                    $this->saveResource("auths_eng.yml"); // save it to Folder
+                }
+                $this->auth = new Config($this->getDataFolder() . "auths_eng.yml"); // make the Config
+            }
+        } else { // if use others lang than English // load new config.
+            $this->auth = new Config($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml"); // example : auths_<lang>.yml
+        } // end
+
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new Hud($this), 20); // Hud.
+
+
+        //$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this); // register ARCore's EventListener .TODO.
+
+        if(!file_exists($this->getDataFolder() . "AuthsData.db")) {
+            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
+            $this->auths->exec("CREATE TABLE players (name TEXT PRIMARY KEY, password TEXT, pin INT, uuid INT, attempts INT);");
+        } else {
+            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE);
+
+                //$this->auths->exec("ALTER TABLE players ADD COLUMN pins INT");
+
+                //$this->auths->exec("ALTER TABLE players ADD COLUMN attempts INT");
+            }
+		//$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
+        $this->getServer()->getCommandMap()->register('cpwd', new ChangePasswordCommand('cpwd', $this));
+        $this->getServer()->getCommandMap()->register('fpwd', new ForgotPasswordCommand('fpwd', $this));
+        $this->getServer()->getCommandMap()->register('log', new LoginCommand('log', $this));
+        $this->getServer()->getCommandMap()->register('logout', new LogoutCommand('logout', $this));
+        $this->getServer()->getCommandMap()->register('reg', new RegisterCommand('reg', $this));
+        $this->getServer()->getCommandMap()->register('pin', new PinCommand('pin', $this));
+        $this->getServer()->getCommandMap()->register('rpwd', new ResetPasswordCommand('rpwd', $this));
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new MessageTick($this), 20);
+        if($this->auth->get($this->getMessage("auth", "popup")) {
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PopupTipTick($this), 20);
+        }
+        $this->getServer()->getPluginManager()->registerEvents(new AuthEventListener($this), $this);
+
+
+        $this->getLogger()->info($this->getMessage("msg", "Enable%Message")); // Message File O.o
+    }
+
+    public function getMessage($type, $message) // A Must :P
+    {
+        if($type == "msg"){
+            $i = str_replace("&", "§", $this->msg->getNested($message));
+        }
+        if($type == "auth"){
+            $i = str_replace("&", "§", $this->auth->getNested($message));
+        }
+        if($type == "config"){
+            $i = str_replace("&", "§", $this->conf->getNested($message));
+        }
+        return $i; // horrah??
+    }
 
 /*Plugins OnEnable*/
    public function onEnable(){
 
-		$this->getServer()->getScheduler()->scheduleRepeatingTask(new CallbackTask([$this,"onRun"]), 20);
+		
   //  $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
     //$this->getCommand("quest")->setExecutor(new QuestCommands($this));
    // $this->getCommand("party")->setExecutor(new PartyCommands($this));
@@ -218,98 +300,16 @@ class ARCore extends PluginBase implements Listener{
 
 
       */
-       //
+
 //Using EconomyAPI by onebone
-			$this->api = EconomyAPI::getInstance();
-   // $this->getServer()->getPluginManager()->registerEvents(new EventListenerz($this), $this);
+            $this->api = EconomyAPI::getInstance(); 
+            
 //Inventory Saver OnEnable//
         @mkdir($this->getDataFolder());
         $this->inventories = new \SQLite3($this->getDataFolder()."inventories.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
         $level = strtolower($this->getServer()->getDefaultLevel()->getFolderName());
         $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$level` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
-//Inventory Saver OnEnable///
-///Auth OnEnable///
-		$this->auth = new Config($this->getDataFolder() . "AuthsSetting.yml", CONFIG::YAML, array(
-		"join-message" => "\n \n \n§l§8-§6»\n \n  §r§8This Server Using An Authentication System.",
-		"login" => "\n \n  §8Please Login By Typing In §b/log <password>\n \n§l§8-§6»",
-		"login-popup" => "§8Not Authenticate",
-		"authentication-success" => "§aYou Have Being Authenticate!",
-		"already-authenticated" => "§8You have already logged in.",
-		"incorrect-password" => "§8Incorrect password.You Have §5{tries} §8Tries left.",
-		"not-registered" => "§5%null%{error}",
-		"register" => "\n \n  §8Please Login By Typing In §b/reg <password> <confirm password>\n \n \n§l§8-§6»",
-		"register-popup" => "§8Not Authenticate",
-		"register-success" => "§aYou have been registered.Your pin is {pin}.",
-		"already-registered" => "§8You are already registered.",
-		"password-too-short" => "§8Password is too short.",
-		"password-not-match" => "§5%null%{error}",
-		"confirm-password" => "§dPlease confirm your password.",
-		"change-password-success" => "§eYour password has been changed.",
-		"forgot-password-success" => "§aYour password has been changed. Your new pin is {pin}.",
-		"incorrect-pin" => "§cIncorrect pin.",
-		"password-reset-success" => "§aPlayers password has been reset.",
-		"not-registered-two" => "§cPlayer not registered.",
-		"pin" => "§aYour pin= {pin}",
-		"dont-say-password" => "§5%null%{error}",
-		"timeout-message" => "§cLogin Timeout",
-		"too-many-tries" => "§cToo Many Tries to Login",
-		"timeout" => 12000,
-		"allow-movement" => false,
-		"chat-login" => false,
-		"auto-authentication" => false,
-		"minimum-password-length" => 6,
-		"tries" => 10,
-		"popup" => true,
-		"seconds-til-next-message" => 1000000,
-		"invisible" => true,
-		"blindness" => true,
-		"see-messages" => false,
-		));
-        if(!file_exists($this->getDataFolder() . "AuthsData.db")) {
-            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
-            $this->auths->exec("CREATE TABLE players (name TEXT PRIMARY KEY, password TEXT, pin INT, uuid INT, attempts INT);");
-        } else {
-            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE);
 
-                //$this->auths->exec("ALTER TABLE players ADD COLUMN pins INT");
-
-                //$this->auths->exec("ALTER TABLE players ADD COLUMN attempts INT");
-            }
-		//$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
-        $this->getServer()->getCommandMap()->register('cpwd', new ChangePasswordCommand('cpwd', $this));
-        $this->getServer()->getCommandMap()->register('fpwd', new ForgotPasswordCommand('fpwd', $this));
-        $this->getServer()->getCommandMap()->register('log', new LoginCommand('log', $this));
-        $this->getServer()->getCommandMap()->register('logout', new LogoutCommand('logout', $this));
-        $this->getServer()->getCommandMap()->register('reg', new RegisterCommand('reg', $this));
-        $this->getServer()->getCommandMap()->register('pin', new PinCommand('pin', $this));
-        $this->getServer()->getCommandMap()->register('rpwd', new ResetPasswordCommand('rpwd', $this));
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new MessageTick($this), 20);
-        if($this->auth->get("popup")) {
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PopupTipTick($this), 20);
-        }
-        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-
-///Auth OnEnable///
-
-//config for custom //		
-		$this->custom = new Config($this->getDataFolder() . "CustomSetting.yml", CONFIG::YAML, array(
-		"ServerName" => "§aArch§eRPG",
-		"LoadDefaultWorld" => "Lobby-202",
-		"SetPlayerFoodBarOnJoin" => 20000,
-		"SetMaxPlayerHealthOnJoin" => 1,
-		"SetPlayerHealthOnJoin" => 40,
-		"SetPlayerFoodBarOnRespawn" => 20000,
-		"SetMaxPlayerHealthOnRespawn" => 1,
-		"SetPlayerHealthOnRespawn" => 40,
-		"DropDeath" => "388,0,1",
-		"NoVoid-SetPlayerMaxHealth" => 1,
-		"NoVoid-SetPlayerHealth" => 1,
-		"NoVoid-SetPlayerFood" => 200000,
-        "Player-Gain-Coins-PerKill" => 20,
-        "Player-Lose-Coins-PerDeath" => 10,
-        "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
-        "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
-		));
 
 /////Start Of Clans [OnEnable]/////
 		@mkdir($this->getDataFolder());
@@ -451,8 +451,8 @@ class ARCore extends PluginBase implements Listener{
        $this->getLogger()->warning("AntiHacks Unloaded!");
        $this->db->close();
        $this->inventories->close();
-        //$this->getConfig()->set('users', $this->users);, $this->users
-      //  $this->getConfig()->save();
+        //$this->conf->set('users', $this->users);, $this->users
+      //  $this->conf->save();
 	
    }
    //AntiHack
@@ -753,16 +753,6 @@ class ARCore extends PluginBase implements Listener{
 			}
 		}
 	}
-  public function onRun($tick) {
-    foreach($this->getServer()->getOnlinePlayers() as $player) {
-      if($player->hasPermission("hud.information")) {
-        $player->sendTip("\n                                                             §7| §6"."§f". $player->getName()."\n                                                             §7| §e". $this->api->myMoney($player->getName())." Coins"."\n                                                             §7| §3". $this->getPlayerFaction($player->getName()) ."\n\n\n\n\n\n\n\n\n\n\n\n\n");
-        } else {
-          $player->sendPopup("§5ERROR");
-          }//. UserDataManager::getGroup($player)
-       }//. EconomyAPI::myMoney($player->getName()
-//. EconomyAPI::myMoney($player->getName()
-     }
 
 ///ENDS OF SIMPLE CUSTOM PLAYERS///
 
