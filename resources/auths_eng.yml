@@ -1,0 +1,36 @@
+
+
+join-message: "\n \n \n&l&8-&6»\n \n  &r&8This Server Using An Authentication System."
+login: "\n \n  &8Please Login By Typing In &b/log <password>\n \n&l&8-&6»"
+login-popup: "&8Not Authenticate"
+authentication-success: "&aYou Have Being Authenticate!"
+already-authenticated: "&8You have already logged in."
+incorrect-password: "&8Incorrect password.You Have &5{tries} &8Tries left."
+not-registered: "&5%null%{error}"
+register: "\n \n  &8Please Login By Typing In &b/reg <password> <confirm password>\n \n \n&l&8-&6»"
+register-popup: "&8Not Authenticate"
+register-success: "&aYou have been registered.Your pin is {pin}."
+already-registered: "&8You are already registered."
+password-too-short: "&8Password is too short."
+password-not-match: "&5%null%{error}"
+confirm-password: "&dPlease confirm your password."
+change-password-success: "&eYour password has been changed."
+forgot-password-success: "&aYour password has been changed. Your new pin is {pin}."
+incorrect-pin: "&cIncorrect pin."
+password-reset-success: "&aPlayers password has been reset."
+not-registered-two: "&cPlayer not registered."
+pin: "&aYour pin= {pin}"
+dont-say-password: "&5%null%{error}"
+timeout-message: "&cLogin Timeout"
+too-many-tries: "&cToo Many Tries to Login"
+timeout: 12000
+allow-movement: false
+chat-login: false
+auto-authentication: false
+minimum-password-length: 6
+tries: 10
+popup: true
+seconds-til-next-message: 1000000
+invisible: true
+blindness: true
+see-messages: false

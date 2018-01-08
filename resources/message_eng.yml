@@ -1,0 +1,12 @@
+
+# Message For ARCore
+# ENGLISH
+
+# onEnable() Message.
+Enable%Message: "&aEnabled ARCore."
+
+
+
+# Working On It...
+Player-Gains-Coins-For-Killing-Message: "You Gains 20 Coins For Killed A Player."
+Player-Lose-Coins-For-Dying-Message: "You Lose 10 Coins For Being Killed By A Player."
