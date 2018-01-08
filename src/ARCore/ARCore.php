@@ -186,7 +186,7 @@ class ARCore extends PluginBase implements Listener
 
     public function onEnable()
     {
-        $this->saveDefaultConfig();
+        $this->saveDefaultConfig();// get config.yml :P
         $this->conf = new Config("config.yml"); // the config will be in english // i'm lazy to do this..
         if (!file_exists($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml")) { //start // if message_<lang>.yml not exist do: 
             if ($this->getResource("message_" . $this->conf->getNested("message.lang") . ".yml") !== null) { // get resource and check if not null (zero)
@@ -247,12 +247,22 @@ class ARCore extends PluginBase implements Listener
         }
         $this->getServer()->getPluginManager()->registerEvents(new AuthEventListener($this), $this);
 
+        if($this->conf->get("currency.api") == "eco"){
+            if($this->getServer()->getPluginManager()->getPlugin("EconomyS")){
+                $this->eco = EconomyAPI::getInstance();
+            }else{
+                $this->getLogger()->warning($this->getMessage("msg", "No%EconomyS"));
+                $this->getLogger()->notice($this->getMessage("msg", "Using%Default%API"));
+                $this->conf->set("currency.api", "arcc");
+            }
+        }else{
+            $this->getLogger()->notice($this->getMessage("msg", "Thank%Using%ARC%Currency"));
+        }
 
         $this->getLogger()->info($this->getMessage("msg", "Enable%Message")); // Message File O.o
     }
 
-    public function getMessage($type, $message) // A Must :P
-    {
+    public function getMessage($type, $message) { // A Must :P
         if($type == "msg"){
             $i = str_replace("&", "§", $this->msg->getNested($message));
         }
