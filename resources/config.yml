@@ -1,0 +1,36 @@
+
+
+# Config For ARCore
+
+# Note: Do Not Delete Any '#' , Unless Its State So.
+
+message:
+  # Default Language: eng
+  # Available Language: eng
+  lang: eng
+template:
+  # Default Language: eng
+  # Available Language: eng
+  lang: eng
+auths:
+  # Default Language: eng
+  # Available Language: eng
+  lang: eng
+
+
+# Config .. Working On It...
+Setting:
+  Server%Name: "Server Name"
+  Load%Default%World: "World Name"
+  Set%Player%Food%Bar%On%Join: 20000
+  Set%Max%Player%Health%On%Join: 20
+  Set%Player%Health%On%Join: 20
+  Set%Player%Food%Bar%On%Respawn: 20000
+  Set%Max%Player%Health%On%Respawn: 20
+  SetPlayerHealthOnRespawn: 40
+  DropDeath: "38801"
+  NoVoid-SetPlayerMaxHealth: 1
+  NoVoid-SetPlayerHealth: 1
+  NoVoid-SetPlayerFood: 200000
+  Player-Gain-Coins-PerKill: 20
+  Player-Lose-Coins-PerDeath: 10
