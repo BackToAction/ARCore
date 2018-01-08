@@ -1,6 +1,7 @@
 # ARCore
 #### Notice: You Can Find ARCore Website [__Here.__](https://backtoaction.github.io/ARCore/) 
-#### Notice: BackToAction Is Reqruiting Devs [Click Me](https://github.com/BackToAction/recruiting)
+#### Notice: BackToAction Is Reqruiting Devs [Click Me.](https://github.com/BackToAction/recruiting)
+#### Notice: Rewrite Is In Progress, I Will Update It In Github At [Here.](https://github.com/BackToAction/ARCore/tree/rewrite-arch-2)
 ##### Description: Used To Be Under Development Of [ArchRPG Organization](https://github.com/ArchRPG/) . Then Due To Certain Circumstances The Plugin Was Abandoned.
 
 
@@ -10,8 +11,8 @@
 - This Plugin Does Not Support Lastest Pocketmine-MP Server Or Something Similiar.
 
 ### NOTICE:
-- Please Read This For Contributers. [__Click Me__](https://github.com/BackToAction/ARCore/blob/master/CONTRIBUTING.md)
-- Please Read [__Code Of Conduct__](https://github.com/BackToAction/ARCore/blob/master/CODE_OF_CONDUCT.md)
+- Please Read This For Contributers. [__Click Me.__](https://github.com/BackToAction/ARCore/blob/master/CONTRIBUTING.md)
+- Please Read [__Code Of Conduct.__](https://github.com/BackToAction/ARCore/blob/master/CODE_OF_CONDUCT.md)
 
 # Others :-
 - Get the old, unstable version and old API of ARCore [here](https://github.com/ArchRPG/ArchCoreSystem/tree/Old-Core). (P.S: It might be laggy :P)
