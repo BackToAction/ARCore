@@ -4,6 +4,15 @@
 
 # Note: Do Not Delete Any '#' , Unless Its State So.
 
+currency:
+  # available currency: ARCore's currency, EconomyS
+  # prefix: arcc = ARCore's Currency, eco = EconomyS
+  # example:
+     # api: arcc
+     # api: eco
+  # default use: arcc
+  api: arcc
+
 message:
   # Default Language: eng
   # Available Language: eng

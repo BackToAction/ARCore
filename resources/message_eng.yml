@@ -4,7 +4,9 @@
 
 # onEnable() Message.
 Enable%Message: "&aEnabled ARCore."
-
+No%EconomyS: "&cThere Is No EconomyS Plugin In Your Plugins."
+Using%Default%API: "&aUsing Default API."
+Thank%Using%ARC%Currency: "&bThank For Using ARCore's Currency API."
 
 
 # Working On It...
