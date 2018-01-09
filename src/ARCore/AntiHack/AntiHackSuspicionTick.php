@@ -3,11 +3,12 @@ namespace ARCore\AntiHack;
 
 use ARCore\AntiHack\AntiHack;
 use pocketmine\scheduler\Task;
+use pocketmine\scheduler\PluginTask;
 
 /**
  * Make permanent checks for cheaters
  */
-class AntiHackSuspicionTick extends Task {
+class AntiHackSuspicionTick extends PluginTask {
 	/**@var AntiHack*/
 	private $plugin;
 

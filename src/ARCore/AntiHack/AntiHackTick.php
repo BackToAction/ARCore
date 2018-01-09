@@ -4,6 +4,7 @@ namespace ARCore\AntiHack;
 use ARCore\AntiHack\AntiHack;
 use pocketmine\scheduler\Task;
 use pocketmine\Server;
+use pocketmine\scheduler\PluginTask;
 
 /**
  * Make permanent checks for cheaters
