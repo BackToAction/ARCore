@@ -3,11 +3,42 @@
 # ENGLISH
 
 # onEnable() Message.
-Enable%Message: "&aEnabled ARCore."
-No%EconomyS: "&cThere Is No EconomyS Plugin In Your Plugins."
-Using%Default%API: "&aUsing Default API."
-Thank%Using%ARC%Currency: "&bThank For Using ARCore's Currency API."
 
+Enable%Message: "&a Enabled ARCore. Thank You For Using BackToAction's Project"
+
+Disabling%Message: "&a Disabling..."
+Disabled%Message: "&a Disabled."
+
+Hud%Enabled: "&a Hud Is Enabled"
+Hud%Disabled: "&c Hud Is Disabled"
+
+No%EconomyS: "&c There Is No EconomyS Plugin In Your Plugins."
+Using%Default%API: "&a Using Default API."
+Thank%Using%ARC%Currency: "&b Thank For Using ARCore's Currency API."
+
+Loading%Default%World%: "&a Loading Default World"
+Set%Server%Name: "&a Set Server Name To"
+
+Not%Enable%Load%Default%World: "&c You Had Disabled Load Default World Features."
+Not%Enable%Set%Server%Name: "&c You Had Disabled Set Server Name Features."
+
+Enable%Inventories%Saver: "&a Inventories Saver Enabled."
+Not%Enable%Inventories%Saver: "&c Inventories Saver Is Disabled." 
+
+Pets%Enabled: "&a Pets Enabled."
+Pets%Disabled: "&c Pets Disabled."
+
+Anti%Hack%Enabled: "&a [ Beta ] AntiHack Enabled."
+Anti%Hack%Disabled: "&c [ Beta ] AntiHack Disabled."
+
+Enabled%Chat%Filter: "&a Chat Filter Enabled."
+Disabled%Chat%Filter: "&c Chat Filter Disabled."
+Chat%Filter%Sorry: "&c I'm sorry, I can't let you say that."
+
+Particle%Enabled: "&a Particle Enabled."
+Particle%Disabled: "&c Particle Disabled."
+
+ 
 
 # Working On It...
 Player-Gains-Coins-For-Killing-Message: "You Gains 20 Coins For Killed A Player."

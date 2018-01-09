@@ -26,6 +26,15 @@ auths:
   # Available Language: eng
   lang: eng
 
+# Please Look Here To Enable Some Setting
+Enable%Set%Server%Name: true
+Enable%Load%Default%World: true
+Enable%Inventories%Saver: false
+Enable%Hud: false
+Enable%Pets: false
+Enable%Anti%Hack: false
+Enable%Chat%Filter: true
+Enable%Particle: false
 
 # Config .. Working On It...
 Setting:
@@ -36,10 +45,42 @@ Setting:
   Set%Player%Health%On%Join: 20
   Set%Player%Food%Bar%On%Respawn: 20000
   Set%Max%Player%Health%On%Respawn: 20
-  SetPlayerHealthOnRespawn: 40
-  DropDeath: "38801"
-  NoVoid-SetPlayerMaxHealth: 1
-  NoVoid-SetPlayerHealth: 1
-  NoVoid-SetPlayerFood: 200000
-  Player-Gain-Coins-PerKill: 20
-  Player-Lose-Coins-PerDeath: 10
+  Set%Player%Health%On%Respawn: 40
+  Drop%Death: "38801"
+  No%Void%Set%Player%Max%Health: 1
+  No%Void%Set%Player%Health: 1
+  No%Void%Set%Player%Food: 200000
+  Player%Gain%Coins%Per%Kill: 20
+  Player%Lose%Coins%Per%Death: 10
+
+# Inventories Saver Setting...
+Inventories:
+  Saver:
+    World%Name:
+    - World Name
+    # Remove The '#' Before The '-' And Add Your World Name To Enable This.
+    #-
+    #-
+    #-
+
+
+# If Enable Pets
+# Set Price
+"BlazePrices" => 1000,
+        "PigPrices" => 1000,
+		"ChickenPrices" => 1000,
+        "WolfPrices" => 1000,
+	    "RabbitPrices" => 1000,
+        "MagmaPrices" => 1000,
+        "BatPrices" => 1000,
+    	"SilverfishPrices" => 1000,
+	    "SpiderPrices" => 1000,
+        "CowPrices" => 1000,
+		"CreeperPrices" => 1000,
+		"IronGolemPrices" => 1000,
+        "HuskPrices" => 1000,
+	    "EndermanPrices" => 1000,
+        "SheepPrices" => 1000,
+        "WitchPrices" => 1000,
+        "BlockPrices" => 1000,
+		));
