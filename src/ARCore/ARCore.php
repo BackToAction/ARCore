@@ -147,6 +147,7 @@ use ARCore\ChatFilter\ChatFilter;
 use ARCore\ChatFilter\ChatFilterTask;
 
 use ARCore\Task\Hud;
+use ARCore\Commands\AntiHackCommand;
 
 class ARCore extends PluginBase implements Listener
 {
@@ -166,7 +167,7 @@ class ARCore extends PluginBase implements Listener
 //	public $price;
 //	public $wishPet;
   /*Inventory Saver*/
-//	public $inventories;
+	public $inventories;
   /*Auths*/
 //	public $authenticated;
 //	public $confirmPassword;
@@ -178,6 +179,7 @@ class ARCore extends PluginBase implements Listener
     public $msg; // message : contain all the message that will be used in the plugin.
     public $conf;
     public $auth;
+    public $filter;
 
     public function onLoad()
     {
@@ -186,6 +188,33 @@ class ARCore extends PluginBase implements Listener
 
     public function onEnable()
     {
+        $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this); // register ARCore's EventListener .TODO.
+        // Note To Future Contributer: Anything That Relate To PluginManager Or Scheduler Put Up Here. // To Look Not Messy..
+        $this->getServer()->getPluginManager()->registerEvents($this ,$this); // to register Events In ARCore.php // prove: $this(ARCore)
+
+        if($this->conf->get("Enable%Hud") == true){
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new Hud($this), 20); // Hud.
+            $this->getLogger()->notice($this->getMessage("msg", "Hud%Enabled"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Hud%Disabled"));
+        }
+        
+        if($this->conf->get("Enable%Pets") == true){
+            $this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
+        }
+
+        if($this->conf->get("Enable%Anti%Hack") == true){
+            $this->getServer()->getCommandMap()->register('antihack', new AntiHackCommand($this,"antihack"));
+        }
+
+        if($this->conf->get("Enable%Chat%Filter") == true){
+            $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChatFilterTask($this), 30);
+        }
+
+        if($this->conf->get("Enable%Particle") == true){
+            $this->getServer()->getCommandMap()->register('antihack', new ARParticleCommand($this,"arparticles"));
+        }
+
         $this->saveDefaultConfig();// get config.yml :P
         $this->conf = new Config("config.yml"); // the config will be in english // i'm lazy to do this..
         if (!file_exists($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml")) { //start // if message_<lang>.yml not exist do: 
@@ -203,49 +232,7 @@ class ARCore extends PluginBase implements Listener
             $this->msg = new Config($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml"); // example : message_<lang>.yml
         } //end
 
-        if (!file_exists($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml")) { // start // if auths_<lang>.yml not exist do: 
-            if ($this->getResource("auths_" . $this->conf->getNested("auths.lang") . ".yml") !== null) { // get resource and check if not null (zero)
-                $this->saveResource("auths_" . $this->conf->getNested("auths.lang") . ".yml"); // save the auths file
-                $this->auth = new Config($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml"); // get it as auths
-            } else {
-                $this->getLogger()->error("Unknown language for auths: " . $this->conf->getNested("auths.lang") . ". Using english."); // if use unsupport lang // auto use english as default language
-                if (!file_exists($this->getDataFolder() . "auths_eng.yml")) { // if not in the user Folder
-                    $this->saveResource("auths_eng.yml"); // save it to Folder
-                }
-                $this->auth = new Config($this->getDataFolder() . "auths_eng.yml"); // make the Config
-            }
-        } else { // if use others lang than English // load new config.
-            $this->auth = new Config($this->getDataFolder() . "auths_" . $this->conf->getNested("auths.lang") . ".yml"); // example : auths_<lang>.yml
-        } // end
-
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new Hud($this), 20); // Hud.
-
-
-        //$this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this); // register ARCore's EventListener .TODO.
-
-        if(!file_exists($this->getDataFolder() . "AuthsData.db")) {
-            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE | SQLITE3_OPEN_CREATE);
-            $this->auths->exec("CREATE TABLE players (name TEXT PRIMARY KEY, password TEXT, pin INT, uuid INT, attempts INT);");
-        } else {
-            $this->auths = new \SQLite3($this->getDataFolder() . "AuthsData.db", SQLITE3_OPEN_READWRITE);
-
-                //$this->auths->exec("ALTER TABLE players ADD COLUMN pins INT");
-
-                //$this->auths->exec("ALTER TABLE players ADD COLUMN attempts INT");
-            }
-		//$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
-        $this->getServer()->getCommandMap()->register('cpwd', new ChangePasswordCommand('cpwd', $this));
-        $this->getServer()->getCommandMap()->register('fpwd', new ForgotPasswordCommand('fpwd', $this));
-        $this->getServer()->getCommandMap()->register('log', new LoginCommand('log', $this));
-        $this->getServer()->getCommandMap()->register('logout', new LogoutCommand('logout', $this));
-        $this->getServer()->getCommandMap()->register('reg', new RegisterCommand('reg', $this));
-        $this->getServer()->getCommandMap()->register('pin', new PinCommand('pin', $this));
-        $this->getServer()->getCommandMap()->register('rpwd', new ResetPasswordCommand('rpwd', $this));
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new MessageTick($this), 20);
-        if($this->auth->get($this->getMessage("auth", "popup")) {
-            $this->getServer()->getScheduler()->scheduleRepeatingTask(new PopupTipTick($this), 20);
-        }
-        $this->getServer()->getPluginManager()->registerEvents(new AuthEventListener($this), $this);
+        // Now Cause MCPE se xBoxLive Auth
 
         if($this->conf->get("currency.api") == "eco"){
             if($this->getServer()->getPluginManager()->getPlugin("EconomyS")){
@@ -259,324 +246,110 @@ class ARCore extends PluginBase implements Listener
             $this->getLogger()->notice($this->getMessage("msg", "Thank%Using%ARC%Currency"));
         }
 
-        $this->getLogger()->info($this->getMessage("msg", "Enable%Message")); // Message File O.o
+        if($this->conf->get("Enable%Anti%Hack")){
+            AntiHack::enable($this);
+            $this->antihack = AntiHack::getInstance();
+            $this->getLogger()->notice($this->getMessage("msg", "Anti%Hack%Enabled"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Anti%Hack%Disabled"));
+        }
+
+        if($this->conf->get("Enable%Set%Server%Name") == true) {
+            $this->getServer()->getNetwork()->setName($this->getMessage("conf", "Setting.Server%Name"));
+            $this->getLogger()->notice($this->getMessage("msg", "Set%Server%Name") . ": " . $this->conf->get("Setting.Server%Name") . ".");
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Not%Enable%Set%Server%Name"));
+        }
+
+        if($this->conf->get("Enable%Load%Default%World") == true) {
+            $this->getLogger()->notice($this->getMessage("msg", "Loading%Default%World%") . ": " . $this->conf->get("Setting.Load%Default%World") . ".");
+            $this->getServer()->loadLevel($this->conf->get("Setting.Load%Default%World"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Not%Enable%Load%Default%World"));
+        }
+        if($this->conf->get("Enable%Inventories%Saver") == true){
+            @mkdir($this->getDataFolder());
+            $this->inventories = new \SQLite3($this->getDataFolder()."InventoriesSaver.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
+            $level = array[strtolower($this->getServer()->getLevelByName($this->conf->get("Inventories.Saver.World")))]; // help?
+            $levels = strtolower($this->getServer()->getLevelByName()->getFolderName()); // will use this if the above is not do what it suppose to do.
+            $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$level` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
+            $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$levels` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
+            $this->getLogger()->notice($this->getMessage("msg", "Enable%Inventories%Saver"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Not%Enable%Inventories%Saver"));
+        }
+
+        if($this->conf->get("Enable%Pets") == true){
+            @mkdir($this->getDataFolder());
+            @mkdir($this->getDataFolder() . "PetPlayer");
+            Entity::registerEntity(ChickenPet::class);
+            Entity::registerEntity(WolfPet::class);
+            Entity::registerEntity(PigPet::class);
+            Entity::registerEntity(BlazePet::class);
+            Entity::registerEntity(MagmaPet::class);
+            Entity::registerEntity(RabbitPet::class);
+            Entity::registerEntity(BatPet::class);
+            Entity::registerEntity(SilverfishPet::class);
+            Entity::registerEntity(SpiderPet::class);
+            Entity::registerEntity(CowPet::class);
+            Entity::registerEntity(CreeperPet::class);
+            Entity::registerEntity(IronGolemPet::class);
+            Entity::registerEntity(HuskPet::class);
+            Entity::registerEntity(EndermanPet::class);
+            Entity::registerEntity(SheepPet::class);
+            Entity::registerEntity(WitchPet::class);
+            Entity::registerEntity(BlockPet::class);
+            $this->getLogger()->notice($this->getMessage("msg", "Pets%Enabled"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Pets%Disabled"));
+        }
+
+        if($this->conf->get("Enable%Chat%Filter") == true){
+            $this->filter = new ChatFilter(); // put it in EventListener
+            $this->getLogger()->notice($this->getMessage("msg", "Enabled%Chat%Filter"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Disabled%Chat%Filter"));
+        }
+
+        if($this->conf->get("Enable%Particle") == true){
+            $this->manager = new ParticleManager($this); // put it in EventListener
+            $this->getLogger()->notice($this->getMessage("msg", "Particle%Enabled"));
+        }else{
+            $this->getLogger()->warning($this->getMessage("msg", "Particle%Disabled"));
+        }
+
+        $this->getLogger()->info($this->getMessage("msg", "Enable%Message")); // Message File O.o // Note: This is The Last Logger For onEnable()
+
+        // todo // $this->getCommand("quest")->setExecutor(new QuestCommands($this));
+        // todo // $this->getCommand("party")->setExecutor(new PartyCommands($this));
+        // todo // $this->getServer ()->getScheduler()->scheduleRepeatingTask (new ManaTask($this), 40);
+	
+        // todo // register pets main file
+        
+        // todo // add Enchants
+
+        // remove clans for a while // why? Cause I Will Add It Later On.. Duh..
+
+        // todo // stop world time // if enable // note: Lazy... Is My Nature...
     }
+
+   public function onDisable(){
+    $this->getLogger()->info($this->getMessage("msg", "Disabling%Message"));
+    $this->db->close();
+    $this->inventories->close();
+    $this->getLogger()->notice($this->getMessage("msg", "Disabled%Message"));
+}
 
     public function getMessage($type, $message) { // A Must :P
         if($type == "msg"){
             $i = str_replace("&", "§", $this->msg->getNested($message));
         }
-        if($type == "auth"){
-            $i = str_replace("&", "§", $this->auth->getNested($message));
-        }
-        if($type == "config"){
+        if($type == "conf"){
             $i = str_replace("&", "§", $this->conf->getNested($message));
         }
         return $i; // horrah??
     }
 
-/*Plugins OnEnable*/
-   public function onEnable(){
-
-		
-  //  $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this);
-    //$this->getCommand("quest")->setExecutor(new QuestCommands($this));
-   // $this->getCommand("party")->setExecutor(new PartyCommands($this));
-    //$this->getServer ()->getScheduler()->scheduleRepeatingTask (new ManaTask($this), 40);
-		//$this->mmorpg = new Config($this->getDataFolder() . "MMOSettings.yml", CONFIG::YAML, array(
-            //"TargetWorld" => "",
-           // "Alllow Block Placing" => false,
-           // "Allow Block Breaking" => false,
-           // "Disable Item Losing" => true,
-      //  ));
-
-		AntiHack::enable($this);
-        $this->antihack = AntiHack::getInstance();
-
-		//$this->getServer()->getPluginManager()->registerEvents(new \ARCore\Pets\main(), $this);
-/*Enchant Manager */
-       // $this->getServer()->getPluginManager()->registerEvents(new EnchantManager($this), $this);
-       //Trying To Squash All The Setting (yml file)
-       //might be ugly
-       /*
-       $this->arcore = new Config($this->getDataFolder() . "ARCoreSettings.yml", CONFIG::YAML, array(
-
-       ))
-
-
-
-
-
-
-
-      */
-
-//Using EconomyAPI by onebone
-            $this->api = EconomyAPI::getInstance(); 
-            
-//Inventory Saver OnEnable//
-        @mkdir($this->getDataFolder());
-        $this->inventories = new \SQLite3($this->getDataFolder()."inventories.db", SQLITE3_OPEN_CREATE | SQLITE3_OPEN_READWRITE);
-        $level = strtolower($this->getServer()->getDefaultLevel()->getFolderName());
-        $this->inventories->exec("CREATE TABLE IF NOT EXISTS `$level` (name TEXT PRIMARY KEY, slots BLOB, armor BLOB)");
-
-
-/////Start Of Clans [OnEnable]/////
-		@mkdir($this->getDataFolder());
-		
-		if(!file_exists($this->getDataFolder() . "PlayerClanBanned.txt")) {
-			$file = fopen($this->getDataFolder() . "PlayerClanBanned.txt", "w");
-			$txt = "Admin:admin:Staff:staff:Owner:owner:Builder:builder:Op:OP:op";
-			fwrite($file, $txt);
-		}
-		$this->getServer()->getPluginManager()->registerEvents(new FactionListener($this), $this);
-		$this->fCommand = new FactionCommands($this);
-		
-		$this->prefs = new Config($this->getDataFolder() . "ClansOptions.yml", CONFIG::YAML, array(
-		"CreateCost" => 3000,
-		"ClaimCost" => 100000,
-		"OverClaimCost" => 25000,
-		"AllyCost" => 5000,
-		"AllyPrice" => 5000,
-		"SetHomeCost" => 150,
-		"MaxFactionNameLength" => 4,
-		"MaxPlayersPerFaction" => 100,
-		"OnlyLeadersAndOfficersCanInvite" => true,
-		"OfficersCanClaim" => false,
-		"PlotSize" => 30,
-        "PlayersNeededInFactionToClaimAPlot" => 5,
-        "PowerNeededToClaimAPlot" => 1000,
-        "PowerNeededToSetOrUpdateAHome" => 250,
-        "PowerGainedPerPlayerInFaction" => 50,
-        "PowerGainedPerKillingAnEnemy" => 15, 
-		"PowerReducedPerDeathByAnEnemy" => 10,
-        "PowerGainedPerAlly" => 100,
-        "TheDefaultPowerEveryFactionStartsWith" => 0,
-        "EnableOverClaim" => true,
-		));
-		$this->db = new \SQLite3($this->getDataFolder() . "FactionPower.db");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS master (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, rank TEXT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS confirm (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, invitedby TEXT, timestamp INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS alliance (player TEXT PRIMARY KEY COLLATE NOCASE, faction TEXT, requestedby TEXT, timestamp INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS motdrcv (player TEXT PRIMARY KEY, timestamp INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS motd (faction TEXT PRIMARY KEY, message TEXT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS plots(faction TEXT PRIMARY KEY, x1 INT, z1 INT, x2 INT, z2 INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS home(faction TEXT PRIMARY KEY, x INT, y INT, z INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS strength(faction TEXT PRIMARY KEY, power INT);");
-		$this->db->exec("CREATE TABLE IF NOT EXISTS allies(ID INT PRIMARY KEY,faction1 TEXT, faction2 TEXT);");
-/////Clans Ends On Enable////
-
-//Todo.
-/*
-* Config. [DONE]
-* Clean Up..
-* ReWrite.
-* Pure Code.
-*/
-
-//Under Here Making Config..
-
-//load level/world
-        $this->getServer()->loadLevel($this->custom->get("LoadDefaultWorld"));
-/*Server Name*/
-		$this->getServer()->getNetwork()->setName($this->custom->get("ServerName"));
-
-
-///This Is To register Events!
-///Dont Write It Again Or Else It Will Send 2 Events On A Row..
-       $this->getServer()->getPluginManager()->registerEvents($this ,$this);
-       $this->getLogger()->info("Enabled...");
-       $this->getServer()->getDefaultLevel();
-       $this->getServer()->getDefaultLevel()->setTime(50000);
-       $this->getServer()->getDefaultLevel()->stopTime();
-		//Pets OnEnable
-		$this->getServer()->getCommandMap()->register('pets', new PetCommand($this,"pets"));
-		Entity::registerEntity(ChickenPet::class);
-		Entity::registerEntity(WolfPet::class);
-		Entity::registerEntity(PigPet::class);
-		Entity::registerEntity(BlazePet::class);
-		Entity::registerEntity(MagmaPet::class);
-		Entity::registerEntity(RabbitPet::class);
-		Entity::registerEntity(BatPet::class);
-		Entity::registerEntity(SilverfishPet::class);
-		Entity::registerEntity(SpiderPet::class);
-		Entity::registerEntity(CowPet::class);
-		Entity::registerEntity(CreeperPet::class);
-	    Entity::registerEntity(IronGolemPet::class);
-        Entity::registerEntity(HuskPet::class);
-        Entity::registerEntity(EndermanPet::class);
-        Entity::registerEntity(SheepPet::class);
-        Entity::registerEntity(WitchPet::class);
-		Entity::registerEntity(BlockPet::class);
-
-		$this->PetPrices = new Config($this->getDataFolder() . "PetPrices.yml", CONFIG::YAML, array(
-        "BlazePrices" => 1000,
-        "PigPrices" => 1000,
-		"ChickenPrices" => 1000,
-        "WolfPrices" => 1000,
-	    "RabbitPrices" => 1000,
-        "MagmaPrices" => 1000,
-        "BatPrices" => 1000,
-    	"SilverfishPrices" => 1000,
-	    "SpiderPrices" => 1000,
-        "CowPrices" => 1000,
-		"CreeperPrices" => 1000,
-		"IronGolemPrices" => 1000,
-        "HuskPrices" => 1000,
-	    "EndermanPrices" => 1000,
-        "SheepPrices" => 1000,
-        "WitchPrices" => 1000,
-        "BlockPrices" => 1000,
-		));
-		@mkdir($this->getDataFolder());
-		@mkdir($this->getDataFolder() . "PetPlayer");
-
-       $this->getLogger()->notice("Pets Loaded!");
-	   //Pets OnEnable
-       //
-       $this->getLogger()->notice("Clans Loaded!");
-       $this->getLogger()->notice("Authentication Loaded!");
-       $this->getLogger()->notice("Customize Player Loaded!");
-       $this->getLogger()->notice("Particles Loaded!");
-       $this->getLogger()->notice("ChatFilter Loaded!");
-       $this->getLogger()->notice("AntiHacks Loaded!");
-
-        $this->manager = new ParticleManager($this);
-        $this->filter = new ChatFilter();
-
-        $this->getServer()->getScheduler()->scheduleRepeatingTask(new ChatFilterTask($this), 30);
-       
-			}
-
-   
-/*Plugins OnDisable*/
-   public function onDisable(){
-       $this->getLogger()->info("Disabled...");
-       $this->getLogger()->warning("Pets Unloaded!"); 
-       $this->getLogger()->warning("Clans Unloaded!");
-       $this->getLogger()->warning("Authentication Unloaded!");
-       $this->getLogger()->warning("Customize Player Unloaded!");
-       $this->getLogger()->warning("Particles Unloaded!");    
-       $this->getLogger()->warning("ChatFilter Unloaded!");   
-       $this->getLogger()->warning("AntiHacks Unloaded!");
-       $this->db->close();
-       $this->inventories->close();
-        //$this->conf->set('users', $this->users);, $this->users
-      //  $this->conf->save();
-	
-   }
-   //AntiHack
-    public function onCommandAntiHack(CommandSender $sender, Command $command, $label, array $args) {
-        $subcommand = strtolower(array_shift($args));
-        switch ($subcommand) {
-            default:
-                return false;
-        }
-    }
-   /*
-   ChatFilter
-   */
-    public function onPlayerChat(PlayerChatEvent $event) {
-        if (!in_array($event->getPlayer()->getDisplayName()) && !$this->filter->check($event->getPlayer(), $event->getMessage())) {
-            $event->setCancelled(true);
-            $event->getPlayer()->sendMessage(TextFormat::RED . " I'm sorry, I can't let you say that.");
-        }
-    }
-   /*
-   PARTICLES
-   
-   */
-    public function onCommandParticles(CommandSender $sender, Command $command, $label, array $args) {
-        $subcommand = strtolower($command->getName('arparticles'));
-        switch ($subcommand) {
-            case "give";
-                if(count($args) < 1){
-                    array_unshift($args, $sender->getDisplayName());
-                }
-
-                /**
-                 * Check perms, then give particles
-                 */
-                if ($sender->hasPermission("arparticles")) {
-                    if($this->giveParticle(...$args)) {
-                        $sender->sendMessage(TextFormat::BLUE . ' ' . $args[0] . ' has a new particle effect!');
-                    } else {
-                        $this->getServer()->broadcastMessage(TextFormat::BLUE . ' Unable to give ' . $args[0] . ' a new particle effect!');
-                    }
-                    return true;
-                }
-
-                $sender->sendMessage(TextFormat::RED . " You don't have permissions to do that...");
-                return true;
-            case "remove":
-                if(count($args) < 1){
-                    array_unshift($args, $sender->getDisplayName());
-                }
-
-                /**
-                 * Check perms, then remove particles
-                 */
-                if ($sender->hasPermission("arparticles")) {
-                    $args[] = true;
-                    if($this->removeParticle(...$args)) {
-                        $sender->sendMessage(TextFormat::RED . ' ' . $args[0] . '\'s particle effect was removed!');
-                    } else {
-                        $sender->sendMessage(TextFormat::RED . ' Unable to remove ' . $args[0] . '\'s particle effect!');
-                    }
-                    return true;
-                }
-
-                $sender->sendMessage(TextFormat::RED . " You don't have permissions to do that...");
-                return true;
-            case "help":
-                $sender->sendMessage(TextFormat::GREEN . ' Available commands: give, remove');
-                return true;
-                break;
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Give a player particles if they are in the config
-     *
-     * @param PlayerLoginEvent $event The login event
-     */
-    public function PlayerLoginEventParticles(PlayerLoginEvent $event) {
-        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
-            $this->giveParticle($event->getPlayer()->getDisplayName(), $this->players[$event->getPlayer()->getDisplayName()]);
-        }
-    }
-
-    /**
-     * Remove the particles from a player when they leave
-     *
-     * @param PlayerQuitEvent $event The quit event
-     */
-    public function PlayerQuitEventParticles(PlayerQuitEvent $event) {
-        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
-            $this->removeParticle($event->getPlayer()->getDisplayName());
-        }
-    }
-
-    /**
-     * Give a player particles when they respawn
-     *
-     * @param PlayerRespawnEvent $event The respawn event
-     */
-    public function PlayerRespawnEventParticles(PlayerRespawnEvent $event) {
-        if (isset($this->players[$event->getPlayer()->getDisplayName()])) {
-            $this->giveParticle($event->getPlayer()->getDisplayName(), $this->players[$event->getPlayer()->getDisplayName()]);
-        }
-    }
-
-    /**
-     * Give a user particles
-     *
-     * @param  string $user     The username of the person to give particles
-     * @param  string $particle The particle effect to give (The class name)
-     * @return boolean          Whether or not giving the particles was successful
-     */
     public function giveParticle($user = '', $particle = '') {
         if(($player = $this->getServer()->getPlayerExact($user)) instanceof Player) {
             if(!isset($this->particles[$player->getDisplayName()])) {
@@ -589,13 +362,6 @@ class ARCore extends PluginBase implements Listener
         return false;
     }
 
-    /**
-     * Remove the particles from the user
-     *
-     * @param  string $user  The username of the person to take the particles from
-     * @param  boolean $unset Whether or not to unset the user from the config
-     * @return boolean        Whether or not the command was successful
-     */
     public function removeParticle($user = '', $unset = false) {
         if(($player = $this->getServer()->getPlayerExact($user)) instanceof Player) {
             if(isset($this->particles[$player->getDisplayName()])) {
@@ -610,11 +376,6 @@ class ARCore extends PluginBase implements Listener
         return false;
     }
 
-    /**
-     * Get the particle class for the manager
-     * @param  string $particle The particle class
-     * @return string           The particle
-     */
     public function getParticleClass($particle) {
         $path = explode('\\', $particle);
         $particle = array_pop($path);
@@ -638,131 +399,6 @@ class ARCore extends PluginBase implements Listener
         return $var;
     }
 
-///START OF SIMPLE CUSTOM PLAYERS///
-/*Making Config For MaxHP And Hunger When Player Join And Die*/
-/*
-  public function testonQuit(PlayerQuitEvent $event) {
-    $p = $event->getPlayer ();
-    $this->data = new Config ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml");
-    unlink ($this->data);
-  }
-
-  public function testonjoin(PlayerJoinEvent $event) {
-    $p = $event->getPlayer ();
-    @mkdir($this->getDataFolder () . "plugins/ARCore/Player/");
-    @file_put_contents ($this->getDataFolder () . "plugins/ARCore/Player/" . $p->getName () . ".yml", yaml_emit([
-    "Health" => 40,
-    "MaxHealth" => 40
-    ]));
-  }*/
-//DONE!
-/*Plugin OnJoin*/
-   public function onJoiningPlayerSettings(PlayerJoinEvent $event){ 
-       $event->setJoinMessage("");
-       $player = $event->getPlayer(); 
-       $player->setFood($this->custom->get("SetPlayerFoodBarOnJoin"));
-       $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnJoin"));
-       $player->setHealth($this->custom->get("SetPlayerHealthOnJoin"));
-       $player->setMovementSpeed(0.12);//DO NOT MESS WITH THIS!!
-       $player->setGamemode(0);//Forgot To Set A Player Gamemode To Survival??LOL NOW YOU WONT FORGOT!!
-       //under here is non stable code 
-       $positionx = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
-       $positiony = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getY()+1.3;
-       $positionz = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getZ();
-       $worldlevel = $this->getServer()->getDefaultLevel();
-       $player->setLevel($worldlevel);
-       $player->teleport(new Vector3($positionx, $positiony, $positionz, $worldlevel));
-       $player->setRotation(270, 0);//DAFUQ TO USE THIS??!!
-   }
-/*TEST*/
-  public function disableBed(PlayerBedEnterEvent $event){
-        $player = $event->getPlayer();
-        if($player->getServer()->getDefaultLevel()){
-        $player->sendMessage("  §8[§b§lBED§r§8] §0> §7Sorry,You Can't Slept Here Its Mine!!!");
-        $event->setCancelled(true);
-   }
-  }
-    public function onHungerChange(PlayerHungerChangeEvent $e){
-        $p = $e->getPlayer();
-        if($p->getServer()->getDefaultLevel()){
-            $e->setCancelled();
-        }
-    }
-    public function lol(PlayerQuitEvent $event){
-        $event->setQuitMessage("");
-    }
-
-    public function onPlayerKick(PlayerKickEvent $e){
-        $e->setQuitMessage("");
-    }
-/*Plugins PRE*/
-    public function PRE(PlayerRespawnEvent $event){
-       $player = $event->getPlayer(); 
-       $player->setFood($this->custom->get("SetPlayerFoodBarOnRespawn"));
-       $player->setMaxHealth($this->custom->get("SetMaxPlayerHealthOnRespawn"));
-       $player->setHealth($this->custom->get("SetPlayerHealthOnRespawn"));
-       $player->setMovementSpeed(0.12);
-       $player->setGamemode(0);
-    }
-//This Function Will Add Percentage To Gain The Items..
-//Add Config..[DONE]
-/*Plugin dropdeath*/
-  public function dropdeath(PlayerDeathEvent $event){
-      $event->setDeathMessage("");
-    $entity = $event->getEntity();
-    $cause = $entity->getLastDamageCause();
-    if($entity instanceof Player){
-       if($cause instanceof Player){
-        $killer->getInventory()->addItem(Item::get($this->custom->get("DropDeath")));//388
-    }
-  }
-}
-
-    public function ByeVoidz(PlayerMoveEvent $event){
-        if($event->getTo()->getFloorY() <= 7){//lucky 7
-			$player = $event->getPlayer();
-			$x = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
-			$y = $this->getServer()->getDefaultLevel()->getSafeSpawn()-> getY()+1.3;
-			$z = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getZ();
-			$level = $this->getServer()->getDefaultLevel();
-			$player->setLevel($level);
-            $player = $event->getPlayer();
-            $player->setMaxHealth($this->custom->get("NoVoid-SetPlayerMaxHealth"));
-            $player->setHealth($this->custom->get("NoVoid-SetPlayerHealth"));
-            $player->setFood($this->custom->get("NoVoid-SetPlayerFood"));
-            $player->setMovementSpeed(0.12);
-			$player->teleport(new Vector3($x, $y, $z, $level));
-            }
-        }	
-
-		public function PlayerKillCoins(PlayerDeathEvent $event){
-			$player = $event->getEntity();
-			$name = strtolower($player->getName());
-     if ($player instanceof Player){
-				$cause = $player->getLastDamageCause();
-		if($cause instanceof EntityDamageByEntityEvent){
-					$damager = $cause->getDamager();
-					if($damager instanceof Player){
-						$PlayerKiller = $this->custom->get("Player-Gain-Coins-PerKill");
-						$PlayerKilled = $this->custom->get("Player-Lose-Coins-PerDeath");
-						$damager->sendTip($this->custom->get("Player-Gains-Coins-For-Killing-Message"));
-						$player->sendTip($this->custom->get("Player-Lose-Coins-For-Dying-Message"));
-						$this->api->addMoney($damager, $PlayerKiller);
-						$this->api->reduceMoney($player, $PlayerKilled);
-					}
-				}
-			}
-		}
-
-	public function NoDamageForFall(EntityDamageEvent $event){
-		$entity = $event->getEntity();
-		$cause = $event->getCause();
-		if($entity instanceof Player && $entity->hasPermission("nofall.damage")){
-			if($cause == EntityDamageEvent::CAUSE_FALL){
-				$event->setCancelled(true);
-			}
-		}
-	}
 
 ///ENDS OF SIMPLE CUSTOM PLAYERS///
 
