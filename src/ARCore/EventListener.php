@@ -28,7 +28,7 @@ class EventListener implements Listener {
 
     public function __construct(ARCore $plugin) {
         $this->plugin = $plugin;
-        $this->conf = $this->plugin->getConfig();
+        $this->conf = new Config($this->getDataFolder() . "config.yml"); // change it to make sure it right.
         $this->msg = new Config($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml");
         if($this->conf->get("Enable%Chat%Filter") == true){
             $this->filter = new ChatFilter();
@@ -103,20 +103,24 @@ class EventListener implements Listener {
             $player->teleport(new Vector3($positionx, $positiony, $positionz, $worldlevel));
         }
     }
- /*TEST*/
-   public function disableBed(PlayerBedEnterEvent $event){
+    public function disableBed(PlayerBedEnterEvent $event){
          $player = $event->getPlayer();
-         if($player->getServer()->getDefaultLevel()){
-         $player->sendMessage("  §8[§b§lBED§r§8] §0> §7Sorry,You Can't Slept Here Its Mine!!!");
-         $event->setCancelled(true);
-    }
-   }
-     public function onHungerChange(PlayerHungerChangeEvent $e){
-         $p = $e->getPlayer();
-         if($p->getServer()->getDefaultLevel()){
-             $e->setCancelled();
-         }
-     }
+         if($this->conf->get("Disable.Use%Of%Bed") == true){
+             if($player->getServer()->getLevelByName($this->conf->get("Disable.Bed%World"))){
+                 $player->sendMessage($this->plugin->getMessage("msg", "Bed%Disabled%At%This%World"));
+                 $event->setCancelled(true);
+                }
+            }
+        }
+
+    public function onHungerChange(PlayerHungerChangeEvent $event){
+         $player = $event->getPlayer();
+         if($this->conf->get("Disable.Use%Of%Hunger") == true){
+             if($player->getServer()->getLevelByName($this->conf->get("Disable.Hunger%World"))){
+                 $event->setCancelled();
+                }
+            }
+        }
      public function lol(PlayerQuitEvent $event){
          $event->setQuitMessage("");
      }
@@ -127,15 +131,26 @@ class EventListener implements Listener {
  /*Plugins PRE*/
      public function PRE(PlayerRespawnEvent $event){
         $player = $event->getPlayer(); 
-        $player->setFood($this->conf->get("SetPlayerFoodBarOnRespawn"));
-        $player->setMaxHealth($this->conf->get("SetMaxPlayerHealthOnRespawn"));
-        $player->setHealth($this->conf->get("SetPlayerHealthOnRespawn"));
-        $player->setMovementSpeed(0.12);
-        $player->setGamemode(0);
-     }
- //This Function Will Add Percentage To Gain The Items..
- //Add Config..[DONE]
- /*Plugin dropdeath*/
+        $player->setFood($this->conf->get("Setting.Set%Player%Food%Bar%On%Respawn"));
+        $player->setMaxHealth($this->conf->get("Setting.Set%Max%Player%Health%On%Respawn"));
+        $player->setHealth($this->conf->get("Setting.Set%Player%Health%On%Respawn"));
+        if($this->conf->get("Enable%Set%Player%Movement%Speed%On%Join") == true){
+            if(0.15 > $this->conf->get("Setting.Set%Player%Movement%Speed%On%Join")){
+                $player->setMovementSpeed($this->conf->get("Setting.Set%Player%Movement%Speed%On%Join"));
+            }else{
+                $this->plugin->getLogger()->warning($this->plugin->getMessage("msg", "Player%Speed%Must%Less%Than"));
+                $player->setMovementSpeed(0.12);
+            }
+        }
+        if($this->conf->get("Enable%Set%Player%Game$Mode%To%Survival") == true){
+            if($this->conf->get("Enable%Operator%To%Bypass%Force%Gamemode") == false){
+                $player->setGamemode(0);//Forgot To Set A Player Gamemode To Survival??LOL NOW YOU WONT FORGOT!!
+            }else{
+                return;
+            }
+        }
+    }
+
    public function dropdeath(PlayerDeathEvent $event){
        $event->setDeathMessage("");
      $entity = $event->getEntity();
@@ -192,6 +207,7 @@ class EventListener implements Listener {
              }
          }
      }
+
 
 
 

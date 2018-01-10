@@ -216,6 +216,11 @@ class ARCore extends PluginBase implements Listener
         }
 
         $this->saveDefaultConfig();// get config.yml :P
+        if(!file_exists($this->getDataFolder() . $this->getResource("config.yml")){ // to ensure everything is okay... I put this..
+            if ($this->getResource("config.yml" !== null) { // get resource and check if not null (zero)
+                $this->saveResource("config.yml"); // save the config to Folder RAWR
+                $this->conf = new Config($this->getDataFolder() . "config.yml"); // get it as conf
+        }
         $this->conf = new Config("config.yml"); // the config will be in english // i'm lazy to do this..
         if (!file_exists($this->getDataFolder() . "message_" . $this->conf->getNested("message.lang") . ".yml")) { //start // if message_<lang>.yml not exist do: 
             if ($this->getResource("message_" . $this->conf->getNested("message.lang") . ".yml") !== null) { // get resource and check if not null (zero)
