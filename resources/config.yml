@@ -35,6 +35,13 @@ Enable%Pets: false
 Enable%Anti%Hack: false
 Enable%Chat%Filter: true
 Enable%Particle: false
+Enable%Set%Player%Food%Bar%On%Join: true
+Enable%Set%Max%Player%Health%On%Join: true
+Enable%Set%Player%Health%On%Join: true
+Enable%Set%Player%Movement%Speed%On%Join: true
+Enable%Set%Player%Game$Mode%To%Survival: true
+Enable%Operator%To%Bypass%Force%Gamemode: false
+Enable%Hub%Spawn: true
 
 # Config .. Working On It...
 Setting:
@@ -46,6 +53,7 @@ Setting:
   Set%Player%Food%Bar%On%Respawn: 20000
   Set%Max%Player%Health%On%Respawn: 20
   Set%Player%Health%On%Respawn: 40
+  Set%Player%Movement%Speed%On%Join: 0.12
   Drop%Death: "38801"
   No%Void%Set%Player%Max%Health: 1
   No%Void%Set%Player%Health: 1
@@ -63,6 +71,15 @@ Inventories:
     #-
     #-
 
+# Below This Is For The Function To Disable Some Events Like: Disable Player From Sleep!!
+Disable:
+  Use%Of%Bed: false
+  Use%Of%Hunger: true
+  Hunger%World:
+  - World Name
+  Bed%World:
+  - World Name
+  # - Second World Name... // Same As Above
 
 # If Enable Pets
 # Set Price

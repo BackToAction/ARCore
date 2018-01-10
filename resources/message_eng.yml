@@ -38,7 +38,9 @@ Chat%Filter%Sorry: "&c I'm sorry, I can't let you say that."
 Particle%Enabled: "&a Particle Enabled."
 Particle%Disabled: "&c Particle Disabled."
 
- 
+Bed%Disabled%At%This%World: "§8[§b§lBED§r§8] §0> §7Sorry,You Can't Slept Here Its Mine!!!"
+
+Player%Speed%Must%Less%Than: "&c Player Speed Must Less Than 0.15. Set 0.12 As Default Speed..."
 
 # Working On It...
 Player-Gains-Coins-For-Killing-Message: "You Gains 20 Coins For Killed A Player."
