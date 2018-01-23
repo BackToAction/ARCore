@@ -13,6 +13,14 @@ currency:
   # default use: arcc
   api: arcc
 
+Enable%FGC: true
+FGC:
+  # there is 3 available feature: Faction, Guild, Clan
+  # put Guild as default
+  # Please Put It Without Changing Anything, For Example: Faction
+  # If You Put It As : faction // It Would Not Give You This Feature But Would Automatically Set Guild As Default.
+  Feature: Guild
+
 message:
   # Default Language: eng
   # Available Language: eng
@@ -42,6 +50,9 @@ Enable%Set%Player%Movement%Speed%On%Join: true
 Enable%Set%Player%Game$Mode%To%Survival: true
 Enable%Operator%To%Bypass%Force%Gamemode: false
 Enable%Hub%Spawn: true
+Enable%Drop%Death%Chance: false
+Enable%No%Void: true
+Enable%Gain%Coins%From%PK: false
 
 # Config .. Working On It...
 Setting:
@@ -54,12 +65,17 @@ Setting:
   Set%Max%Player%Health%On%Respawn: 20
   Set%Player%Health%On%Respawn: 40
   Set%Player%Movement%Speed%On%Join: 0.12
-  Drop%Death: "38801"
+  Drop%Death%Chance%Item: "388"
   No%Void%Set%Player%Max%Health: 1
   No%Void%Set%Player%Health: 1
   No%Void%Set%Player%Food: 200000
-  Player%Gain%Coins%Per%Kill: 20
-  Player%Lose%Coins%Per%Death: 10
+  Gain%Coins%From%PK: 20
+  Lost%Coins%From%Pked: 10
+
+NoVoid:
+  Y-NoVoid: 7
+  # Note: Only For One World, Why? Because.... 'You See It Yourself.'
+  NoVoid%World: World Name
 
 # Inventories Saver Setting...
 Inventories:

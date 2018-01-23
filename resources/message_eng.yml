@@ -42,6 +42,8 @@ Bed%Disabled%At%This%World: "§8[§b§lBED§r§8] §0> §7Sorry,You Can't Slept 
 
 Player%Speed%Must%Less%Than: "&c Player Speed Must Less Than 0.15. Set 0.12 As Default Speed..."
 
+Drop%Message: "You Luck Is Good, You Gain A Golden Apple."
+
 # Working On It...
 Player-Gains-Coins-For-Killing-Message: "You Gains 20 Coins For Killed A Player."
 Player-Lose-Coins-For-Dying-Message: "You Lose 10 Coins For Being Killed By A Player."
