@@ -246,6 +246,7 @@ class ARCore extends PluginBase implements Listener
                 $this->getLogger()->warning($this->getMessage("msg", "No%EconomyS"));
                 $this->getLogger()->notice($this->getMessage("msg", "Using%Default%API"));
                 $this->conf->set("currency.api", "arcc");
+                $this->currency = CurrencyAPI::getInstance();
             }
         }else{
             $this->getLogger()->notice($this->getMessage("msg", "Thank%Using%ARC%Currency"));

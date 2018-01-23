@@ -36,6 +36,13 @@ class EventListener implements Listener {
         if($this->conf->get("Enable%Particle") == true){
             $this->manager = new ParticleManager();
         }
+        if($this->conf->get("currency.api") == "eco"){
+            if($this->plugin->getServer()->getPluginManager()->getPlugin("EconomyS")){
+                $this->eco = EconomyAPI::getInstance();
+            }else{
+                $this->currency = new CurrencyAPI(); // todo
+            }
+        }
     }
 
     public function onPlayerChat(PlayerChatEvent $event) {
@@ -128,7 +135,7 @@ class EventListener implements Listener {
      public function onPlayerKick(PlayerKickEvent $e){
          $e->setQuitMessage("");
      }
- /*Plugins PRE*/
+     
      public function PRE(PlayerRespawnEvent $event){
         $player = $event->getPlayer(); 
         $player->setFood($this->conf->get("Setting.Set%Player%Food%Bar%On%Respawn"));
@@ -150,36 +157,62 @@ class EventListener implements Listener {
             }
         }
     }
-
-   public function dropdeath(PlayerDeathEvent $event){
-       $event->setDeathMessage("");
-     $entity = $event->getEntity();
-     $cause = $entity->getLastDamageCause();
-     if($entity instanceof Player){
-        if($cause instanceof Player){
-         $killer->getInventory()->addItem(Item::get($this->conf->get("DropDeath")));//388
-     }
-   }
- }
+    
+    public function dropdeath(PlayerDeathEvent $event){
+        $event->setDeathMessage("");
+        $entity = $event->getEntity();
+        $cause = $entity->getLastDamageCause();
+        if($this->conf->get("Enable%DropDeath%Chance")){
+            $chance = mt_rand(1, 555);
+            if($chance == 62){
+                if($entity instanceof Player){
+                    if($cause instanceof Player){
+                        $cause->sendMessage($this->plugin->getMessage("msg", "Drop%Message"));
+                        $cause->getInventory()->addItem(Item::get($this->conf->get("Setting.Drop%Death%Chance%Item")));//388
+                    }
+                }
+            }
+        }
+    }
  
      public function ByeVoidz(PlayerMoveEvent $event){
-         if($event->getTo()->getFloorY() <= 7){//lucky 7
-             $player = $event->getPlayer();
-             $x = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getX();
-             $y = $this->getServer()->getDefaultLevel()->getSafeSpawn()-> getY()+1.3;
-             $z = $this->getServer()->getDefaultLevel()->getSafeSpawn()->getZ();
-             $level = $this->getServer()->getDefaultLevel();
-             $player->setLevel($level);
-             $player = $event->getPlayer();
-             $player->setMaxHealth($this->conf->get("NoVoid-SetPlayerMaxHealth"));
-             $player->setHealth($this->conf->get("NoVoid-SetPlayerHealth"));
-             $player->setFood($this->conf->get("NoVoid-SetPlayerFood"));
-             $player->setMovementSpeed(0.12);
-             $player->teleport(new Vector3($x, $y, $z, $level));
-             }
-         }	
+         if($this->conf->get("Enable%No%Void") == true){
+             if($event->getTo()->getFloorY() <= $this->conf->get("NoVoid.T-NoVoid")){
+                 $player = $event->getPlayer();
+                 $x = $this->getServer()->getLevelByName($this->conf->get("NoVoid.NoVoid%World"))->getSafeSpawn()->getX();
+                 $y = $this->getServer()->getLevelByName($this->conf->get("NoVoid.NoVoid%World"))->getSafeSpawn()-> getY()+1.3;
+                 $z = $this->getServer()->getLevelByName($this->conf->get("NoVoid.NoVoid%World"))->getSafeSpawn()->getZ();
+                 $level = $player->getServer()->getLevelByName($this->conf->get("NoVoid.NoVoid%World"));
+                 $player->setLevel($level);
+                 $player->telepoty(new Vector3($x, $y, $z, $level));
+                }
+            }
+        }
  
-         public function PlayerKillCoins(PlayerDeathEvent $event){
+         public function GetCoinsFromPK(PlayerDeathEvent $event){
+             if($this->conf->get("Enable%Gain%Coins%From%PK") == true){
+                 $victim = $event->getEntity(); // A User(Player) From Minecraft Is Also An Entity. Thus Let Say That This Entity Is User(Player) // From Player POV
+                 $victim_ign = strtolower($player->getName()); // might get remove by me( HyGlobalHD )
+                 if($victim instanceof Player){// Now, To Make Sure The Entity Is A Player So When Hit Other Entity Nothing Happen, ( Hopefully ) 
+                    $cause = $victim->getLastDamageCause(); // Who The Last Cause That Beat The User(Player) To Death.
+                    if($cause instanceof EntityDamageByEntityEvent){
+                        $culprit = $cause->getDamager(); // The One Who Kill The User(Player)
+                        if($culprit instanceof Player){// To Make Sure The Culprit Is Also A Player
+                            $gains = $this->conf->get("Setting.Gain%Coins%From%PK"); // get config \O/
+                            $losts = $this->conf->get("Setting.Lost%Coins%From%Pked");
+                            if($this->conf->get("currency.api") == "eco"){
+                                $this->eco->addMoney($culprit, $gains);
+                                $this->eco->reduceMoney($victim, $losts)
+                                // No Need Message Or Popup // Note: To Encourage Use Of Hud. So Enable IT!!
+                            }
+                            elseif($this->conf->get("currency.api") == "arcc"){
+                                $this->currency->addCoins($culprit, $gains);
+                                $this->currency->reduceCoins($victim, $losts);
+                            }
+                        }
+                    }
+                }
+             }
              $player = $event->getEntity();
              $name = strtolower($player->getName());
       if ($player instanceof Player){
@@ -207,6 +240,7 @@ class EventListener implements Listener {
              }
          }
      }
+
 
 
 
