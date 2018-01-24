@@ -58,6 +58,8 @@ class CurrencyAPI {
             if($coins <= $lastest){
                 $i->set("Coins", $lastest - $coins);
                 $i->save();
+            }else{
+                return -1;// later if want to make shop, ensure to get this if the player coins isn't sufficient which would enter as false
             }
         }
     }

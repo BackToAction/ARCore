@@ -4,6 +4,7 @@ namespace ARCore\API;
 
 use pocketmine\utils\Config;
 use pocketmine\utils\Utils;
+use ARCore\ARCore;
 
 class DatabaseAPI {
 
@@ -30,7 +31,7 @@ class DatabaseAPI {
                 "Username" => $ign,
                 "Coins" => 0,
                 "Level" => 1,
-                "Exp" => 0,
+                "Exp" => 0, "MaxExp" => 100,
                 "Class" => 0,
                 "Health" => 10,
                 "Mana" => 10,
