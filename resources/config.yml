@@ -13,6 +13,19 @@ currency:
   # default use: arcc
   api: arcc
 
+# Note To Me: Class's Skills Would'nt Include In Level Feature Cause Player Can Only Advance To Other Branch Class By Doin Quest Or Triggered An Event.
+# Spoiled Next Feature Todo LoL...
+Enable%Level: true
+Level:
+  # eg: if in level 1, the maxexp is 100, then in level 2, 100*2, then level 3, 200*2, ... 
+  # Multiplier Must Be Greater Or Same From 2. Else 2 Will Be Set As Default.
+  MultipleExpPerLevel: 2
+  # Plus Max Exp Is For Like Example, If Level Up, It Will Undergo 100*(multiplier)+(PlusMaxExp). Leve it 0 if you dont want to add anything.
+  PlusMaxExp: 0
+  # add to set difficulty
+  Max%Level: 150
+  
+
 Enable%FGC: true
 FGC:
   # there is 3 available feature: Faction, Guild, Clan
