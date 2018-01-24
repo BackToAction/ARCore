@@ -1,6 +1,5 @@
 # ARCore
 #### Notice: You Can Find ARCore Website [__Here.__](https://backtoaction.github.io/ARCore/) 
-#### Notice: BackToAction Is Reqruiting Devs [Click Me.](https://github.com/BackToAction/recruiting)
 #### Notice: Rewrite Is In Progress, I Will Update It In Github At [Here.](https://github.com/BackToAction/ARCore/tree/rewrite-arch-2)
 ##### Description: Used To Be Under Development Of [ArchRPG Organization](https://github.com/ArchRPG/) . Then Due To Certain Circumstances The Plugin Was Abandoned.
 
