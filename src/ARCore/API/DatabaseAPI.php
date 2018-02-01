@@ -35,6 +35,7 @@ class DatabaseAPI {
                 "Class" => 0,
                 "Health" => 10,
                 "Mana" => 10,
+                "AttrPoint" => 0, "SkillPoint" => 0,
                 "Stats" => [
                     "str" => 5, "int" => 5, "dex" => 5, "luck" => 5,
                 ],
@@ -44,7 +45,7 @@ class DatabaseAPI {
                 "Title" => [
                     "New Lancer" => "You Still Confuse With The Server As You Still New.",
                 ],
-                "Description" => "Tell A Bit About Yourself",
+                "Description" => "Tell A Bit About Yourself.",
                 "Likes" => 0,
                 "Achievements" => 0,
                 "WarnPoints" => 0,

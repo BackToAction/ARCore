@@ -51,7 +51,7 @@ class LevelAPI {
         }
     }
 
-    public function reduceLevel($user, $reduce_level){
+    public function reduceLevel($user, $reduce_level){ // will be un-used. xP
         $i = $this->getLevel($user);
         $ii = $this->database->getPlayerDatabase($user);
         if($i > $reduce_level){
@@ -69,6 +69,16 @@ class LevelAPI {
     public function LevelUp($user){
         $i = $this->database->getPlayerDatabase($user);
         $restrition = $this->conf->get("Level.Max%Level");
+        $getLevel = $this->getLevel($user);
+        // todo.
+        if($getLevel >= $restrition){
+            return true;
+        }elseif($getLevel < $restrition){
+            // todo
+            $cal = $getLevel + 1;
+            $i->set("Level", $cal);
+            $i->save();
+        }
     }
 
 
