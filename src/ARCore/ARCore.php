@@ -127,18 +127,6 @@ use ARCore\Pets\CreeperPet;
 use ARCore\Pets\EndermanPet;
 use ARCore\Pets\HuskPet;
 use ARCore\Pets\IronGolemPet;
-//Auths Implement
-use ARCore\Auth\EventListener;
-use ARCore\Auth\Tasks\PopupTipTick;
-use ARCore\Auth\Tasks\TimeoutTask;
-use ARCore\Auth\Tasks\MessageTick;
-use ARCore\Auth\Commands\ChangePasswordCommand;
-use ARCore\Auth\Commands\ForgotPasswordCommand;
-use ARCore\Auth\Commands\LoginCommand;
-use ARCore\Auth\Commands\LogoutCommand;
-use ARCore\Auth\Commands\PinCommand;
-use ARCore\Auth\Commands\RegisterCommand;
-use ARCore\Auth\Commands\ResetPasswordCommand;
 //economys
 use onebone\economyapi\EconomyAPI;
 use ARCore\Particle\ParticleManager;
@@ -148,6 +136,12 @@ use ARCore\ChatFilter\ChatFilterTask;
 
 use ARCore\Task\Hud;
 use ARCore\Commands\AntiHackCommand;
+
+//API :: still in dev
+use ARCore\API\DatabaseAPI;
+use ARCore\API\CurrencyAPI;
+use ARCore\API\ExpAPI;
+use ARCore\API\LevelAPI;
 
 class ARCore extends PluginBase implements Listener
 {
@@ -188,6 +182,7 @@ class ARCore extends PluginBase implements Listener
 
     public function onEnable()
     {
+        $this->database = DatabaseAPI::getInstance();
         $this->getServer()->getPluginManager()->registerEvents(new EventListener($this), $this); // register ARCore's EventListener .TODO.
         // Note To Future Contributer: Anything That Relate To PluginManager Or Scheduler Put Up Here. // To Look Not Messy..
         $this->getServer()->getPluginManager()->registerEvents($this ,$this); // to register Events In ARCore.php // prove: $this(ARCore)
@@ -250,6 +245,14 @@ class ARCore extends PluginBase implements Listener
             }
         }else{
             $this->getLogger()->notice($this->getMessage("msg", "Thank%Using%ARC%Currency"));
+        }
+
+        if($this->conf->get("Enable%Level") == true){
+            $this->getLogger()->notice($this->getMessage("msg", "Enable%Level"));
+            $this->level = LevelAPI::getInstance();
+            $this->exp = ExpAPI::getInstance();
+        }else{
+            $this->getLogger()->notice($this->getMessage("msg", "Level%Disabled"));
         }
 
         if($this->conf->get("Enable%Anti%Hack")){
