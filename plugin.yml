@@ -1,7 +1,7 @@
 name: ARCore
 authors: [HyGlobalHD,GamerXzavier,Adam1609,NeuroBinds,Skull3x]
 main: ARCore\ARCore
-api: [2.0.0]
+api: [3.0.1]
 version: 0.0.3_2#UNSTABLE
 commands:
   c:
