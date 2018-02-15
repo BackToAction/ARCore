@@ -5,12 +5,10 @@ namespace ARCore\Task;
 use ARCore\ARCore;
 use pocketmine\scheduler\PluginTask;
 
-class AntiCheatsTick extends PluginTask
-{
+class Hud extends PluginTask {
     private $plugin;
 
-    public function __construct(ARCore $plugin)
-    {
+    public function __construct(ARCore $plugin) {
         parent::__construct($plugin);
         $this->plugin = $plugin;
     }
