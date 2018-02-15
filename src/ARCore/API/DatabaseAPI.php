@@ -33,8 +33,8 @@ class DatabaseAPI {
                 "Level" => 1,
                 "Exp" => 0, "MaxExp" => 100,
                 "Class" => 0,
-                "Health" => 10,
-                "Mana" => 10,
+                "Health" => 10, "MaxHealth" => 10,
+                "Mana" => 10, "MaxMana" => 10,
                 "AttrPoint" => 0, "SkillPoint" => 0,
                 "Stats" => [
                     "str" => 5, "int" => 5, "dex" => 5, "luck" => 5,

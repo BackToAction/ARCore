@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * Copyrights 2018 @HyGlobalHD (https://github.com/HyGlobalHD)
+ * This Code Is Made By @HyGlobalHD
+ * Please Give Credits For Using This Code As Reference.
+ * Reference: HyGlobalHD's Theory-RPG (https://github.com/SLIMENATIONS/Theory-RPG)
+ */
 namespace ARCore\API;
 
 class StatsAPI {
@@ -32,6 +38,9 @@ class StatsAPI {
 
      public function addStr($user, $ap){}
 
+    public function calcBaseDmg($user){ // not the user's final damage; this is just the base damage.
+        $str = $this->getStr($user);
+    }
 
     /**
      *  calculation for user attack base: str has relation with user level, item attr, equipment.
