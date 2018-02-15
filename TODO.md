@@ -1,30 +1,20 @@
-# TODO:
+## Info
+A Todo List For ARCore.
+
+# TODO(OLD):
 - [x] Custom Player Management
 - [x] Custom Server Management
-   - [x] Server Name
 - [x] Custom Damage Management
 - [x] Simple Authentication System.
 - [x] Add Pets (with EconomyAPI support)
-- [x] Custom Currency (just base on EconomyAPI)
-- [x] Add Money For Killing
-- [x] Support for API 2.0.0
-- [x] Custom LevelUP System
-- [x] Clans System (with EconomyAPI support)
-- [x] AntiHack System [ Had Bugs ]
-   - Will Be Disable Temporary
-   - [ ] Re-Format
-- [x] Chat Filter
-- [x] Particle [Not Working Properly]
-   - Will Be Disable Temporary
-   - [ ] Re-Format
-- [ ] Custom Modified Entity
-   - [ ] Entities With Specific Tag Will Hold Diff Purpose
+- [ ] Custom Modified Entity (could be based on Minibosses)
 - [ ] Add Skill System.
-   - [ ] Under Jobs/Class 
+- [x] Custom Currency (just base on EconomyAPI)
 - [ ] Add Jobs/Class
 - [ ] Add Leaderboard, Achievement Rewards
 - [ ] Add Kits for each Class.
 - [ ] Add Translation
+- [x] Add Money For Killing
 - [ ] Custom NPC
 - [ ] Vaults
 - [ ] Pet Shop
@@ -32,14 +22,76 @@
 - [ ] Custom Commands
 - [ ] Custom Enchants
 - [ ] Add AntiLagg System
+- [x] Support for API 2.0.0
 - [ ] Custom Enchantment API
 - [ ] Custom Accessories
+- [x] Custom LevelUP System
+- [x] Clans System (with EconomyAPI support)
 - [ ] Enchant Shop and Trade
 - [ ] Custom Backgrounds Sound
 - [ ] Using private database for players
 - [ ] Custom Inventory Management(bugs)
 - [ ] Add Auto-Updater
+- [x] AntiHack System [ Had Bugs ]
 - [ ] Custom Items.
 - [ ] Custom Craft Recipes
 - [ ] Custom Chat
 - [ ] Cusom Ranks (People Can Add Ranks Easily)
+- [x] Chat Filter
+- [x] Particle [Not Working Properly]
+
+# TODO(NEW):
+- [ ] Re-base Every Code.
+  - [ ] Put Each Code To Their's Perspective Place.
+    - [ ] Object Oriented.
+  - [ ] Fix Some Miss-Spell (Typo)
+  - [ ] Make The Code More Read-able (User-Friendly)
+    - [ ] Remove Un-Needed Code Or Bugs.
+  - [ ] Change Some Code To Compability With The PMMP's API
+  - [ ] Multi-Language
+    - [ ] Change-Able Message
+    - [ ] English
+    - [ ] Others
+  - [ ] Custom Config
+- [ ] Auto-Update
+  - [ ] Checker
+  - [ ] Enable/Disable Auto-Update.
+- [ ] ARCore's API
+  - [ ] Simple API
+  - [ ] RPG's API
+    - [x] Exp
+    - [x] Level
+    - [ ] Stats
+  - [x] Currency API
+  - [ ] Database API
+- [ ] FGC (Faction, Guild, Clan)
+  - [ ] Change-Able Features.
+- [ ] Add Welcome Message
+  - [ ] Option Enable/Disable (Not For The Player)
+
+
+### FGC TODO
+- [ ] Option To Use F/G/C
+  - [ ] Same Features
+- [ ] Upgrade-Able Slot
+  - [ ] Option To Use F/G/C 's Currency Or Use F/G/C 's Power.
+  - [ ] Limit The Upgrade-Able Slot.
+- [ ] Change-Able The FGC's Owner, Officer, Member Name
+- [ ] Fix Some Bugs
+  - [ ] Fix Spelling.
+  - [ ] Fix Code.
+- [ ] FGC's Power Can Increase By
+  - [ ] Player's Level Up (Depended On Player's Level; If Level Low, The Increase Is Also Low; If Level High, Increase Is Also High)
+  - [ ] Player Join FGC
+  - [ ] Every FGC's Kills
+- [ ] Power Decrease By
+  - [ ] Upgrade Slot
+  - [ ] Remove FGC's Member/Officer
+  - [ ] Disband FGC
+- [ ] Power
+  - [ ] Each Member's Have Their Own Power When Join FGC
+  - [ ] Power Can Only Be Seen By Joining The FGC
+  - [ ] FGC's Power = Total Members's Power
+  - [ ] Can See Own Power
+  - [ ] Power Lost When Not In FGC
+- [ ] 
