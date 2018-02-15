@@ -213,22 +213,6 @@ class EventListener implements Listener {
                     }
                 }
              }
-             $player = $event->getEntity();
-             $name = strtolower($player->getName());
-      if ($player instanceof Player){
-                 $cause = $player->getLastDamageCause();
-         if($cause instanceof EntityDamageByEntityEvent){
-                     $damager = $cause->getDamager();
-                     if($damager instanceof Player){
-                         $PlayerKiller = $this->conf->get("Player-Gain-Coins-PerKill");
-                         $PlayerKilled = $this->conf->get("Player-Lose-Coins-PerDeath");
-                         $damager->sendTip($this->conf->get("Player-Gains-Coins-For-Killing-Message"));
-                         $player->sendTip($this->conf->get("Player-Lose-Coins-For-Dying-Message"));
-                         $this->api->addMoney($damager, $PlayerKiller);
-                         $this->api->reduceMoney($player, $PlayerKilled);
-                     }
-                 }
-             }
          }
  
      public function NoDamageForFall(EntityDamageEvent $event){
