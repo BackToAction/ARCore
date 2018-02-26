@@ -14,7 +14,7 @@ class ARParticleCommand extends VanillaCommand {
         $this->plugin = $plugin;
     }
 
-    public function execute(CommandSender $sender, Command $command, $label, array $args) {
+    public function execute(CommandSender $sender, Command $command, string $label, array $args) {
         $subcommand = strtolower($command->getName('arparticles'));
         switch ($subcommand) {
             case "give";
