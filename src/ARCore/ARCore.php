@@ -309,6 +309,15 @@ class ARCore extends PluginBase implements Listener{
         "Player-Lose-Coins-PerDeath" => 10,
         "Player-Gains-Coins-For-Killing-Message" => "You Gains 20 Coins For Killed A Player.",
         "Player-Lose-Coins-For-Dying-Message" => "You Lose 10 Coins For Being Killed By A Player.",
+			"OnJoin" => [
+			"EnableSendMessage" => true,
+			"howManyMessage" => 2,
+			"message" => [
+			0 => "First Message.",
+			1 => "Second Message",
+			2 => "Third Message",
+			],
+			],
 		));
 
 /////Start Of Clans [OnEnable]/////
@@ -663,6 +672,15 @@ class ARCore extends PluginBase implements Listener{
        $player->setLevel($worldlevel);
        $player->teleport(new Vector3($positionx, $positiony, $positionz, $worldlevel));
        $player->setRotation(270, 0);//DAFUQ TO USE THIS??!!
+       if($this->custom->get("OnJoin.EnableSendMessage") == true){
+       $i = $this->custom->get("OnJoin.howManyMessage"); // 0 // 2 //3 etc
+	       for($ii = 0; $ii <= $i; $ii++){
+		       // example : OnJoin => message => $ii => "Message";
+		       // by AcNEO to MalakasPlazMC
+	       $player->sendMessage($this->custom->get("OnJoin.message." . $ii));
+		       // now how many message is up to you.
+	       }
+       }
    }
 /*TEST*/
   public function disableBed(PlayerBedEnterEvent $event){
